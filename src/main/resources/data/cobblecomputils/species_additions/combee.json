@@ -1,0 +1,39 @@
+{
+  "target": "cobblemon:combee",
+  "abilities": [
+    "honeygather",
+    "runaway",
+    "h:hustle"
+  ],
+  "moves": [
+    "1:sweetscent",
+    "1:gust",
+    "1:bugbite",
+    "1:strugglebug",
+    "tm:bugbite",
+    "tm:bugbuzz",
+    "tm:endeavor",
+    "tm:lunge",
+    "tm:ominouswind",
+    "tm:skittersmack",
+    "tm:sleeptalk",
+    "tm:stringshot",
+    "tm:strugglebug",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:endeavor",
+    "tutor:ominouswind",
+    "tutor:skittersmack",
+    "tutor:sleeptalk",
+    "tutor:stringshot",
+    "legacy:aircutter",
+    "legacy:dualwingbeat",
+    "legacy:mudslap",
+    "legacy:snore",
+    "legacy:swift",
+    "legacy:tailwind",
+    "egg:powertrip",
+    "egg:bodypress",
+    "egg:spore"
+  ]
+}

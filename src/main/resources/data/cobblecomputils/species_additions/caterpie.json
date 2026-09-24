@@ -1,0 +1,25 @@
+{
+  "target": "cobblemon:caterpie",
+  "abilities": [
+    "shielddust",
+    "gluttony",
+    "h:runaway"
+  ],
+  "moves": [
+    "1:tackle",
+    "1:stringshot",
+    "9:bugbite",
+    "tm:bugbite",
+    "tm:electroweb",
+    "tm:stringshot",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:electroweb",
+    "tutor:stringshot",
+    "legacy:snore",
+    "egg:sandsearstorm",
+    "egg:silktrap",
+    "egg:twinbeam",
+    "egg:bleakwindstorm"
+  ]
+}

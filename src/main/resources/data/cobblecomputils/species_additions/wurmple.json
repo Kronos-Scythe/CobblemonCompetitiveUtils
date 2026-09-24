@@ -1,0 +1,28 @@
+{
+  "target": "cobblemon:wurmple",
+  "abilities": [
+    "shielddust",
+    "poisonpoint",
+    "h:runaway"
+  ],
+  "moves": [
+    "1:tackle",
+    "1:stringshot",
+    "5:poisonsting",
+    "15:bugbite",
+    "tm:bugbite",
+    "tm:electroweb",
+    "tm:skittersmack",
+    "tm:stringshot",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:electroweb",
+    "tutor:skittersmack",
+    "tutor:stringshot",
+    "legacy:snore",
+    "egg:batonpass",
+    "egg:bleakwindstorm",
+    "egg:storedpower",
+    "egg:malignantchain"
+  ]
+}

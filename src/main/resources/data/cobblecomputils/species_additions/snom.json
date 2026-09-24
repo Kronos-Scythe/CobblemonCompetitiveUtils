@@ -1,0 +1,39 @@
+{
+  "target": "cobblemon:snom",
+  "abilities": [
+    "shielddust",
+    "snowwarning",
+    "h:icescales"
+  ],
+  "moves": [
+    "1:powdersnow",
+    "1:strugglebug",
+    "tm:bugbite",
+    "tm:bugbuzz",
+    "tm:facade",
+    "tm:iciclespear",
+    "tm:icywind",
+    "tm:lunge",
+    "tm:pounce",
+    "tm:protect",
+    "tm:rest",
+    "tm:skittersmack",
+    "tm:sleeptalk",
+    "tm:strugglebug",
+    "tm:substitute",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:icywind",
+    "tutor:rest",
+    "tutor:skittersmack",
+    "tutor:sleeptalk",
+    "legacy:attract",
+    "legacy:endure",
+    "legacy:round",
+    "legacy:snore",
+    "egg:frostbreath",
+    "egg:roost",
+    "egg:sleeppowder",
+    "egg:earthpower"
+  ]
+}

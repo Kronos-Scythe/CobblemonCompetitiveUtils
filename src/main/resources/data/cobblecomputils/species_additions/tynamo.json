@@ -1,0 +1,28 @@
+{
+  "target": "cobblemon:tynamo",
+  "abilities": [
+    "levitate",
+    "poisonheal"
+  ],
+  "moves": [
+    "1:tackle",
+    "1:thunderwave",
+    "1:spark",
+    "1:chargebeam",
+    "tm:charge",
+    "tm:chargebeam",
+    "tm:knockoff",
+    "tm:magnetrise",
+    "tm:risingvoltage",
+    "tm:terablast",
+    "tm:thunderwave",
+    "tutor:chargebeam",
+    "tutor:knockoff",
+    "tutor:magnetrise",
+    "tutor:risingvoltage",
+    "egg:scald",
+    "egg:leechlife",
+    "egg:gunkshot",
+    "egg:plasmafists"
+  ]
+}

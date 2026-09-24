@@ -1,0 +1,26 @@
+{
+  "target": "cobblemon:scatterbug",
+  "abilities": [
+    "shielddust",
+    "compoundeyes",
+    "runaway",
+    "h:friendguard"
+  ],
+  "moves": [
+    "1:tackle",
+    "1:stringshot",
+    "6:stunspore",
+    "15:bugbite",
+    "tm:bugbite",
+    "tm:pounce",
+    "tm:stringshot",
+    "tm:strugglebug",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:stringshot",
+    "egg:focusblast",
+    "egg:afteryou",
+    "egg:decorate",
+    "egg:blizzard"
+  ]
+}

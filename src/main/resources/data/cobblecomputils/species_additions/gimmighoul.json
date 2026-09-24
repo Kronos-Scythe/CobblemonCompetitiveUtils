@@ -1,0 +1,34 @@
+{
+  "target": "cobblemon:gimmighoul",
+  "abilities": [
+    "rattled",
+    "honeygather"
+  ],
+  "moves": [
+    "1:astonish",
+    "1:tackle",
+    "tm:confuseray",
+    "tm:endure",
+    "tm:hex",
+    "tm:lightscreen",
+    "tm:nastyplot",
+    "tm:nightshade",
+    "tm:powergem",
+    "tm:protect",
+    "tm:reflect",
+    "tm:rest",
+    "tm:shadowball",
+    "tm:sleeptalk",
+    "tm:substitute",
+    "tm:takedown",
+    "tm:terablast",
+    "tm:thief",
+    "tutor:rest",
+    "tutor:shadowball",
+    "tutor:sleeptalk",
+    "egg:happyhour",
+    "egg:aurasphere",
+    "egg:surf",
+    "egg:astralbarrage"
+  ]
+}

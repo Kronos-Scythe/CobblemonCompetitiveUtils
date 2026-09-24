@@ -1,0 +1,27 @@
+{
+  "target": "cobblemon:spewpa",
+  "abilities": [
+    "shedskin",
+    "compoundeyes",
+    "h:friendguard"
+  ],
+  "moves": [
+    "1:harden",
+    "1:protect",
+    "1:stunspore",
+    "1:tackle",
+    "tm:bugbite",
+    "tm:irondefense",
+    "tm:pounce",
+    "tm:protect",
+    "tm:strugglebug",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:irondefense",
+    "legacy:electroweb",
+    "egg:focusblast",
+    "egg:afteryou",
+    "egg:decorate",
+    "egg:blizzard"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "target": "cobblemon:smeargle",
+  "abilities": [
+    "owntempo",
+    "technician",
+    "prankster",
+    "h:moody"
+  ],
+  "moves": [
+    "1:sketch",
+    "tutor:falseswipe",
+    "tutor:flamethrower",
+    "legacy:captivate",
+    "legacy:sleeptalk",
+    "special:falseswipe",
+    "special:flamethrower",
+    "special:furyswipes",
+    "special:meanlook",
+    "special:odorsleuth",
+    "special:seismictoss",
+    "special:spore",
+    "egg:conversion",
+    "egg:burningbulwark",
+    "egg:saltcure",
+    "egg:darkvoid"
+  ]
+}

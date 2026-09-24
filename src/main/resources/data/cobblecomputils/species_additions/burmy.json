@@ -1,0 +1,26 @@
+{
+  "target": "cobblemon:burmy",
+  "abilities": [
+    "shedskin",
+    "sturdy",
+    "h:overcoat"
+  ],
+  "moves": [
+    "10:tackle",
+    "15:bugbite",
+    "20:stringshot",
+    "tm:bugbite",
+    "tm:electroweb",
+    "tm:stringshot",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:electroweb",
+    "tutor:stringshot",
+    "legacy:hiddenpower",
+    "legacy:protect",
+    "legacy:snore",
+    "egg:fierydance",
+    "egg:defendorder",
+    "egg:healorder"
+  ]
+}

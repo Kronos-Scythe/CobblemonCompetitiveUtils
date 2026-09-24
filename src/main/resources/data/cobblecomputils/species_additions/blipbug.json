@@ -1,0 +1,19 @@
+{
+  "target": "cobblemon:blipbug",
+  "abilities": [
+    "swarm",
+    "compoundeyes",
+    "runaway",
+    "h:telepathy"
+  ],
+  "moves": [
+    "1:strugglebug",
+    "tm:infestation",
+    "tm:strugglebug",
+    "tm:terablast",
+    "egg:recover",
+    "egg:lusterpurge",
+    "egg:cosmicpower",
+    "egg:tailglow"
+  ]
+}

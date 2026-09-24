@@ -1,0 +1,25 @@
+{
+  "target": "cobblemon:weedle",
+  "abilities": [
+    "shielddust",
+    "poisonpoint",
+    "h:runaway"
+  ],
+  "moves": [
+    "1:poisonsting",
+    "1:stringshot",
+    "9:bugbite",
+    "tm:bugbite",
+    "tm:electroweb",
+    "tm:skittersmack",
+    "tm:stringshot",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:electroweb",
+    "tutor:skittersmack",
+    "tutor:stringshot",
+    "egg:closecombat",
+    "egg:attackorder",
+    "egg:victorydance"
+  ]
+}
