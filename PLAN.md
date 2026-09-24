@@ -66,6 +66,22 @@ Drawbacks this milestone accepts: the files copy Cobblemon's move lists, so
 they go stale when Cobblemon changes moves, and they lose to another addon that
 rewrites the same species first in load order.
 
+## Findings from Cobblemon 1.8.1 source
+
+- `species_additions` replaces every field it sets, except `forms` and
+  `evolutions`, which it **appends to** (`SpeciesAdditions.reload`). So an
+  addition cannot edit an existing form (Alolan Vulpix, Origin Giratina): it
+  would add a second form with the same name. Form abilities/egg moves need
+  the runtime merge (milestone 2).
+- Regional and other forms live in the species file's `forms` list, each with
+  its own `abilities` and `moves` (keyed by `name`, selected by `aspects`).
+- Any number of regular abilities is fine: `AbilityPool.select` picks at random
+  among the lowest-priority group, so `--passive ability` giving three regular
+  abilities works.
+- Cobblemon has mega battle hooks (`MegaEvolutionEvent`, `MegaInstruction`) but
+  ships no mega forms; those come from an addon, which decides how megas are
+  stored and so how we apply PokeRogue data to them.
+
 ## Milestone 2: runtime merge
 
 - Replace the generated files with a compact table (species → abilities, egg
