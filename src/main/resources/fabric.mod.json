@@ -34,5 +34,8 @@
     "cobblemon": ">=${cobblemon_version}",
     "fabric-language-kotlin": "*",
     "mega_showdown": "*"
+  },
+  "recommends": {
+    "cobbledollars": "*"
   }
 }

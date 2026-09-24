@@ -133,4 +133,28 @@ Server-side chest menus (`gui/MenuScreenHandler`, `evedit/`): a vanilla
   the party. Lowering HP EVs clamps current HP to the new max.
 - Open to every player; add a permission check if the server needs one.
 
+## Step 3: prices in CobbleDollars
+
+`economy/`: CobbleDollars keeps each balance on the player entity through the
+`fr.harmex.cobbledollars.common.utils.CobbleDollarsPlayer` interface
+(`cobbleDollars$getCobbleDollars()` / `cobbleDollars$setCobbleDollars(BigInteger)`),
+as used by CobbleMarket. No bridge mod needed. CobbleDollars is optional: if
+it isn't installed, the startup log says so and editing is free.
+
+`config/cobblecomputils/evedit.json` (created on first start, `/evedit reload`
+re-reads it, needs op):
+```json
+{
+  "charge": true,
+  "pricePerEv": {"hp": 10, "attack": 10, "defence": 10,
+                 "special_attack": 10, "special_defence": 10, "speed": 10},
+  "refundPercent": 0
+}
+```
+- Adding EVs costs `pricePerEv` each; +1/+4 are refused if unaffordable,
+  Ctrl+Q buys as many as the balance allows (up to the max).
+- Lowering EVs is free and refunds `refundPercent` of the price (default 0).
+- Hover shows the price per EV; the Pokémon at the top shows the balance.
+  Payments and refunds appear in the action bar.
+
 Next candidates: an IV editor on the same menus (max 31), nature/ability.

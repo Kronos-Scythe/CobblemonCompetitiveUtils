@@ -9,6 +9,7 @@ import com.cobblemon.mod.common.battles.BattleRegistry;
 import com.cobblemon.mod.common.item.PokemonItem;
 import com.cobblemon.mod.common.pokemon.EVs;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +27,8 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Unit;
+import org.cobbleutils.cobblecomputils.Cobblecomputils;
+import org.cobbleutils.cobblecomputils.economy.Economy;
 import org.cobbleutils.cobblecomputils.gui.MenuScreenHandler;
 
 /**
@@ -105,7 +108,7 @@ public final class EvEditMenus {
             return;
         }
         SimpleInventory menu = framedInventory();
-        drawStats(menu, pokemon);
+        drawStats(menu, player, pokemon);
         MutableText title = Text.literal("EVs: ").append(pokemon.getDisplayName(false));
         open(player, menu, title, (slot, button, action) -> {
             if (slot == BACK_SLOT && action == SlotActionType.PICKUP) {
@@ -122,14 +125,15 @@ public final class EvEditMenus {
                 player.closeHandledScreen();
                 return;
             }
-            if (applyClick(current, STATS[statIndex], button, action)) {
-                drawStats(menu, current);
+            if (applyClick(player, current, STATS[statIndex], button, action)) {
+                drawStats(menu, player, current);
             }
         });
     }
 
-    /** Maps a click to an EV change. Returns true if the EVs changed. */
-    private static boolean applyClick(Pokemon pokemon, Stat stat, int button, SlotActionType action) {
+    /** Maps a click to an EV change and charges for it. Returns true if the EVs changed. */
+    private static boolean applyClick(ServerPlayerEntity player, Pokemon pokemon, Stat stat,
+                                      int button, SlotActionType action) {
         EVs evs = pokemon.getEvs();
         int current = evs.getOrDefault(stat);
         int max = maxAllowed(evs, stat);
@@ -147,12 +151,58 @@ public final class EvEditMenus {
         if (target == current) {
             return false;
         }
+
+        Economy economy = Cobblecomputils.economy();
+        long price = pricePerEv(stat);
+        BigInteger cost = BigInteger.ZERO;
+        if (target > current && price > 0) {
+            BigInteger balance = economy.balance(player);
+            if (action == SlotActionType.THROW) {
+                // Ctrl+Q buys as many EVs as the player can afford, up to the max.
+                long affordable = balance.divide(BigInteger.valueOf(price)).min(BigInteger.valueOf(target - current)).longValue();
+                target = current + (int) affordable;
+            }
+            cost = BigInteger.valueOf(price).multiply(BigInteger.valueOf(target - current));
+            if (target == current || !economy.withdraw(player, cost)) {
+                BigInteger needed = BigInteger.valueOf(price).max(cost);
+                player.sendMessage(Text.literal("Not enough CobbleDollars: need " + money(needed)
+                    + ", you have " + money(balance)).formatted(Formatting.RED), true);
+                return false;
+            }
+        }
         evs.set(stat, target);
+        if (evs.getOrDefault(stat) != target) {
+            // EVs.set refused the value; give the money back.
+            if (cost.signum() > 0) {
+                economy.deposit(player, cost);
+            }
+            return false;
+        }
+        if (cost.signum() > 0) {
+            player.sendMessage(Text.literal("Paid " + money(cost)).formatted(Formatting.GOLD), true);
+        } else if (target < current && price > 0) {
+            BigInteger refund = BigInteger.valueOf(price).multiply(BigInteger.valueOf(current - target))
+                .multiply(BigInteger.valueOf(EvEditConfig.get().refundPercent())).divide(BigInteger.valueOf(100));
+            if (refund.signum() > 0) {
+                economy.deposit(player, refund);
+                player.sendMessage(Text.literal("Refunded " + money(refund)).formatted(Formatting.GOLD), true);
+            }
+        }
         // Lowering HP EVs lowers max HP; keep current HP within it.
         if (pokemon.getCurrentHealth() > pokemon.getMaxHealth()) {
             pokemon.setCurrentHealth(pokemon.getMaxHealth());
         }
         return true;
+    }
+
+    /** Price of one EV of this stat, or 0 when nothing is charged. */
+    private static long pricePerEv(Stat stat) {
+        EvEditConfig config = EvEditConfig.get();
+        return config.charge && !Cobblecomputils.economy().isFree() ? config.price(stat) : 0;
+    }
+
+    private static String money(BigInteger amount) {
+        return String.format("%,d %s", amount, Cobblecomputils.economy().symbol()).trim();
     }
 
     /** Highest value this stat can take: 252, or less if the 510 total would be exceeded. */
@@ -162,7 +212,7 @@ public final class EvEditMenus {
         return Math.min(EVs.MAX_STAT_VALUE, current + left);
     }
 
-    private static void drawStats(SimpleInventory menu, Pokemon pokemon) {
+    private static void drawStats(SimpleInventory menu, ServerPlayerEntity player, Pokemon pokemon) {
         EVs evs = pokemon.getEvs();
         int total = evs.total();
 
@@ -171,6 +221,9 @@ public final class EvEditMenus {
         headerLore.add(line(spreadSummary(evs), Formatting.AQUA));
         headerLore.add(line("Total EVs: " + total + " / " + EVs.MAX_TOTAL_VALUE
             + " (" + (EVs.MAX_TOTAL_VALUE - total) + " left)", Formatting.GRAY));
+        if (!Cobblecomputils.economy().isFree() && EvEditConfig.get().charge) {
+            headerLore.add(line("Balance: " + money(Cobblecomputils.economy().balance(player)), Formatting.GOLD));
+        }
         menu.setStack(HEADER_SLOT, named(PokemonItem.from(pokemon),
             pokemon.getDisplayName(false).copy().setStyle(plain(Formatting.WHITE)), headerLore));
 
@@ -181,6 +234,14 @@ public final class EvEditMenus {
             lore.add(line("EVs: " + value + " / " + EVs.MAX_STAT_VALUE, value > 0 ? Formatting.GREEN : Formatting.GRAY));
             lore.add(line("Stat: " + pokemon.getStat(stat), Formatting.GRAY));
             lore.add(line("Can go up to " + maxAllowed(evs, stat), Formatting.DARK_GRAY));
+            long price = pricePerEv(stat);
+            if (price > 0) {
+                lore.add(line("Cost: " + money(BigInteger.valueOf(price)) + " per EV", Formatting.GOLD));
+                int refund = EvEditConfig.get().refundPercent();
+                if (refund > 0) {
+                    lore.add(line("Lowering refunds " + refund + "%", Formatting.GOLD));
+                }
+            }
             lore.add(Text.empty());
             lore.add(line("Left / right click: +1 / -1", Formatting.YELLOW));
             lore.add(line("Shift + left / right click: +4 / -4", Formatting.YELLOW));
