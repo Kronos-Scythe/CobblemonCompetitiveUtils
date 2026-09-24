@@ -1,0 +1,22 @@
+{
+  "target": "cobblemon:magikarp",
+  "abilities": [
+    "swiftswim",
+    "multiscale",
+    "h:rattled"
+  ],
+  "moves": [
+    "1:splash",
+    "15:tackle",
+    "25:flail",
+    "tm:bounce",
+    "tutor:bounce",
+    "legacy:hydropump",
+    "special:celebrate",
+    "special:happyhour",
+    "egg:flipturn",
+    "egg:icespinner",
+    "egg:knockoff",
+    "egg:dragonascent"
+  ]
+}

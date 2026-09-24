@@ -1,0 +1,14 @@
+{
+  "target": "cobblemon:unown",
+  "abilities": [
+    "levitate",
+    "adaptability"
+  ],
+  "moves": [
+    "1:hiddenpower",
+    "egg:naturepower",
+    "egg:cosmicpower",
+    "egg:ancientpower",
+    "egg:mysticalpower"
+  ]
+}

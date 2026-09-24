@@ -1,0 +1,28 @@
+{
+  "target": "cobblemon:cascoon",
+  "abilities": [
+    "shedskin",
+    "sturdy"
+  ],
+  "moves": [
+    "1:harden",
+    "1:tackle",
+    "1:poisonsting",
+    "tm:bugbite",
+    "tm:electroweb",
+    "tm:irondefense",
+    "tm:skittersmack",
+    "tm:stringshot",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:electroweb",
+    "tutor:irondefense",
+    "tutor:skittersmack",
+    "tutor:stringshot",
+    "legacy:snore",
+    "egg:batonpass",
+    "egg:bleakwindstorm",
+    "egg:storedpower",
+    "egg:malignantchain"
+  ]
+}

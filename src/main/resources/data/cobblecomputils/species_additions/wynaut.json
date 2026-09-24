@@ -1,0 +1,27 @@
+{
+  "target": "cobblemon:wynaut",
+  "abilities": [
+    "shadowtag",
+    "sturdy",
+    "h:telepathy"
+  ],
+  "moves": [
+    "1:splash",
+    "1:charm",
+    "1:encore",
+    "1:counter",
+    "1:mirrorcoat",
+    "1:safeguard",
+    "1:destinybond",
+    "1:amnesia",
+    "tm:amnesia",
+    "tm:charm",
+    "tm:encore",
+    "tm:safeguard",
+    "special:tickle",
+    "egg:recover",
+    "egg:shedtail",
+    "egg:taunt",
+    "egg:comeuppance"
+  ]
+}

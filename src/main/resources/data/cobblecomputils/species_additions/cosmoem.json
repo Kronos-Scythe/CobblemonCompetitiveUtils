@@ -1,0 +1,17 @@
+{
+  "target": "cobblemon:cosmoem",
+  "abilities": [
+    "sturdy",
+    "powerspot"
+  ],
+  "moves": [
+    "1:cosmicpower",
+    "1:teleport",
+    "1:splash",
+    "tm:cosmicpower",
+    "egg:photongeyser",
+    "egg:precipiceblades",
+    "egg:sacredfire",
+    "egg:astralbarrage"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "target": "cobblemon:meltan",
+  "abilities": [
+    "magnetpull",
+    "heatproof"
+  ],
+  "moves": [
+    "1:thundershock",
+    "1:harden",
+    "8:tailwhip",
+    "16:headbutt",
+    "24:thunderwave",
+    "32:acidarmor",
+    "40:flashcannon",
+    "tm:endure",
+    "tm:facade",
+    "tm:flashcannon",
+    "tm:gyroball",
+    "tm:headbutt",
+    "tm:irondefense",
+    "tm:protect",
+    "tm:rest",
+    "tm:sleeptalk",
+    "tm:steelbeam",
+    "tm:substitute",
+    "tm:terablast",
+    "tm:thunderbolt",
+    "tm:thunderwave",
+    "tutor:flashcannon",
+    "tutor:irondefense",
+    "tutor:rest",
+    "tutor:sleeptalk",
+    "tutor:steelbeam",
+    "tutor:thunderbolt",
+    "legacy:round",
+    "legacy:snore",
+    "legacy:toxic",
+    "egg:bulletpunch",
+    "egg:drainpunch",
+    "egg:bulkup",
+    "egg:plasmafists"
+  ]
+}

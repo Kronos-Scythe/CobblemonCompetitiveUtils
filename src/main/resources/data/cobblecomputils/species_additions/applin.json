@@ -1,0 +1,27 @@
+{
+  "target": "cobblemon:applin",
+  "abilities": [
+    "ripen",
+    "gluttony",
+    "sturdy",
+    "h:bulletproof"
+  ],
+  "moves": [
+    "1:withdraw",
+    "1:astonish",
+    "tm:pounce",
+    "tm:recycle",
+    "tm:rollout",
+    "tm:suckerpunch",
+    "tm:terablast",
+    "tutor:recycle",
+    "tutor:rollout",
+    "tutor:suckerpunch",
+    "legacy:attract",
+    "legacy:dracometeor",
+    "legacy:grassyglide",
+    "egg:coreenforcer",
+    "egg:temperflare",
+    "egg:matchagotcha"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "target": "cobblemon:toxel",
+  "abilities": [
+    "rattled",
+    "static",
+    "electricsurge",
+    "h:klutz"
+  ],
+  "moves": [
+    "1:belch",
+    "1:tearfullook",
+    "1:nuzzle",
+    "1:growl",
+    "1:flail",
+    "1:acid",
+    "tm:charm",
+    "tm:encore",
+    "tm:endeavor",
+    "tm:endure",
+    "tm:facade",
+    "tm:metalsound",
+    "tm:poweruppunch",
+    "tm:protect",
+    "tm:rest",
+    "tm:sleeptalk",
+    "tm:substitute",
+    "tm:terablast",
+    "tutor:endeavor",
+    "tutor:rest",
+    "tutor:sleeptalk",
+    "legacy:attract",
+    "legacy:round",
+    "legacy:snore",
+    "egg:bugbuzz",
+    "egg:sparklingaria",
+    "egg:torchsong"
+  ]
+}

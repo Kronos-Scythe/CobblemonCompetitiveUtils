@@ -1,0 +1,27 @@
+{
+  "target": "cobblemon:beldum",
+  "abilities": [
+    "clearbody",
+    "rockhead",
+    "h:lightmetal"
+  ],
+  "moves": [
+    "1:tackle",
+    "tm:headbutt",
+    "tm:irondefense",
+    "tm:ironhead",
+    "tm:steelbeam",
+    "tm:takedown",
+    "tm:terablast",
+    "tm:zenheadbutt",
+    "tutor:irondefense",
+    "tutor:ironhead",
+    "tutor:steelbeam",
+    "tutor:zenheadbutt",
+    "special:holdback",
+    "egg:psyshieldbash",
+    "egg:drainpunch",
+    "egg:icehammer",
+    "egg:shiftgear"
+  ]
+}

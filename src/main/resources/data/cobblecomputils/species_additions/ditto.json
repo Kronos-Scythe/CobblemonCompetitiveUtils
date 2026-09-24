@@ -1,0 +1,15 @@
+{
+  "target": "cobblemon:ditto",
+  "abilities": [
+    "limber",
+    "adaptability",
+    "h:imposter"
+  ],
+  "moves": [
+    "1:transform",
+    "egg:mimic",
+    "egg:sketch",
+    "egg:metronome",
+    "egg:imprison"
+  ]
+}

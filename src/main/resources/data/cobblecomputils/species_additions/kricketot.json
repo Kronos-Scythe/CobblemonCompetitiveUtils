@@ -1,0 +1,34 @@
+{
+  "target": "cobblemon:kricketot",
+  "abilities": [
+    "shedskin",
+    "honeygather",
+    "h:runaway"
+  ],
+  "moves": [
+    "1:growl",
+    "1:bide",
+    "1:tackle",
+    "6:strugglebug",
+    "16:bugbite",
+    "tm:bugbite",
+    "tm:endeavor",
+    "tm:lunge",
+    "tm:pound",
+    "tm:skittersmack",
+    "tm:stringshot",
+    "tm:strugglebug",
+    "tm:terablast",
+    "tutor:bugbite",
+    "tutor:endeavor",
+    "tutor:skittersmack",
+    "tutor:stringshot",
+    "legacy:mudslap",
+    "legacy:snore",
+    "legacy:uproar",
+    "egg:bonemerang",
+    "egg:victorydance",
+    "egg:stoneaxe",
+    "egg:populationbomb"
+  ]
+}

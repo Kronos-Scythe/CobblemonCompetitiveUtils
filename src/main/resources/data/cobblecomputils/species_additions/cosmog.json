@@ -1,0 +1,15 @@
+{
+  "target": "cobblemon:cosmog",
+  "abilities": [
+    "unaware",
+    "powerspot"
+  ],
+  "moves": [
+    "1:splash",
+    "1:teleport",
+    "egg:photongeyser",
+    "egg:precipiceblades",
+    "egg:sacredfire",
+    "egg:astralbarrage"
+  ]
+}
