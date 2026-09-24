@@ -10,11 +10,12 @@ Inputs
                          Needed for two reasons:
                            1. species additions REWRITE list fields, so the moves list we emit
                               must be the full base list with only the egg moves swapped;
-                           2. it tells us which abilities/moves Cobblemon actually knows.
+                           2. it tells us which abilities/moves Cobblemon species actually use.
 
 Rules applied
   - PokeRogue abilities/moves flagged `unimplemented` are dropped (`partial` kept unless --partial drop)
-  - Abilities/moves that Cobblemon doesn't know are dropped
+  - Abilities/moves that no Cobblemon species has (in any list, any form) are dropped,
+    e.g. signature moves gained only through a form change such as Behemoth Blade
   - Species PokeRogue only lists under a form name are matched by dex number to their default form
   - Other entries that can't be matched to a Cobblemon species (forms, megas, gmax...) are skipped and reported
   - PokeRogue passives have no Cobblemon equivalent and are ignored
@@ -167,7 +168,7 @@ def build(rows, status, species, k_abilities, k_moves, args):
         if st is None:
             report[f"{kind} not found in PokeRogue source (kept)"].append(display)
         if key not in cobble_known:
-            report[f"dropped {kind} (unknown to Cobblemon)"].append(display)
+            report[f"dropped {kind} (no Cobblemon species has them)"].append(display)
             return None
         return key
 

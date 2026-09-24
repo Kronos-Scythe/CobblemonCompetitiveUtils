@@ -29,8 +29,13 @@ python tools/build_additions.py --cobblemon path/to/cobblemon-1.8.1.jar
 Rules:
 - Unimplemented PokeRogue abilities/moves are dropped. `--partial drop` also
   drops partial ones.
-- Abilities or moves Cobblemon doesn't know are dropped. If a species has no
-  valid main ability left, it keeps its original abilities.
+- Abilities or moves that no Cobblemon species has are dropped. This is
+  checked against the species files, not Showdown's move list, so signature
+  moves only gained through a form change or special mechanic (Behemoth
+  Blade/Bash, the Starmobile torques, Let's Go partner moves, Nihil Light) are
+  dropped even though Cobblemon's battle engine knows most of them. This is
+  intentional: 19 moves on Cobblemon 1.8.1.
+- If a species has no valid main ability left, it keeps its original abilities.
 - The default replaces Cobblemon's `egg:` moves. `--keep-base-egg` adds
   PokeRogue's on top instead.
 - Species additions rewrite whole lists, so the builder writes the full base
