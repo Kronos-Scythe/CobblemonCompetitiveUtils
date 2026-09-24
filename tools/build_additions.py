@@ -15,7 +15,8 @@ Inputs
 Rules applied
   - PokeRogue abilities/moves flagged `unimplemented` are dropped (`partial` kept unless --partial drop)
   - Abilities/moves that Cobblemon doesn't know are dropped
-  - Species that can't be matched to a Cobblemon species (forms, megas, gmax...) are skipped and reported
+  - Species PokeRogue only lists under a form name are matched by dex number to their default form
+  - Other entries that can't be matched to a Cobblemon species (forms, megas, gmax...) are skipped and reported
   - PokeRogue passives have no Cobblemon equivalent and are ignored
   - If no main ability survives, the base abilities are left alone (nothing emitted for abilities)
 
@@ -112,10 +113,45 @@ def known_ids(species: dict[str, dict]):
 # --------------------------------------------------------------------------
 # Building
 # --------------------------------------------------------------------------
+# PokeRogue entries that are battle-only transformations, never a species' default form.
+BATTLE_FORM_RE = re.compile(r"^(Mega|Gigantamax|Primal|Eternamax|Ultra) ")
+
+
+def match_rows(rows, species, report):
+    """Pair each Cobblemon species with one PokeRogue entry.
+
+    Exact name first. Species PokeRogue only lists under a form name
+    ("Altered Giratina", "Female Nidoran", "Shield Aegislash") fall back to the
+    first non-battle-form entry with the same national dex number, which is the
+    default form in PokeRogue's ordering.
+    """
+    matched, by_dex = {}, defaultdict(list)
+    for row in rows:
+        sid = norm(row["species"])
+        if sid in species:
+            matched.setdefault(sid, row)
+        elif not BATTLE_FORM_RE.match(row["species"]):
+            by_dex[row["dex"]].append(row)
+    for sid, data in species.items():
+        if sid in matched:
+            continue
+        candidates = by_dex.get(data.get("nationalPokedexNumber"))
+        if candidates:
+            matched[sid] = candidates[0]
+            report["base species matched via their default-form entry"].append(
+                f"{data.get('name', sid)} <- {candidates[0]['species']}")
+        else:
+            report["Cobblemon species with no PokeRogue entry"].append(data.get("name", sid))
+    used = {id(r) for r in matched.values()}
+    for row in rows:
+        if id(row) not in used and norm(row["species"]) not in species:
+            report["skipped entries (no matching Cobblemon species - forms, megas, etc.)"].append(row["species"])
+    return matched
+
+
 def build(rows, status, species, k_abilities, k_moves, args):
     report = defaultdict(list)
     additions = {}
-    seen = set()
 
     def check(kind, display, cobble_known):
         """Return the normalised ID if usable, else None (and log why)."""
@@ -135,14 +171,7 @@ def build(rows, status, species, k_abilities, k_moves, args):
             return None
         return key
 
-    for row in rows:
-        sid = norm(row["species"])
-        if sid in seen:
-            continue
-        if sid not in species:
-            report["skipped entries (no matching Cobblemon species - forms, megas, etc.)"].append(row["species"])
-            continue
-        seen.add(sid)
+    for sid, row in match_rows(rows, species, report).items():
         base = species[sid]
         add = {"target": f"cobblemon:{sid}"}
 
