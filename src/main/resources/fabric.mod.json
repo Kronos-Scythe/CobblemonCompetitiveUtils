@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblecomputils",
+  "version": "${version}",
+  "name": "Cobblemon Competitive Utils",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cobblecomputils/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "org.cobbleutils.cobblecomputils.client.CobblecomputilsDataGenerator"
+    ],
+    "client": [
+      "org.cobbleutils.cobblecomputils.client.CobblecomputilsClient"
+    ],
+    "main": [
+      "org.cobbleutils.cobblecomputils.Cobblecomputils"
+    ]
+  },
+  "mixins": [
+    "cobblecomputils.mixins.json",
+    {
+      "config": "cobblecomputils.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
