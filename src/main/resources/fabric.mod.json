@@ -32,6 +32,7 @@
     "fabric-api": "*",
     "minecraft": "${minecraft_version}",
     "cobblemon": ">=${cobblemon_version}",
-    "fabric-language-kotlin": "*"
+    "fabric-language-kotlin": "*",
+    "mega_showdown": "*"
   }
 }

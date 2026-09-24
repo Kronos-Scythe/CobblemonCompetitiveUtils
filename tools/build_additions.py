@@ -6,7 +6,9 @@ validating everything on the way.
 Inputs
   pokerogue_data.json    from pokerogue_extract.py
   pokerogue_status.json  from pokerogue_status.py (unimplemented / partial flags)
-  --cobblemon PATH       Cobblemon jar/zip, or a folder holding its data files.
+  --cobblemon PATH...    Cobblemon jar/zip, or a folder holding its data files, followed by any
+                         addon jars that replace species files (e.g. Mega Showdown). Later paths
+                         win for a species defined in more than one, as in datapack load order.
                          Needed for two reasons:
                            1. species additions REWRITE list fields, so the moves list we emit
                               must be the full base list with only the egg moves swapped;
@@ -32,6 +34,7 @@ Output
 
 Usage
   python build_additions.py --cobblemon Cobblemon-fabric.jar
+  python build_additions.py --cobblemon Cobblemon-fabric.jar mega_showdown-fabric.jar
   python build_additions.py --cobblemon ./cobblemon_data --namespace myaddon --partial drop
 """
 import argparse
@@ -236,7 +239,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", type=Path, default=Path("pokerogue_data.json"))
     ap.add_argument("--status", type=Path, default=Path("pokerogue_status.json"))
-    ap.add_argument("--cobblemon", type=Path, required=True)
+    ap.add_argument("--cobblemon", type=Path, nargs="+", required=True,
+                    help="Cobblemon jar/folder, then addon jars that replace species files")
     ap.add_argument("--out", type=Path, default=Path("generated"))
     ap.add_argument("--namespace", default="cobblecomputils")
     ap.add_argument("--partial", choices=["keep", "drop"], default="keep",
@@ -249,7 +253,12 @@ def main():
 
     rows = json.loads(args.data.read_text(encoding="utf-8"))
     status = json.loads(args.status.read_text(encoding="utf-8"))
-    species = load_cobblemon(args.cobblemon)
+    species = {}
+    for path in args.cobblemon:
+        loaded = load_cobblemon(path)
+        replaced = len(loaded.keys() & species.keys())
+        species.update(loaded)
+        print(f"{path}: {len(loaded)} species files" + (f" ({replaced} replace earlier ones)" if replaced else ""))
     if not species:
         sys.exit("No Cobblemon species files found. Point --cobblemon at the jar or an extracted data folder.")
     k_ab, k_mv = known_ids(species)

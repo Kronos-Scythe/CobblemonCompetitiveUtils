@@ -35,8 +35,16 @@ repositories {
     // for more information about repositories.
     maven {
         name = "Cobblemon"
-        url = "https://maven.impactdev.net/repository/development/"
+        url = "https://artefacts.cobblemon.com/releases"
     }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content { includeGroup "maven.modrinth" }
+    }
+    maven { url = "https://maven.architectury.dev" }
+    maven { url = "https://maven.wispforest.io/releases" }
+    maven { url = "https://maven.su5ed.dev/releases" }
 }
 
 dependencies {
@@ -49,6 +57,12 @@ dependencies {
 
     modImplementation "com.cobblemon:fabric:${project.cobblemon_version}"
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
+
+    // Mega Showdown (megas, form changes). We only ship data alongside it, so it is
+    // needed at runtime in the dev client but not on the compile classpath.
+    modLocalRuntime "maven.modrinth:SszvX85I:${project.mega_showdown_version}"
+    modLocalRuntime "dev.architectury:architectury-fabric:${project.architectury_api_version}"
+    modLocalRuntime "io.wispforest:accessories-fabric:${project.accessories_version}"
 }
 
 processResources {
