@@ -111,3 +111,50 @@ Architectury and Accessories).
   `egg:` entries and abilities, leave everything else alone.
 - First, read Cobblemon 1.8.1's source to find how it loads species and applies
   additions (events or registry hooks) and pick the hook to use.
+
+## Step 2: `/evedit` EV editor
+
+Server-side chest menus (`gui/MenuScreenHandler`, `evedit/`): a vanilla
+3-row chest with a glass frame, so no client screen code is needed.
+
+- `/evedit` opens the team: the six party slots show the Pokémon's model
+  (`PokemonItem`), with an empty slot shown as a Poké Ball. Hover for level and
+  EV spread; click to edit.
+- The editor shows one power item per stat (Power Weight HP, Bracer Atk, Belt
+  Def, Lens SpA, Band SpD, Anklet Spe). Hover: current EVs, resulting stat,
+  how high it can go. Maxed stats glow.
+- Controls: left/right +1/-1, shift+left/right +4/-4, Ctrl+Q max, Q reset.
+  Ctrl+click can't be used: a server-side menu only receives the click type,
+  not modifier keys. Ctrl+Q (vanilla "drop stack") is the closest input the
+  server does receive.
+- Max respects both caps: 252 per stat and 510 total (`EVs.set` silently
+  refuses values that break them, so the menu clamps first).
+- Refused during a battle; each click re-checks that the Pokémon is still in
+  the party. Lowering HP EVs clamps current HP to the new max.
+- Open to every player; add a permission check if the server needs one.
+
+## Step 3: prices in CobbleDollars
+
+`economy/`: CobbleDollars keeps each balance on the player entity through the
+`fr.harmex.cobbledollars.common.utils.CobbleDollarsPlayer` interface
+(`cobbleDollars$getCobbleDollars()` / `cobbleDollars$setCobbleDollars(BigInteger)`),
+as used by CobbleMarket. No bridge mod needed. CobbleDollars is optional: if
+it isn't installed, the startup log says so and editing is free.
+
+`config/cobblecomputils/evedit.json` (created on first start, `/evedit reload`
+re-reads it, needs op):
+```json
+{
+  "charge": true,
+  "pricePerEv": {"hp": 10, "attack": 10, "defence": 10,
+                 "special_attack": 10, "special_defence": 10, "speed": 10},
+  "refundPercent": 0
+}
+```
+- Adding EVs costs `pricePerEv` each; +1/+4 are refused if unaffordable,
+  Ctrl+Q buys as many as the balance allows (up to the max).
+- Lowering EVs is free and refunds `refundPercent` of the price (default 0).
+- Hover shows the price per EV; the Pokémon at the top shows the balance.
+  Payments and refunds appear in the action bar.
+
+Next candidates: an IV editor on the same menus (max 31), nature/ability.

@@ -63,6 +63,11 @@ dependencies {
     modLocalRuntime "maven.modrinth:SszvX85I:${project.mega_showdown_version}"
     modLocalRuntime "dev.architectury:architectury-fabric:${project.architectury_api_version}"
     modLocalRuntime "io.wispforest:accessories-fabric:${project.accessories_version}"
+
+    // CobbleDollars (economy for paid features). Optional at runtime: without it
+    // everything is free, so compile against it but don't require it.
+    modCompileOnly "maven.modrinth:cobbledollars:${project.cobbledollars_version}"
+    modLocalRuntime "maven.modrinth:cobbledollars:${project.cobbledollars_version}"
 }
 
 processResources {
