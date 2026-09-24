@@ -25,3 +25,6 @@ pokerogue_data.json
 pokerogue_status.json
 report.txt
 __pycache__/
+.cache/
+generated/
+pokerogue_data.csv

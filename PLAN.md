@@ -21,7 +21,8 @@ python tools/build_additions.py --cobblemon path/to/cobblemon-1.8.1.jar
 2. `pokerogue_status.py` reads PokeRogue's source (`.unimplemented()` /
    `.partial()` tags) and writes `pokerogue_status.json`.
 3. `build_additions.py` **only reads** the Cobblemon jar. It writes one species
-   addition per Pokémon to `data/<namespace>/species_additions/<species>.json`,
+   addition per Pokémon to `generated/data/cobblecomputils/species_additions/<species>.json`
+   (change with `--out` / `--namespace`),
    validates every ability and move against what Cobblemon knows, and writes
    everything dropped or skipped to `report.txt`.
 
@@ -43,9 +44,9 @@ scripts).
 
 - [x] Fabric project set up, Cobblemon 1.8.1 + Fabric Language Kotlin as dependencies
 - [x] `src/main/resources/data/cobblecomputils/species_additions/` ready for generated files
-- [ ] Commit the three Python scripts to `tools/`
-- [ ] Run the builder against the real Cobblemon 1.8.1 jar and review `report.txt`
-- [ ] Copy the generated JSON into `src/main/resources/data/cobblecomputils/species_additions/`
+- [x] Commit the three Python scripts to `tools/`
+- [ ] Run the builder against the real Cobblemon 1.8.1 jar and review `generated/report.txt`
+- [ ] Copy `generated/data/cobblecomputils/species_additions/*.json` into `src/main/resources/data/cobblecomputils/species_additions/`
 - [ ] `runClient`, spawn a few species, confirm abilities and egg moves changed
 
 Drawbacks this milestone accepts: the files copy Cobblemon's move lists, so
