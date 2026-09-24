@@ -36,12 +36,20 @@ Rules:
   dropped even though Cobblemon's battle engine knows most of them. This is
   intentional: 19 moves on Cobblemon 1.8.1.
 - If a species has no valid main ability left, it keeps its original abilities.
+- An ability is never listed both as regular and hidden (Cobblemon's own
+  `gastly.json` has `["levitate", "h:levitate"]`); the regular entry wins.
+- Passives are ignored by default. `--passive ability` adds each passive to the
+  regular ability pool as an extra option (Smeargle: Own Tempo / Technician /
+  Prankster). That is not a true passive: the Pokémon rolls it *instead of*
+  its other ability, not on top of it. A passive skips when it is already the
+  hidden ability.
 - The default replaces Cobblemon's `egg:` moves. `--keep-base-egg` adds
   PokeRogue's on top instead.
 - Species additions rewrite whole lists, so the builder writes the full base
   move list with the `egg:` entries swapped.
 
-Known gaps: passives (Cobblemon has no slot), forms (Megas, regionals; skipped
+Known gaps: true passives (a second ability active at the same time needs
+battle-engine work, a candidate for after milestone 2), forms (Megas, regionals; skipped
 and reported), abilities missing from Cobblemon (dropped, no custom Showdown
 scripts).
 

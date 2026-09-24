@@ -18,7 +18,12 @@ Rules applied
     e.g. signature moves gained only through a form change such as Behemoth Blade
   - Species PokeRogue only lists under a form name are matched by dex number to their default form
   - Other entries that can't be matched to a Cobblemon species (forms, megas, gmax...) are skipped and reported
-  - PokeRogue passives have no Cobblemon equivalent and are ignored
+  - PokeRogue passives are ignored by default: a passive is active ON TOP of the chosen ability,
+    which Cobblemon's one-ability battles can't express. `--passive ability` instead adds the
+    passive to the regular ability pool as an extra option (Smeargle: Own Tempo / Technician /
+    Prankster), which changes what it means: the Pokémon rolls it instead of having it as well
+  - An ability is never listed twice: if the hidden ability is also a regular one (Cobblemon's own
+    gastly.json has ["levitate", "h:levitate"]), only the regular entry is kept
   - If no main ability survives, the base abilities are left alone (nothing emitted for abilities)
 
 Output
@@ -185,7 +190,15 @@ def build(rows, status, species, k_abilities, k_moves, args):
                 hidden_entries = [f"h:{hidden}"]
             else:  # keep whatever hidden ability Cobblemon already had
                 hidden_entries = [a for a in base.get("abilities", []) if a.startswith("h:")]
-            add["abilities"] = main + hidden_entries
+            if args.passive == "ability" and row.get("passive"):
+                passive = check("abilities", row["passive"], k_abilities)
+                if passive and passive not in main and f"h:{passive}" not in hidden_entries:
+                    main.append(passive)
+                    report["passives added as a regular ability"].append(f"{row['species']}: {row['passive']}")
+            abilities = main + [h for h in hidden_entries if h.split(":", 1)[-1] not in main]
+            if len(abilities) < len(main) + len(hidden_entries):
+                report["hidden ability dropped (same as a regular ability)"].append(row["species"])
+            add["abilities"] = abilities
         else:
             report["species left with base abilities (no valid main ability)"].append(row["species"])
 
@@ -228,6 +241,8 @@ def main():
     ap.add_argument("--namespace", default="cobblecomputils")
     ap.add_argument("--partial", choices=["keep", "drop"], default="keep",
                     help="what to do with abilities/moves PokeRogue flags as partially implemented")
+    ap.add_argument("--passive", choices=["ignore", "ability"], default="ignore",
+                    help="'ability' adds each PokeRogue passive to the regular ability pool")
     ap.add_argument("--keep-base-egg", action="store_true",
                     help="keep Cobblemon's own egg moves and add PokeRogue's on top")
     args = ap.parse_args()
