@@ -130,21 +130,22 @@ Every push is also built on GitHub (*Actions → Build*). Each run's
 ### Running in development
 
 ```sh
-./gradlew runClient      # starts Minecraft with the mod and its dependencies
+./gradlew runClient      # starts Minecraft with the mod, Cobblemon and CobbleDollars
 ./gradlew runServer      # same, as a dedicated server (in ./run)
 ```
+
+Mega Showdown is required but isn't pulled in by Gradle. Before the first
+run, download the Fabric jars of Mega Showdown and its dependencies
+(Architectury API, Accessories, owo-lib) and put them in `run/mods/`.
 
 In IntelliJ IDEA, open the folder as a Gradle project. After the import,
 Loom adds **Minecraft Client** and **Minecraft Server** run configurations.
 
 ### Dependency versions
 
-All versions are in [`gradle.properties`](gradle.properties). Check two of
-them when updating:
-
-- `mega_showdown_version`: a Mega Showdown version number from Modrinth.
-- `cobbledollars_version`: a CobbleDollars **Modrinth version ID**
-  (e.g. `cqsHXSXe`), from its Modrinth versions page.
+All versions are in [`gradle.properties`](gradle.properties).
+`cobbledollars_version` is a CobbleDollars **Modrinth version ID**
+(e.g. `cqsHXSXe`), from its Modrinth versions page.
 
 CobbleDollars is only on the compile classpath: the built jar doesn't require
 it.
