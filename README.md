@@ -115,6 +115,16 @@ above.
 The first build takes a while: it downloads Minecraft, the mappings and all
 dependencies.
 
+> **Build with Gradle, not IntelliJ's "Build Artifacts".** Fabric mods have
+> to go through Gradle (Loom), which packages the resources and remaps the
+> code for the real game. An IntelliJ artifact comes out as a ~1 KB jar with
+> nothing in it. In IntelliJ, use the Gradle tool window: *Tasks → build →
+> build*. The right jar is several hundred KB and contains `fabric.mod.json`
+> and `data/cobblecomputils/species_additions/`.
+
+Every push is also built on GitHub (*Actions → Build*). Each run's
+**cobblemoncompetitiveutils** artifact is a ready-to-use jar.
+
 ### Running in development
 
 ```sh
