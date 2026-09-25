@@ -99,7 +99,9 @@ Mega Showdown, as usual, but not this mod.
 
 ## Building
 
-You need **JDK 21** and git. Gradle is not required: the included wrapper
+You need **JDK 25** and git. Loom, the Fabric build plugin, needs Java 25
+to run Gradle; the mod itself is still compiled for Java 21, so it runs on
+any normal 1.21.1 install. Gradle is not required: the included wrapper
 (`gradlew`) downloads the right version.
 
 ```sh
