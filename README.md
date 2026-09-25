@@ -1,12 +1,40 @@
 # Cobblemon Competitive Utils
 
 A Fabric mod for [Cobblemon](https://cobblemon.com) 1.8.1 (Minecraft 1.21.1)
-for competitive play. It gives Pokémon
-[PokeRogue](https://pokerogue.net)'s abilities and egg moves, and adds an
-in-game EV editor that can charge [CobbleDollars](https://www.curseforge.com/minecraft/mc-mods/cobbledollars).
+for competitive play, built for level-capped runs with
+[Radical Cobblemon Trainers](https://modrinth.com/mod/rctmod) (RCT):
+
+- Pokémon get [PokeRogue](https://pokerogue.net)'s abilities and egg moves.
+- In-game menus to edit EVs and teach any learnable move.
+- Showdown team export/import, to plan with Showdown's tools and share teams.
+- Level cap rules and scouting on top of RCT.
+- Prices in [CobbleDollars](https://www.curseforge.com/minecraft/mc-mods/cobbledollars).
 
 > **Status: in development.** See [`PLAN.md`](PLAN.md) for the roadmap and
 > design notes.
+
+## Quick reference
+
+| Command | What it does | Needs |
+| --- | --- | --- |
+| `/evedit` | Edit your Pokémon's EVs in a chest menu | |
+| `/movetutor` | Browse and teach every move a Pokémon can learn | |
+| `/scout` | See the next RCT trainers' teams | RCT |
+| `/showdown export` | Copy your team in Showdown format | |
+| `/showdown import [pokepast.es link]` | Apply Showdown sets (from a book in hand or a PokéPaste) to your Pokémon | |
+| `/showdown confirm` | Apply the last import preview | |
+| `/evedit reload`, `/movetutor reload`, `/showdown reload` | Re-read that feature's config | operator |
+
+Plus, automatically: wild Pokémon above your RCT level cap can't be caught.
+
+Config files are created in `config/cobblecomputils/` on first start:
+
+| File | Controls |
+| --- | --- |
+| `evedit.json` | EV prices, refunds |
+| `movetutor.json` | Move prices per source, level-up moves above the current level |
+| `showdown.json` | Import on/off, nature / ability / Tera type prices |
+| `capture.json` | Level cap capture block, ball return |
 
 ## Features
 
@@ -57,9 +85,12 @@ Nothing can be taken out of the menu. Editing is refused during a battle.
 
 ### CobbleDollars prices
 
-With CobbleDollars installed, adding EVs costs CobbleDollars. Unaffordable
-clicks are refused, and Ctrl + Q buys as many EVs as your balance allows.
-Without CobbleDollars, editing is free.
+With CobbleDollars installed, `/evedit`, `/movetutor` and `/showdown import`
+charge CobbleDollars (no bridge mod needed). Without CobbleDollars, or with
+`"charge": false`, everything is free.
+
+For EVs, unaffordable clicks are refused, and Ctrl + Q buys as many EVs as
+your balance allows.
 
 Prices are in `config/cobblecomputils/evedit.json`, created on first start:
 
@@ -148,7 +179,7 @@ enough to prepare, not their moves, items or abilities.
 ## Requirements
 
 Install on the **server** (or in singleplayer). Clients need Cobblemon and
-Mega Showdown, as usual, but not this mod.
+Mega Showdown, as usual, but not this mod: every menu is a normal chest.
 
 | Mod | Version | |
 | --- | --- | --- |
@@ -157,7 +188,7 @@ Mega Showdown, as usual, but not this mod.
 | [Fabric API](https://modrinth.com/mod/fabric-api) | for 1.21.1 | required |
 | [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) | for 1.21.1 | required (Cobblemon needs it) |
 | [Cobblemon](https://modrinth.com/mod/cobblemon) | 1.8.1 or newer | required |
-| [Mega Showdown](https://github.com/yajatkaul/CobblemonMegaShowdown) | for Cobblemon 1.8 | required, with its own dependencies (Architectury API, Accessories) |
+| [Mega Showdown](https://github.com/yajatkaul/CobblemonMegaShowdown) | for Cobblemon 1.8 | required, with its own dependencies (Architectury API, Accessories, owo-lib) |
 | [CobbleDollars](https://www.curseforge.com/minecraft/mc-mods/cobbledollars) | for 1.21.1 | optional, for prices |
 | [Radical Cobblemon Trainers](https://modrinth.com/mod/rctmod) | for 1.21.1 | optional, for level cap captures and `/scout` |
 
