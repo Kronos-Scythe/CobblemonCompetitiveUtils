@@ -179,4 +179,21 @@ vanilla clients) and import onto owned Pokémon; `/scout` for the next RCT
 boss trainer's species; level cap HUD (RCT sends the cap to the client);
 doubles damage preview (largest).
 
+## Step 5: level cap captures, `/scout`, `/showdown`
+
+- **RCT integration** (`integration/RctBridge`): RCT isn't on any Maven
+  repository, so its public API is called by reflection. Level cap:
+  `RCTMod.getInstance().getTrainerManager().getData(player).getLevelCap()`.
+  Next trainers: `PlayerState.get(player)` → current series + defeated IDs →
+  `SeriesManager.getGraph(series).getNext(defeated)` (the trainers RCT uses
+  to compute the cap) → `TrainerMobData.getTrainerTeam()` (rctapi
+  `PokemonModel`: species, level, aspects, shiny).
+- **Captures**: Cobblemon 1.8.1 declares `THROWN_POKEBALL_HIT` but never
+  fires it, so the block uses `POKE_BALL_CAPTURE_CALCULATED` (LOWEST
+  priority) and replaces the result with a 0-shake failure, then returns the ball.
+- **Showdown import** only applies to owned Pokémon (matched by species) and
+  only what could be bought anyway: EVs (evedit prices), learnable moves
+  (tutor prices), nature as a mint, a legal ability, Tera type. Preview first,
+  re-planned and charged on confirm.
+
 Next candidates: an IV editor on the same menus (max 31), nature/ability.

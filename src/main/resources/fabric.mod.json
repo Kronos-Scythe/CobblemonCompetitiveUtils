@@ -37,5 +37,8 @@
   },
   "recommends": {
     "cobbledollars": "*"
+  },
+  "suggests": {
+    "rctmod": "*"
   }
 }
