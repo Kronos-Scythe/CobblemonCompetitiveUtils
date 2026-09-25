@@ -157,4 +157,26 @@ re-reads it, needs op):
 - Hover shows the price per EV; the Pokémon at the top shows the balance.
   Payments and refunds appear in the action bar.
 
+## Step 4: `/movetutor`
+
+Feature ideas were checked against Cobblemon 1.8.1 and RCT first: Cobblemon
+already has mints, Ability Capsule/Patch, EV-lowering berries, Hyper Training
+candies (its Bottle Caps) and a relearner for level-up/benched/evolution
+moves; RCT already caps XP (incl. Rare Candies) when `allowOverLeveling` is
+false (true on our server). What was missing: teaching egg/TM/tutor moves.
+
+- Lists `Learnset` level-up (up to current level unless
+  `levelUpAboveCurrentLevel`), evolution, egg, tutor, TM and form-change moves.
+- Teaches with `MoveSet.add` into a free slot, or `Pokemon.exchangeMove`
+  when replacing (the old move is benched, PP ratio carried over). Benched
+  moves are free, as in Cobblemon's own summary screen.
+- Prices per source in `movetutor.json`, cheapest source wins.
+- Descriptions come from Cobblemon's lang file; if the server can't resolve
+  them, the client translates them (unwrapped).
+
+Other ideas, in suggested order: Showdown export (clickable copy, works with
+vanilla clients) and import onto owned Pokémon; `/scout` for the next RCT
+boss trainer's species; level cap HUD (RCT sends the cap to the client);
+doubles damage preview (largest).
+
 Next candidates: an IV editor on the same menus (max 31), nature/ability.

@@ -82,6 +82,38 @@ Prices are in `config/cobblecomputils/evedit.json`, created on first start:
 
 After editing the file, run `/evedit reload` (operators only).
 
+### `/movetutor`: move tutor
+
+`/movetutor` opens your party. Pick a Pokémon to see **every move it can
+learn** in a 6-row chest, 28 per page, each shown as its type's gem. Hover a
+move for its type, category, power, accuracy, PP and description, how the
+Pokémon learns it, and the price.
+
+- **Filter** (hopper): cycles All / Level-up / Evolution / Egg move / Tutor /
+  TM / Form change (left click forward, right click back).
+- **Teaching:** click a move. With a free slot it's learned right away;
+  otherwise a menu asks which move to forget. Forgotten moves go to
+  Cobblemon's relearnable list, as usual.
+- Moves already known glow; moves known before (relearnable) are free.
+- Level-up moves above the Pokémon's level aren't offered by default, so the
+  tutor doesn't bypass level caps.
+
+Prices are in `config/cobblecomputils/movetutor.json`:
+
+```json
+{
+  "charge": true,
+  "prices": {
+    "level_up": 0, "evolution": 0, "egg": 1000,
+    "tutor": 500, "tm": 500, "form_change": 500
+  },
+  "levelUpAboveCurrentLevel": false
+}
+```
+
+A move learnable several ways costs the cheapest. `/movetutor reload`
+(operators only) re-reads the file.
+
 ## Requirements
 
 Install on the **server** (or in singleplayer). Clients need Cobblemon and
@@ -181,8 +213,10 @@ each script's `--help`.
 src/main/java/org/cobbleutils/cobblecomputils/
   Cobblecomputils.java   mod entrypoint: economy detection, config, commands
   evedit/                /evedit command, menus and price config
+  movetutor/             /movetutor command, learnable-move list, menus and prices
+  config/                JSON config loading
   economy/               CobbleDollars integration (free fallback)
-  gui/                   server-side chest menu base class
+  gui/                   server-side chest menus and shared menu helpers
 src/main/resources/data/cobblecomputils/species_additions/   generated species data
 tools/                   PokeRogue → Cobblemon data pipeline (Python)
 PLAN.md                  roadmap and design notes

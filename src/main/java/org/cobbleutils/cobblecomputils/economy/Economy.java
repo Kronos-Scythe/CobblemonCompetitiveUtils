@@ -21,6 +21,11 @@ public interface Economy {
 
     void deposit(ServerPlayerEntity player, BigInteger amount);
 
+    /** "1,250 CD", or just the number when nothing is charged. */
+    default String format(BigInteger amount) {
+        return String.format("%,d %s", amount, symbol()).trim();
+    }
+
     static Economy detect() {
         if (FabricLoader.getInstance().isModLoaded(COBBLEDOLLARS_MOD_ID)) {
             Cobblecomputils.LOGGER.info("Using CobbleDollars as the economy");
