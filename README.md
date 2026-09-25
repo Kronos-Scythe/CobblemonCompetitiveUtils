@@ -99,7 +99,9 @@ Mega Showdown, as usual, but not this mod.
 
 ## Building
 
-You need **JDK 21** and git. Gradle is not required: the included wrapper
+You need **JDK 25** and git. Loom, the Fabric build plugin, needs Java 25
+to run Gradle; the mod itself is still compiled for Java 21, so it runs on
+any normal 1.21.1 install. Gradle is not required: the included wrapper
 (`gradlew`) downloads the right version.
 
 ```sh
@@ -114,6 +116,16 @@ above.
 
 The first build takes a while: it downloads Minecraft, the mappings and all
 dependencies.
+
+> **Build with Gradle, not IntelliJ's "Build Artifacts".** Fabric mods have
+> to go through Gradle (Loom), which packages the resources and remaps the
+> code for the real game. An IntelliJ artifact comes out as a ~1 KB jar with
+> nothing in it. In IntelliJ, use the Gradle tool window: *Tasks → build →
+> build*. The right jar is several hundred KB and contains `fabric.mod.json`
+> and `data/cobblecomputils/species_additions/`.
+
+Every push is also built on GitHub (*Actions → Build*). Each run's
+**cobblemoncompetitiveutils** artifact is a ready-to-use jar.
 
 ### Running in development
 
