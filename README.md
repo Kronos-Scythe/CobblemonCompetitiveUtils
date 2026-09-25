@@ -1,12 +1,40 @@
 # Cobblemon Competitive Utils
 
 A Fabric mod for [Cobblemon](https://cobblemon.com) 1.8.1 (Minecraft 1.21.1)
-for competitive play. It gives Pokémon
-[PokeRogue](https://pokerogue.net)'s abilities and egg moves, and adds an
-in-game EV editor that can charge [CobbleDollars](https://www.curseforge.com/minecraft/mc-mods/cobbledollars).
+for competitive play, built for level-capped runs with
+[Radical Cobblemon Trainers](https://modrinth.com/mod/rctmod) (RCT):
+
+- Pokémon get [PokeRogue](https://pokerogue.net)'s abilities and egg moves.
+- In-game menus to edit EVs and teach any learnable move.
+- Showdown team export/import, to plan with Showdown's tools and share teams.
+- Level cap rules and scouting on top of RCT.
+- Prices in [CobbleDollars](https://www.curseforge.com/minecraft/mc-mods/cobbledollars).
 
 > **Status: in development.** See [`PLAN.md`](PLAN.md) for the roadmap and
 > design notes.
+
+## Quick reference
+
+| Command | What it does | Needs |
+| --- | --- | --- |
+| `/evedit` | Edit your Pokémon's EVs in a chest menu | |
+| `/movetutor` | Browse and teach every move a Pokémon can learn | |
+| `/scout` | See the next RCT trainers' teams | RCT |
+| `/showdown export` | Copy your team in Showdown format | |
+| `/showdown import [pokepast.es link]` | Apply Showdown sets (from a book in hand or a PokéPaste) to your Pokémon | |
+| `/showdown confirm` | Apply the last import preview | |
+| `/evedit reload`, `/movetutor reload`, `/showdown reload` | Re-read that feature's config | operator |
+
+Plus, automatically: wild Pokémon above your RCT level cap can't be caught.
+
+Config files are created in `config/cobblecomputils/` on first start:
+
+| File | Controls |
+| --- | --- |
+| `evedit.json` | EV prices, refunds |
+| `movetutor.json` | Move prices per source, level-up moves above the current level |
+| `showdown.json` | Import on/off, nature / ability / Tera type prices |
+| `capture.json` | Level cap capture block, ball return |
 
 ## Features
 
@@ -57,9 +85,12 @@ Nothing can be taken out of the menu. Editing is refused during a battle.
 
 ### CobbleDollars prices
 
-With CobbleDollars installed, adding EVs costs CobbleDollars. Unaffordable
-clicks are refused, and Ctrl + Q buys as many EVs as your balance allows.
-Without CobbleDollars, editing is free.
+With CobbleDollars installed, `/evedit`, `/movetutor` and `/showdown import`
+charge CobbleDollars (no bridge mod needed). Without CobbleDollars, or with
+`"charge": false`, everything is free.
+
+For EVs, unaffordable clicks are refused, and Ctrl + Q buys as many EVs as
+your balance allows.
 
 Prices are in `config/cobblecomputils/evedit.json`, created on first start:
 
@@ -82,10 +113,73 @@ Prices are in `config/cobblecomputils/evedit.json`, created on first start:
 
 After editing the file, run `/evedit reload` (operators only).
 
+### `/movetutor`: move tutor
+
+`/movetutor` opens your party. Pick a Pokémon to see **every move it can
+learn** in a 6-row chest, 28 per page, each shown as its type's gem. Hover a
+move for its type, category, power, accuracy, PP and description, how the
+Pokémon learns it, and the price.
+
+- **Filter** (hopper): cycles All / Level-up / Evolution / Egg move / Tutor /
+  TM / Form change (left click forward, right click back).
+- **Teaching:** click a move. With a free slot it's learned right away;
+  otherwise a menu asks which move to forget. Forgotten moves go to
+  Cobblemon's relearnable list, as usual.
+- Moves already known glow; moves known before (relearnable) are free.
+- Level-up moves above the Pokémon's level aren't offered by default, so the
+  tutor doesn't bypass level caps.
+
+Prices are in `config/cobblecomputils/movetutor.json`:
+
+```json
+{
+  "charge": true,
+  "prices": {
+    "level_up": 0, "evolution": 0, "egg": 1000,
+    "tutor": 500, "tm": 500, "form_change": 500
+  },
+  "levelUpAboveCurrentLevel": false
+}
+```
+
+A move learnable several ways costs the cheapest. `/movetutor reload`
+(operators only) re-reads the file.
+
+### Level cap captures (with Radical Cobblemon Trainers)
+
+Wild Pokémon above your [RCT](https://modrinth.com/mod/rctmod) level cap
+can't be caught: the ball fails immediately, you're told why, and the ball is
+given back. `config/cobblecomputils/capture.json`:
+`blockAboveLevelCap` (default `true`), `returnBall` (default `true`).
+
+### `/scout`: next trainers (with Radical Cobblemon Trainers)
+
+Shows the trainers you have to beat next in your RCT series (the ones that
+raise your level cap), one per row, with their team's species and levels:
+enough to prepare, not their moves, items or abilities.
+
+### `/showdown`: export and import
+
+- `/showdown export` lists your party in chat as [Showdown](https://play.pokemonshowdown.com)
+  sets. Hover to see a set, click to copy it, or copy the whole team.
+- `/showdown import` reads sets from a book (and quill) in your main hand;
+  `/showdown import https://pokepast.es/…` reads a PokéPaste. Each set is
+  applied to the first party Pokémon of the same species, and you get a
+  preview with the total price and a **[Confirm]** button
+  (`/showdown confirm`, valid for 5 minutes).
+- Import changes EVs (priced like `/evedit`), moves (only ones `/movetutor`
+  could teach, priced the same), nature (applied as a mint), ability (only
+  one the species can have) and Tera type. It never changes level, IVs, held
+  item, shininess or gender, and never creates Pokémon.
+
+`config/cobblecomputils/showdown.json`: `allowImport` (default `true`),
+`naturePrice` (500), `abilityPrice` (1000), `teraTypePrice` (500).
+`/showdown reload` (operators only) re-reads it.
+
 ## Requirements
 
 Install on the **server** (or in singleplayer). Clients need Cobblemon and
-Mega Showdown, as usual, but not this mod.
+Mega Showdown, as usual, but not this mod: every menu is a normal chest.
 
 | Mod | Version | |
 | --- | --- | --- |
@@ -94,8 +188,9 @@ Mega Showdown, as usual, but not this mod.
 | [Fabric API](https://modrinth.com/mod/fabric-api) | for 1.21.1 | required |
 | [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) | for 1.21.1 | required (Cobblemon needs it) |
 | [Cobblemon](https://modrinth.com/mod/cobblemon) | 1.8.1 or newer | required |
-| [Mega Showdown](https://github.com/yajatkaul/CobblemonMegaShowdown) | for Cobblemon 1.8 | required, with its own dependencies (Architectury API, Accessories) |
+| [Mega Showdown](https://github.com/yajatkaul/CobblemonMegaShowdown) | for Cobblemon 1.8 | required, with its own dependencies (Architectury API, Accessories, owo-lib) |
 | [CobbleDollars](https://www.curseforge.com/minecraft/mc-mods/cobbledollars) | for 1.21.1 | optional, for prices |
+| [Radical Cobblemon Trainers](https://modrinth.com/mod/rctmod) | for 1.21.1 | optional, for level cap captures and `/scout` |
 
 ## Building
 
@@ -130,21 +225,22 @@ Every push is also built on GitHub (*Actions → Build*). Each run's
 ### Running in development
 
 ```sh
-./gradlew runClient      # starts Minecraft with the mod and its dependencies
+./gradlew runClient      # starts Minecraft with the mod, Cobblemon and CobbleDollars
 ./gradlew runServer      # same, as a dedicated server (in ./run)
 ```
+
+Mega Showdown is required but isn't pulled in by Gradle. Before the first
+run, download the Fabric jars of Mega Showdown and its dependencies
+(Architectury API, Accessories, owo-lib) and put them in `run/mods/`.
 
 In IntelliJ IDEA, open the folder as a Gradle project. After the import,
 Loom adds **Minecraft Client** and **Minecraft Server** run configurations.
 
 ### Dependency versions
 
-All versions are in [`gradle.properties`](gradle.properties). Check two of
-them when updating:
-
-- `mega_showdown_version`: a Mega Showdown version number from Modrinth.
-- `cobbledollars_version`: a CobbleDollars **Modrinth version ID**
-  (e.g. `cqsHXSXe`), from its Modrinth versions page.
+All versions are in [`gradle.properties`](gradle.properties).
+`cobbledollars_version` is a CobbleDollars **Modrinth version ID**
+(e.g. `cqsHXSXe`), from its Modrinth versions page.
 
 CobbleDollars is only on the compile classpath: the built jar doesn't require
 it.
@@ -180,8 +276,14 @@ each script's `--help`.
 src/main/java/org/cobbleutils/cobblecomputils/
   Cobblecomputils.java   mod entrypoint: economy detection, config, commands
   evedit/                /evedit command, menus and price config
+  movetutor/             /movetutor command, learnable-move list, menus and prices
+  capture/               blocks capturing Pokémon above the RCT level cap
+  scout/                 /scout menu
+  showdown/              /showdown export/import, Showdown text format
+  integration/           Radical Cobblemon Trainers access (reflection, optional)
+  config/                JSON config loading
   economy/               CobbleDollars integration (free fallback)
-  gui/                   server-side chest menu base class
+  gui/                   server-side chest menus and shared menu helpers
 src/main/resources/data/cobblecomputils/species_additions/   generated species data
 tools/                   PokeRogue → Cobblemon data pipeline (Python)
 PLAN.md                  roadmap and design notes

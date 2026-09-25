@@ -1,12 +1,8 @@
 package org.cobbleutils.cobblecomputils.evedit;
 
-import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
-import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
-import com.cobblemon.mod.common.battles.BattleRegistry;
-import com.cobblemon.mod.common.item.PokemonItem;
 import com.cobblemon.mod.common.pokemon.EVs;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import java.math.BigInteger;
@@ -14,32 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Unit;
 import org.cobbleutils.cobblecomputils.Cobblecomputils;
 import org.cobbleutils.cobblecomputils.economy.Economy;
-import org.cobbleutils.cobblecomputils.gui.MenuScreenHandler;
+import org.cobbleutils.cobblecomputils.gui.Menus;
 
 /**
- * The two /evedit menus: the party picker and the per-Pokémon EV editor.
- *
- * Layout (3-row chest, glass frame): the six content slots are the middle row
- * minus its centre, which keeps the team split 3 | 3 like a party screen.
+ * The two /evedit menus: the party picker and the per-Pokémon EV editor
+ * (3-row chest, glass frame, one power item per stat in the party slots).
  */
 public final class EvEditMenus {
-    private static final int[] CONTENT_SLOTS = {10, 11, 12, 14, 15, 16};
-    private static final int CENTER_SLOT = 13;
+    private static final int[] CONTENT_SLOTS = Menus.PARTY_SLOTS;
     private static final int HEADER_SLOT = 4;
     private static final int BACK_SLOT = 22;
 
@@ -61,41 +50,11 @@ public final class EvEditMenus {
     // ------------------------------------------------------------------
 
     public static void openParty(ServerPlayerEntity player) {
-        if (refuseInBattle(player)) {
-            return;
-        }
-        SimpleInventory menu = framedInventory();
-        PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
-        for (int i = 0; i < CONTENT_SLOTS.length; i++) {
-            Pokemon pokemon = party.get(i);
-            menu.setStack(CONTENT_SLOTS[i], pokemon == null ? emptyPartySlot() : partyIcon(pokemon));
-        }
-        open(player, menu, Text.literal("EV Editor"), (slot, button, action) -> {
-            int partySlot = indexOf(CONTENT_SLOTS, slot);
-            if (partySlot < 0 || action != SlotActionType.PICKUP) {
-                return;
-            }
-            Pokemon pokemon = party.get(partySlot);
-            if (pokemon != null) {
-                openStats(player, pokemon.getUuid());
-            }
-        });
-    }
-
-    private static ItemStack partyIcon(Pokemon pokemon) {
-        ItemStack stack = PokemonItem.from(pokemon);
-        EVs evs = pokemon.getEvs();
-        List<Text> lore = new ArrayList<>();
-        lore.add(line("Lv. " + pokemon.getLevel(), Formatting.GRAY));
-        lore.add(line(spreadSummary(evs), Formatting.AQUA));
-        lore.add(line("Total EVs: " + evs.total() + " / " + EVs.MAX_TOTAL_VALUE, Formatting.GRAY));
-        lore.add(Text.empty());
-        lore.add(line("Click to edit EVs", Formatting.YELLOW));
-        return named(stack, pokemon.getDisplayName(false).copy().setStyle(plain(Formatting.WHITE)), lore);
-    }
-
-    private static ItemStack emptyPartySlot() {
-        return named(new ItemStack(CobblemonItems.POKE_BALL), line("Empty slot", Formatting.DARK_GRAY), List.of());
+        Menus.openPartyPicker(player, Text.literal("EV Editor"), "Click to edit EVs",
+            pokemon -> List.of(
+                line(spreadSummary(pokemon.getEvs()), Formatting.AQUA),
+                line("Total EVs: " + pokemon.getEvs().total() + " / " + EVs.MAX_TOTAL_VALUE, Formatting.GRAY)),
+            pokemon -> openStats(player, pokemon.getUuid()));
     }
 
     // ------------------------------------------------------------------
@@ -103,25 +62,25 @@ public final class EvEditMenus {
     // ------------------------------------------------------------------
 
     private static void openStats(ServerPlayerEntity player, UUID pokemonId) {
-        Pokemon pokemon = findInParty(player, pokemonId);
-        if (pokemon == null || refuseInBattle(player)) {
+        Pokemon pokemon = Menus.findInParty(player, pokemonId);
+        if (pokemon == null || Menus.refuseInBattle(player)) {
             return;
         }
-        SimpleInventory menu = framedInventory();
+        SimpleInventory menu = Menus.framed(3);
         drawStats(menu, player, pokemon);
         MutableText title = Text.literal("EVs: ").append(pokemon.getDisplayName(false));
-        open(player, menu, title, (slot, button, action) -> {
+        Menus.open(player, menu, 3, title, (slot, button, action) -> {
             if (slot == BACK_SLOT && action == SlotActionType.PICKUP) {
                 openParty(player);
                 return;
             }
-            int statIndex = indexOf(CONTENT_SLOTS, slot);
+            int statIndex = Menus.indexOf(CONTENT_SLOTS, slot);
             if (statIndex < 0) {
                 return;
             }
             // Re-resolve on every click: the Pokémon may have left the party or a battle may have started.
-            Pokemon current = findInParty(player, pokemonId);
-            if (current == null || refuseInBattle(player)) {
+            Pokemon current = Menus.findInParty(player, pokemonId);
+            if (current == null || Menus.refuseInBattle(player)) {
                 player.closeHandledScreen();
                 return;
             }
@@ -202,7 +161,7 @@ public final class EvEditMenus {
     }
 
     private static String money(BigInteger amount) {
-        return String.format("%,d %s", amount, Cobblecomputils.economy().symbol()).trim();
+        return Cobblecomputils.economy().format(amount);
     }
 
     /** Highest value this stat can take: 252, or less if the 510 total would be exceeded. */
@@ -224,8 +183,7 @@ public final class EvEditMenus {
         if (!Cobblecomputils.economy().isFree() && EvEditConfig.get().charge) {
             headerLore.add(line("Balance: " + money(Cobblecomputils.economy().balance(player)), Formatting.GOLD));
         }
-        menu.setStack(HEADER_SLOT, named(PokemonItem.from(pokemon),
-            pokemon.getDisplayName(false).copy().setStyle(plain(Formatting.WHITE)), headerLore));
+        menu.setStack(HEADER_SLOT, Menus.pokemonIcon(pokemon, headerLore));
 
         for (int i = 0; i < STATS.length; i++) {
             Stat stat = STATS[i];
@@ -254,47 +212,23 @@ public final class EvEditMenus {
             menu.setStack(CONTENT_SLOTS[i], stack);
         }
 
-        menu.setStack(BACK_SLOT, named(new ItemStack(Items.ARROW), line("Back to team", Formatting.WHITE), List.of()));
+        menu.setStack(BACK_SLOT, Menus.backButton("Back to team"));
     }
 
     // ------------------------------------------------------------------
     // Helpers
     // ------------------------------------------------------------------
 
-    private static void open(ServerPlayerEntity player, SimpleInventory menu, Text title,
-                             MenuScreenHandler.ClickListener listener) {
-        player.openHandledScreen(new SimpleNamedScreenHandlerFactory(
-            (syncId, playerInventory, p) -> new MenuScreenHandler(syncId, playerInventory, menu, listener),
-            title));
+    private static ItemStack named(ItemStack stack, Text name, List<Text> lore) {
+        return Menus.named(stack, name, lore);
     }
 
-    private static SimpleInventory framedInventory() {
-        SimpleInventory menu = new SimpleInventory(MenuScreenHandler.SIZE);
-        ItemStack frame = named(new ItemStack(Items.GRAY_STAINED_GLASS_PANE), Text.literal(" "), List.of());
-        for (int i = 0; i < MenuScreenHandler.SIZE; i++) {
-            menu.setStack(i, frame.copy());
-        }
-        menu.setStack(CENTER_SLOT, named(new ItemStack(Items.BLACK_STAINED_GLASS_PANE), Text.literal(" "), List.of()));
-        return menu;
+    private static Text line(String text, Formatting color) {
+        return Menus.line(text, color);
     }
 
-    private static Pokemon findInParty(ServerPlayerEntity player, UUID pokemonId) {
-        PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
-        for (int i = 0; i < party.size(); i++) {
-            Pokemon pokemon = party.get(i);
-            if (pokemon != null && pokemon.getUuid().equals(pokemonId)) {
-                return pokemon;
-            }
-        }
-        return null;
-    }
-
-    private static boolean refuseInBattle(ServerPlayerEntity player) {
-        if (BattleRegistry.INSTANCE.getBattleByParticipatingPlayer(player) == null) {
-            return false;
-        }
-        player.sendMessage(Text.literal("You can't edit EVs during a battle.").formatted(Formatting.RED), false);
-        return true;
+    private static Style plain(Formatting color) {
+        return Menus.plain(color);
     }
 
     private static String spreadSummary(EVs evs) {
@@ -306,29 +240,5 @@ public final class EvEditMenus {
             sb.append(evs.getOrDefault(STATS[i])).append(' ').append(STAT_SHORT[i]);
         }
         return sb.toString();
-    }
-
-    private static ItemStack named(ItemStack stack, Text name, List<Text> lore) {
-        stack.set(DataComponentTypes.CUSTOM_NAME, name);
-        stack.set(DataComponentTypes.LORE, new LoreComponent(lore));
-        stack.set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE);
-        return stack;
-    }
-
-    private static Text line(String text, Formatting color) {
-        return Text.literal(text).setStyle(plain(color));
-    }
-
-    private static Style plain(Formatting color) {
-        return Style.EMPTY.withItalic(false).withColor(color);
-    }
-
-    private static int indexOf(int[] slots, int slot) {
-        for (int i = 0; i < slots.length; i++) {
-            if (slots[i] == slot) {
-                return i;
-            }
-        }
-        return -1;
     }
 }
