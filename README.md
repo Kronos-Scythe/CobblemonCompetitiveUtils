@@ -8,6 +8,7 @@ for competitive play, built for level-capped runs with
 - In-game menus to edit EVs and teach any learnable move.
 - Showdown team export/import, to plan with Showdown's tools and share teams.
 - Level cap rules and scouting on top of RCT.
+- A restyled phone / Gym Challenge menu, a searchable Poké Mart and a Tier 7 Raid Pass (Potential Pack).
 - Prices in [CobbleDollars](https://www.curseforge.com/minecraft/mc-mods/cobbledollars).
 
 > **Status: in development.** See [`PLAN.md`](PLAN.md) for the roadmap and
@@ -82,6 +83,29 @@ go, and the price.
 | Q (drop item) | Reset to 0 |
 
 Nothing can be taken out of the menu. Editing is refused during a battle.
+
+### Potential Pack additions (v1.24)
+
+These features ship in the released jar for the Potential Pack modpack. Their
+sources are in [`reference-src/`](reference-src/) (see the note there).
+
+- **Phone / Gym Challenge menu.** The phone menu is drawn as a custom window in
+  the same style as `/evedit` and `/movetutor` (`GymNet` + `GymScreen`). Players
+  without the mod still get the chest menu. It also has buttons for the Move
+  Tutor, the EV Editor and the Tier 7 Raid Pass.
+- **Poké Mart.** Every CobbleDollars shop in one window with a search bar,
+  category chips, a quantity picker and a price per item (`MartNet` +
+  `MartScreen`). The catalog is generated from the pack's shop JSONs by
+  [`tools/gen_mart_catalog.py`](tools/gen_mart_catalog.py); items sold by
+  several merchants collapse to the cheapest price. Players without the mod
+  keep the per-merchant chest list.
+- **Tier 7 Raid Pass (`RaidPass`).** Clearing a region on Base, Hard or Elite
+  earns one voucher. A voucher is activated from the phone menu and gives one
+  hour of 7★ raids in `/rqueue`. Vouchers are granted from advancements, so
+  players who cleared a region before the update receive them automatically.
+  State is stored in `config/cobblecomputils/raidpass.json`. The pass gate is
+  enforced by a small patch to the Raid Den Queue mod (`raid-den-queue-1.0.0-pp1`).
+  Tier 6 queues are enabled in `config/raid-den-queue.json`.
 
 ### CobbleDollars prices
 
