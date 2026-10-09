@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.class_310;
 import org.cobbleutils.cobblecomputils.capture.GymNet;
+import org.cobbleutils.cobblecomputils.capture.ListNet;
 import org.cobbleutils.cobblecomputils.capture.MartNet;
 import org.cobbleutils.cobblecomputils.evedit.EvNet;
 import org.cobbleutils.cobblecomputils.movetutor.TutorNet;
@@ -13,6 +14,7 @@ import org.cobbleutils.cobblecomputils.movetutor.TutorNet;
 @Environment(EnvType.CLIENT)
 public class CobblecomputilsClient implements ClientModInitializer {
    public void onInitializeClient() {
+      SkinChestScreen.register();
       ClientPlayNetworking.registerGlobalReceiver(TutorNet.Open.ID, (payload, context) -> {
          class_310 client = context.client();
          if (client.field_1755 instanceof TutorScreen screen) {
@@ -49,6 +51,16 @@ public class CobblecomputilsClient implements ClientModInitializer {
       });
       ClientPlayNetworking.registerGlobalReceiver(MartNet.Result.ID, (payload, context) -> {
          if (context.client().field_1755 instanceof MartScreen screen) screen.result(payload);
+      });
+      ClientPlayNetworking.registerGlobalReceiver(ListNet.View.ID, (payload, context) -> {
+         class_310 client = context.client();
+         if (payload.rows().isEmpty() && payload.title().isEmpty()) {
+            if (client.field_1755 instanceof ListScreen screen) screen.closeFromServer();
+         } else if (client.field_1755 instanceof ListScreen screen) {
+            screen.update(payload);
+         } else {
+            client.method_1507(new ListScreen(payload));
+         }
       });
    }
 }

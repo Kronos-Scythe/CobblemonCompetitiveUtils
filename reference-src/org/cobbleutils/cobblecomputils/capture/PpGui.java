@@ -54,6 +54,7 @@ public final class PpGui {
 
     static void tick(net.minecraft.server.MinecraftServer server) {
         tickN++;
+        try { ListNet.tick(server); } catch (Throwable t) { }
         try { RaidPass.tick(server); } catch (Throwable t) { if (tickN % 6000 == 0) System.out.println("[cobblecomputils] raid pass tick error: " + t); }
         if (!OPEN.isEmpty()) {
             for (H h : new ArrayList<>(OPEN)) if (h.virtual && h.pl.method_31481()) { OPEN.remove(h); VIRT.values().remove(h); }
@@ -91,6 +92,94 @@ public final class PpGui {
         {"pp_gui_dex", "dex", "dex/menu_chat"},
     };
 
+    // ------------------------------------------------------------------ list-window versions (clients with the mod)
+    static void openList(class_3222 pl, String screen) {
+        switch (screen) {
+            case "shop": ListNet.open(pl, s -> shopList(pl, s)); break;
+            case "dex": ListNet.open(pl, s -> dexList(pl, s)); break;
+            default: ListNet.open(pl, s -> laneList(pl, s)); break;
+        }
+    }
+
+    static void shopList(class_3222 pl, ListNet.Spec s) {
+        int bp = score(pl, "pp_bp");
+        int el = 0;
+        for (String r : REG) if (adv(pl, "region/" + r + "_elite")) el++;
+        s.title = "Badge Point Shop"; s.back = true;
+        s.info = "Badge Points: " + bp;
+        Map<Integer, Integer> gi = new HashMap<>();
+        for (String[] c : ShopData.CATS) { gi.put(Integer.parseInt(c[0]), s.groups.size()); s.groups.add(c[1]); }
+        for (String[] it : ShopData.ITEMS) {
+            int cat = Integer.parseInt(it[0]), cost = Integer.parseInt(it[2]), req = Integer.parseInt(it[3]), trig = Integer.parseInt(it[4]);
+            boolean locked = req > el, afford = bp >= cost;
+            String name = it[1];
+            String sub = locked ? "Requires " + req + " Elite region" + (req > 1 ? "s" : "") + " (you have " + el + ")" : (req > 0 ? "Elite requirement met" : "");
+            int state = locked ? 1 : (afford ? 0 : 3);
+            String tip = (locked ? "Locked\n" : (afford ? "Click to buy\n" : "Not enough Badge Points\n")) + "Cost: " + cost + " BP";
+            class_1799 st = stackOf(it[5], "");
+            if (st.method_7960()) st = mk("minecraft:paper", 1, name, false);
+            s.add(ListNet.Row.of(st, name, sub, cost + " BP", gi.getOrDefault(cat, 0), state, tip), () -> {
+                if (locked) { ListNet.note(pl, name + " is locked: clear more regions on Elite.", true); return; }
+                if (score(pl, "pp_bp") < cost) { ListNet.note(pl, "Not enough Badge Points for " + name + ".", true); return; }
+                run(pl, "trigger gym set " + trig);
+                ListNet.note(pl, "Bought " + name + " (-" + cost + " BP)", false);
+            });
+        }
+    }
+
+    static void dexList(class_3222 pl, ListNet.Spec s) {
+        int caught = dexCaught(pl);
+        runServer(pl, "scoreboard players set " + pl.method_5477().getString() + " pp_dexc " + caught);
+        int ready = 0;
+        for (int n : DEX_N) if (caught >= n && !tag(pl, "ppdex_" + n)) ready++;
+        s.title = "Pokedex Milestones"; s.back = true;
+        s.info = "Caught: " + caught;
+        for (int i = 0; i < DEX_N.length; i++) {
+            int n = DEX_N[i];
+            boolean done = tag(pl, "ppdex_" + n), can = caught >= n && !done;
+            String icon = done ? "minecraft:nether_star" : (can ? "minecraft:knowledge_book" : "minecraft:gray_dye");
+            String right = done ? "Claimed" : (can ? "CLAIM" : (n - caught) + " to go");
+            class_1799 st = stackOf(icon, "");
+            s.add(ListNet.Row.of(st, n + " species", DEX_R[i], right, -1, done ? 2 : (can ? 4 : 0), done ? "Already claimed" : (can ? "Click to claim" : "Register " + (n - caught) + " more species")), () -> {
+                if (can) {
+                    runServer(pl, "scoreboard players set " + pl.method_5477().getString() + " pp_dexc " + dexCaught(pl));
+                    run(pl, "trigger gym set 63");
+                    ListNet.note(pl, "Claimed the " + n + " species reward", false);
+                } else ListNet.note(pl, done ? "Already claimed." : "Not there yet: " + (n - caught) + " more species.", true);
+            });
+        }
+        final int readyF = ready;
+        if (ready > 1) {
+            s.add(ListNet.Row.of(stackOf("minecraft:lime_dye", ""), "Claim all ready rewards", ready + " rewards ready", "CLAIM ALL", -1, 4, "Claims every milestone you qualify for"), () -> {
+                runServer(pl, "scoreboard players set " + pl.method_5477().getString() + " pp_dexc " + dexCaught(pl));
+                run(pl, "trigger gym set 63");
+                ListNet.note(pl, "Claimed " + readyF + " rewards", false);
+            });
+        }
+    }
+
+    static void laneList(class_3222 pl, ListNet.Spec s) {
+        s.title = "Open co-op lanes"; s.back = true;
+        s.info = "Pick a host to fight beside";
+        if (score(pl, "pp_slot") >= 1) {
+            s.add(ListNet.Row.of(stackOf("minecraft:barrier", ""), "You are in your own lane", "Leave the arena first, then join a partner", "", -1, 1, "Leave the arena first"), null);
+            return;
+        }
+        int n = 0;
+        for (class_3222 p : pl.method_5682().method_3760().method_14571()) {
+            if (p == pl || !tag(p, "pp_coopopen") || tag(p, "pp_pend")) continue;
+            int slot = score(p, "pp_slot");
+            if (slot < 1) continue;
+            n++;
+            String name = p.method_5477().getString();
+            s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), name, "Open lane  |  Gym stage " + slot, "JOIN", -1, 4, "Click to teleport into " + name + "'s lane"), () -> {
+                run(pl, "trigger gym set " + (30000 + slot));
+                ListNet.close(pl);
+            });
+        }
+        if (n == 0) s.add(ListNet.Row.of(stackOf("minecraft:gray_dye", ""), "Nobody has an open lane", "Ask your partner to start a fight and open their lane first", "", -1, 1, "No open lanes right now"), null);
+    }
+
     static void virtClick(class_3222 pl, int slot) {
         H h = VIRT.get(pl.method_5667());
         if (h == null || slot < 0 || slot >= 54) return;
@@ -105,6 +194,7 @@ public final class PpGui {
 
     static void open(class_3222 pl, String screen) {
         if (screen.equals("mart") && MartNet.hasClient(pl)) { virtClose(pl); MartNet.open(pl); return; }
+        if ((screen.equals("shop") || screen.equals("dex") || screen.equals("coop_join")) && ListNet.hasClient(pl)) { virtClose(pl); openList(pl, screen); return; }
         if (GymNet.hasClient(pl)) {
             virtClose(pl);
             H v = new H(0, pl.method_31548(), pl);
@@ -308,7 +398,8 @@ public final class PpGui {
             if (MartNet.hasClient(pl)) { close(); MartNet.open(pl); } else go("mart");
         }
         void cmd(String c) { close(); run(pl, c); }
-        void go(String s) { screen = s; page = 0; render(); }
+        void go(String s) {
+            if ((s.equals("shop") || s.equals("dex") || s.equals("coop_join")) && ListNet.hasClient(pl)) { close(); openList(pl, s); return; } screen = s; page = 0; render(); }
 
         void render() {
             act.clear();

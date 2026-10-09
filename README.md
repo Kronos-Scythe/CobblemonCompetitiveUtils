@@ -111,6 +111,13 @@ sources are in [`reference-src/`](reference-src/) (see the note there).
   (`config/cobblecomputils/tutored_moves.json`). If one vanishes during a battle it is put back
   afterwards and the event is logged, which also records what the moveset looked like before and after.
 
+- **Searchable list window (`ListNet` + `ListScreen`).** One generic window (search bar, category
+  chips, rows with icons, left/right click) used by the Badge Point shop, `/scout`, Pokédex
+  milestones and the co-op lane list, and by the patched Rogue shop.
+- **Chest menu skin (`SkinChestScreen`).** Server-driven chest menus with a literal title (wiki,
+  hunts, trade views, ...) are drawn in the pack's dark window style on clients with the mod.
+  Real chests (translatable titles) are untouched.
+
 ### CobbleDollars prices
 
 With CobbleDollars installed, `/evedit`, `/movetutor` and `/showdown import`
