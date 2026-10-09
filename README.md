@@ -211,6 +211,15 @@ enough to prepare, not their moves, items or abilities.
 `naturePrice` (500), `abilityPrice` (1000), `teraTypePrice` (500).
 `/showdown reload` (operators only) re-reads it.
 
+### Engagement systems (v1.28)
+
+- **Quests**: `/quests` or the phone's Quests card. Three daily and three weekly goals (Denver time, daily reset midnight, weekly Monday) with token, BP and Raid Pass rewards.
+- **Leaderboard**: `/leaderboard` or `/top`. Badges, Pokedex, gym wins, Rogue clears and streaks.
+- **Rogue bonuses**: first win of the day, win streaks and bonus Rogue Tokens; Rogue wins and Pokedex milestones (100/250/600/900 species) also grant Tier 7 Raid Pass vouchers.
+- **Trading**: `/trade <player>`, then both players pick a Pokemon in a side by side confirm window and both press Accept. The swap is re-validated server side (no battles, Pokemon still in the party) and logged. Open to every player; it also lowers CobblemonExtras' `command.poketrade` permission to 0 if that config exists.
+- **Phone search**: every feature of the phone in one searchable list.
+- **Co-op level caps**: the open lane list shows your cap and each host's cap before you join.
+
 ## Requirements
 
 Install on the **server** (or in singleplayer). Clients need Cobblemon and

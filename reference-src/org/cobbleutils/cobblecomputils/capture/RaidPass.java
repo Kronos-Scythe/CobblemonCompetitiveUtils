@@ -109,6 +109,13 @@ public final class RaidPass {
         return true;
     }
 
+    /** Gives vouchers from any source (quests, Rogue wins, Pokedex milestones). */
+    public static synchronized void addVouchers(class_3222 pl, int n) {
+        entry(pl).vouchers += n;
+        dirty = true;
+        save();
+    }
+
     public static String fmt(long ms) {
         long s = Math.max(0L, ms / 1000L);
         return String.format("%d:%02d", s / 60L, s % 60L);
@@ -133,8 +140,18 @@ public final class RaidPass {
         if (dirty) save();
     }
 
+    static final int[] DEX_VOUCHER = {100, 250, 600, 900};
+
     static synchronized void grant(class_3222 pl) {
         Entry e = entry(pl);
+        for (int n : DEX_VOUCHER) {
+            String key = "dex_" + n;
+            if (e.granted.contains(key) || !PpGui.tag(pl, "ppdex_" + n)) continue;
+            e.granted.add(key);
+            e.vouchers++;
+            dirty = true;
+            pl.method_7353(class_2561.method_43470("§6★ Tier 7 Raid Pass earned: §e" + n + " Pokédex species§6!"), false);
+        }
         for (int r = 0; r < PpGui.REG.length; r++) {
             for (int t = 0; t < SUFFIX.length; t++) {
                 String key = PpGui.REG[r] + SUFFIX[t];

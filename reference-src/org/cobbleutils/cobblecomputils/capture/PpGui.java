@@ -158,6 +158,13 @@ public final class PpGui {
         }
     }
 
+    static String capOf(class_3222 p) {
+        try {
+            java.util.OptionalInt c = org.cobbleutils.cobblecomputils.integration.RctBridge.levelCap(p);
+            return c.isPresent() ? String.valueOf(c.getAsInt()) : "none";
+        } catch (Throwable t) { return "?"; }
+    }
+
     static void laneList(class_3222 pl, ListNet.Spec s) {
         s.title = "Open co-op lanes"; s.back = true;
         s.info = "Pick a host to fight beside";
@@ -165,6 +172,8 @@ public final class PpGui {
             s.add(ListNet.Row.of(stackOf("minecraft:barrier", ""), "You are in your own lane", "Leave the arena first, then join a partner", "", -1, 1, "Leave the arena first"), null);
             return;
         }
+        final String myCap = capOf(pl);
+        s.info = "Pick a host to fight beside   |   Your level cap: " + myCap;
         int n = 0;
         for (class_3222 p : pl.method_5682().method_3760().method_14571()) {
             if (p == pl || !tag(p, "pp_coopopen") || tag(p, "pp_pend")) continue;
@@ -172,12 +181,59 @@ public final class PpGui {
             if (slot < 1) continue;
             n++;
             String name = p.method_5477().getString();
-            s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), name, "Open lane  |  Gym stage " + slot, "JOIN", -1, 4, "Click to teleport into " + name + "'s lane"), () -> {
+            String hostCap = capOf(p);
+            s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), name, "Gym stage " + slot + "  |  Level cap: you " + myCap + ", " + name + " " + hostCap, "JOIN", -1, 4,
+                    "Click to teleport into " + name + "'s lane\nYour level cap: " + myCap + "\nHost level cap: " + hostCap + "\nPokemon above the cap are held back in gym fights"), () -> {
+                pl.method_7353(class_2561.method_43470("\u00a76Co-op: \u00a7fyour level cap " + myCap + ", " + name + "'s cap " + hostCap + "."), false);
                 run(pl, "trigger gym set " + (30000 + slot));
                 ListNet.close(pl);
             });
         }
         if (n == 0) s.add(ListNet.Row.of(stackOf("minecraft:gray_dye", ""), "Nobody has an open lane", "Ask your partner to start a fight and open their lane first", "", -1, 1, "No open lanes right now"), null);
+    }
+
+    // ------------------------------------------------------------------ phone search
+    static void openSearch(class_3222 pl) {
+        if (ListNet.hasClient(pl)) { ListNet.open(pl, s -> searchList(pl, s)); return; }
+        pl.method_7353(class_2561.method_43470("\u00a76Phone search needs the Cobblemon Competitive Utils mod. Use \u00a7e/quests\u00a76, \u00a7e/leaderboard\u00a76, \u00a7e/trade\u00a76, \u00a7e/movetutor\u00a76, \u00a7e/evedit\u00a76."), false);
+    }
+
+    private static void srow(ListNet.Spec s, String icon, String title, String keys, int group, Runnable act) {
+        s.add(ListNet.Row.of(stackOf(icon, ""), title, keys, "OPEN", group, 0, "Click to open"), act);
+    }
+
+    static void searchList(class_3222 pl, ListNet.Spec s) {
+        s.title = "Search the phone"; s.back = true;
+        s.info = "Type any feature: heal, shop, raid, tutor, quests...";
+        s.groups.add("Gym"); s.groups.add("Shops"); s.groups.add("Pokemon"); s.groups.add("Progress"); s.groups.add("Social");
+        srow(s, "cobblemon:poke_ball", "Fight my next Gym Leader", "gym leader battle challenge fight arena badge", 0, () -> { ListNet.close(pl); run(pl, "trigger gym set 1"); });
+        srow(s, "cobblemon:ultra_ball", "Rematches (Hard / Elite)", "rematch replay hard elite harder gym", 0, () -> { ListNet.close(pl); open(pl, "rm_hub"); });
+        srow(s, "minecraft:compass", "Start next region", "region johto hoenn sinnoh unova kalos series", 0, () -> { ListNet.close(pl); run(pl, "trigger gym set 46"); });
+        srow(s, "minecraft:barrier", "Leave the arena", "leave exit return arena quit", 0, () -> { ListNet.close(pl); run(pl, "trigger gym set 2"); });
+        srow(s, "minecraft:comparator", "Challenge Modifiers", "iron mode speedrun modifier bonus bp", 0, () -> { ListNet.close(pl); open(pl, "mods"); });
+        srow(s, "minecraft:totem_of_undying", "Co-op Gyms", "coop co-op partner team friend duo", 4, () -> { ListNet.close(pl); open(pl, "coop"); });
+        srow(s, "minecraft:player_head", "Join an open co-op lane", "join coop lane partner level cap", 4, () -> { ListNet.close(pl); open(pl, "coop_join"); });
+        srow(s, "minecraft:emerald", "Badge Point Shop", "bp shop buy mint held item tera shard", 1, () -> { ListNet.close(pl); open(pl, "shop"); });
+        srow(s, "minecraft:villager_spawn_egg", "Poke Mart", "mart store villager cobbledollars buy items ball potion", 1, () -> { ListNet.close(pl); openMartFor(pl); });
+        srow(s, "minecraft:lightning_rod", "Weather Machine", "weather rain storm clear thunder fishing", 1, () -> { ListNet.close(pl); open(pl, "weather"); });
+        srow(s, "cobblemon:full_restore", "Heal my party", "heal restore revive charges pokemon center", 2, () -> { ListNet.close(pl); run(pl, "trigger gym set 8"); });
+        srow(s, "minecraft:enchanted_book", "Move Tutor", "move tutor teach egg moves tm learn", 2, () -> { ListNet.close(pl); run(pl, "movetutor"); });
+        srow(s, "cobblemon:protein", "EV Editor", "ev evs train stats vitamins", 2, () -> { ListNet.close(pl); run(pl, "evedit"); });
+        srow(s, "minecraft:spyglass", "Scout trainers", "scout trainer team preview level cap next opponent", 2, () -> { ListNet.close(pl); run(pl, "scout"); });
+        srow(s, "minecraft:writable_book", "Badge Case", "badges progress region case", 3, () -> { ListNet.close(pl); open(pl, "case"); });
+        srow(s, "minecraft:knowledge_book", "Pokedex Milestones", "dex pokedex species caught milestone reward", 3, () -> { ListNet.close(pl); open(pl, "dex"); });
+        srow(s, "minecraft:knowledge_book", "Raid Den Key", "raid key den claim replacement", 3, () -> { ListNet.close(pl); run(pl, "trigger gym set 9"); });
+        srow(s, "minecraft:nether_star", "Tier 7 Raid Pass", "raid pass voucher tier 7 seven rqueue activate", 3, () -> { ListNet.close(pl); RaidPass.activate(pl); });
+        srow(s, "minecraft:writable_book", "Daily & Weekly Quests", "quest daily weekly task goal reward", 3, () -> { ListNet.close(pl); Engage.openQuests(pl); });
+        srow(s, "minecraft:gold_ingot", "Leaderboard", "leaderboard top ranking best players score", 4, () -> { ListNet.close(pl); Engage.openBoard(pl); });
+        srow(s, "minecraft:lead", "Trade Pokemon", "trade swap exchange player pokemon", 4, () -> {
+            ListNet.close(pl);
+            pl.method_7353(class_2561.method_43470("\u00a76Type \u00a7e/trade <player>\u00a76 to start a trade. Both players see a confirm window."), false);
+        });
+    }
+
+    static void openMartFor(class_3222 pl) {
+        if (MartNet.hasClient(pl)) MartNet.open(pl); else open(pl, "mart");
     }
 
     static void virtClick(class_3222 pl, int slot) {
@@ -465,6 +521,9 @@ public final class PpGui {
                     pact ? "g|ACTIVE: " + RaidPass.fmt(RaidPass.remainingMs(pl)) + " left" : "s|1 hour of /rqueue on 7-star raids",
                     "y|Vouchers: " + vch, "d|Earned for every Base, Hard and Elite region clear",
                     pact ? "s|Pass running" : (vch > 0 ? "y|Click to activate a voucher" : "r|Clear a region to earn one")), () -> { RaidPass.activate(pl); render(); });
+            put(29, mk("minecraft:writable_book", 1, "Daily & Weekly Quests", Engage.readyCount(pl) > 0, "s|Three daily + three weekly goals", "g|Ready to claim: " + Engage.readyCount(pl), "y|Click to open"), () -> { close(); Engage.openQuests(pl); });
+            put(31, mk("minecraft:gold_ingot", 1, "Leaderboard", false, "s|Top trainers: badges, dex, wins,", "s|Rogue clears and more", "y|Click to open"), () -> { close(); Engage.openBoard(pl); });
+            put(33, mk("minecraft:spyglass", 1, "Search the Phone", false, "s|Find any feature by name", "y|Type to search"), () -> { close(); openSearch(pl); });
             put(49, mk("minecraft:oak_door", 1, "Close", false), () -> close());
         }
 
