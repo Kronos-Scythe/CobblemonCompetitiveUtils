@@ -260,11 +260,12 @@ public final class TutorScreen extends class_437 {
          boolean sel = i == this.data.selected();
          boolean over = mouseX >= tx && mouseX < tx + tabW && mouseY >= this.y0 + 24 && mouseY < this.y0 + 40;
          this.box(g, tx, this.y0 + 24, tabW, 16, sel ? 0xFF2E4A8A : (over ? 0xFF2A2F48 : PANEL), sel ? ACCENT : BORDER);
+         MonIcon.draw(g, mon.sid(), mon.aspects(), tx + 2, this.y0 + 24, 16, 35.0F, mouseX, mouseY, delta);
          String label = mon.name() + " Lv" + mon.level();
-         while (label.length() > 3 && this.field_22793.method_1727(label) > tabW - 6) {
+         while (label.length() > 3 && this.field_22793.method_1727(label) > tabW - 24) {
             label = label.substring(0, label.length() - 2) + ".";
          }
-         g.method_51433(this.field_22793, label, tx + 4, this.y0 + 28, sel ? TEXT : MUTED, false);
+         g.method_51433(this.field_22793, label, tx + 20, this.y0 + 28, sel ? TEXT : MUTED, false);
          int slot = mon.slot();
          this.hit(tx, this.y0 + 24, tabW, 16, () -> this.send(new TutorNet.Select(slot)), null);
       }

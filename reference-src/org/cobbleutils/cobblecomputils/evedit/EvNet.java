@@ -57,6 +57,8 @@ public final class EvNet implements ModInitializer {
             buf.method_10804(m.slot());
             buf.method_10814(m.name());
             buf.method_10804(m.level());
+            buf.method_10814(m.sid());
+            buf.method_10814(m.aspects());
          }
          buf.method_10814(o.balance);
          buf.method_10804(o.refund);
@@ -77,7 +79,7 @@ public final class EvNet implements ModInitializer {
          int n = buf.method_10816();
          List<TutorNet.Mon> party = new ArrayList<>();
          for (int i = 0; i < n; i++) {
-            party.add(new TutorNet.Mon(buf.method_10816(), buf.method_19772(), buf.method_10816()));
+            party.add(new TutorNet.Mon(buf.method_10816(), buf.method_19772(), buf.method_10816(), buf.method_19772(), buf.method_19772()));
          }
          String balance = buf.method_19772();
          int refund = buf.method_10816();
@@ -160,7 +162,7 @@ public final class EvNet implements ModInitializer {
             selected = p;
             selectedIndex = mons.size();
          }
-         mons.add(new TutorNet.Mon(i, p.getDisplayName(false).getString(), p.getLevel()));
+         mons.add(new TutorNet.Mon(i, p.getDisplayName(false).getString(), p.getLevel(), TutorNet.sidOf(p), TutorNet.aspOf(p)));
       }
       if (selected == null || mons.isEmpty()) {
          player.method_7353(class_2561.method_43470("You have no Pokemon to edit.").method_27692(class_124.field_1061), true);
