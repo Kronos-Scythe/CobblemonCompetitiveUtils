@@ -1,11 +1,21 @@
 package org.cobbleutils.cobblecomputils.client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
+import com.cobblemon.mod.common.client.gui.trade.ModelWidget;
+import com.cobblemon.mod.common.pokemon.RenderablePokemon;
+import com.cobblemon.mod.common.pokemon.Species;
 import net.minecraft.class_1109;
+import net.minecraft.class_1799;
+import net.minecraft.class_2960;
 import net.minecraft.class_2561;
 import net.minecraft.class_310;
 import net.minecraft.class_332;
@@ -25,6 +35,32 @@ public final class TradeScreen extends class_437 {
     private int x0, y0, w, h;
     private final List<int[]> hits = new ArrayList<>();
     private final List<Runnable> actions = new ArrayList<>();
+    private final Map<String, ModelWidget> models = new HashMap<>();
+
+    /** Draws the Pokemon's 3D model (Cobblemon's own trade-screen widget) clipped to a size x size box. */
+    private void icon(class_332 g, TradeNet.Mon m, int x, int y, int size, float rot, int mx, int my, float delta) {
+        if (m.empty() || m.sid().isEmpty()) return;
+        try {
+            String key = m.sid() + "|" + m.aspects() + "|" + size + "|" + rot;
+            ModelWidget wd = this.models.get(key);
+            if (wd == null) {
+                class_2960 id = class_2960.method_12829(m.sid());
+                Species sp = id == null ? null : PokemonSpecies.INSTANCE.getByIdentifier(id);
+                if (sp == null) return;
+                Set<String> asp = new HashSet<>();
+                for (String a : m.aspects().split(",")) if (!a.isEmpty()) asp.add(a);
+                float k = size / 78.0F;
+                wd = new ModelWidget(x, y, size, size, new RenderablePokemon(sp, asp, class_1799.field_8037), 2.0F * k, rot, -8.0 * k);
+                this.models.put(key, wd);
+            }
+            wd.method_48229(x, y);
+            g.method_44379(x, y, x + size, y + size);
+            wd.method_25394(g, mx, my, delta);
+            g.method_44380();
+        } catch (Throwable t) {
+            try { g.method_44380(); } catch (Throwable ignored) { }
+        }
+    }
 
     public TradeScreen(TradeNet.View v) {
         super(class_2561.method_43470("Trade"));
@@ -92,7 +128,7 @@ public final class TradeScreen extends class_437 {
         return out;
     }
 
-    private void card(class_332 g, int x, int y, int cw, int ch, String heading, TradeNet.Mon m, boolean accepted, int headColor) {
+    private void card(class_332 g, int x, int y, int cw, int ch, String heading, TradeNet.Mon m, boolean accepted, int headColor, float rot, int mx, int my, float delta) {
         this.box(g, x, y, cw, ch, PANEL, accepted ? GREEN : BORDER);
         g.method_51433(this.field_22793, heading, x + 6, y + 5, headColor, true);
         if (accepted) g.method_51433(this.field_22793, "ACCEPTED", x + cw - 6 - this.field_22793.method_1727("ACCEPTED"), y + 5, GREEN, true);
@@ -101,10 +137,12 @@ public final class TradeScreen extends class_437 {
             g.method_51433(this.field_22793, t, x + (cw - this.field_22793.method_1727(t)) / 2, y + ch / 2, MUTED, false);
             return;
         }
-        g.method_51433(this.field_22793, this.fit(m.name() + (m.shiny() ? " *" : ""), cw - 12), x + 6, y + 20, m.shiny() ? GOLD : TEXT, true);
+        int isz = 48;
+        this.icon(g, m, x + cw - isz - 4, y + 18, isz, rot, mx, my, delta);
+        g.method_51433(this.field_22793, this.fit(m.name() + (m.shiny() ? " *" : ""), cw - 12 - isz), x + 6, y + 20, m.shiny() ? GOLD : TEXT, true);
         int ly = y + 34;
         for (String line : m.lines()) {
-            for (String part : this.wrap(line, cw - 12)) {
+            for (String part : this.wrap(line, ly < y + 18 + isz ? cw - 16 - isz : cw - 12)) {
                 if (ly > y + ch - 10) return;
                 g.method_51433(this.field_22793, part, x + 6, ly, MUTED, false);
                 ly += 10;
@@ -141,8 +179,9 @@ public final class TradeScreen extends class_437 {
             if (m.empty()) {
                 g.method_51433(this.field_22793, "(empty slot)", px + 8, ry + 12, 0xFF555A70, false);
             } else {
-                g.method_51433(this.field_22793, this.fit(m.name() + (m.shiny() ? " *" : ""), pw - 16), px + 8, ry + 6, m.shiny() ? GOLD : TEXT, true);
-                g.method_51433(this.field_22793, "Lv." + m.level() + (offered ? "   - offered" : ""), px + 8, ry + 18, offered ? GREEN : MUTED, false);
+                this.icon(g, m, px + 3, ry + 2, 28, 35.0F, mx, my, delta);
+                g.method_51433(this.field_22793, this.fit(m.name() + (m.shiny() ? " *" : ""), pw - 44), px + 36, ry + 6, m.shiny() ? GOLD : TEXT, true);
+                g.method_51433(this.field_22793, "Lv." + m.level() + (offered ? "   - offered" : ""), px + 36, ry + 18, offered ? GREEN : MUTED, false);
                 final int idx = i;
                 this.hit(px, ry, pw, 32, () -> this.send(0, idx));
             }
@@ -150,8 +189,8 @@ public final class TradeScreen extends class_437 {
         // offer cards
         int cx = this.x0 + 198, cw = (this.x0 + this.w - 8 - cx - 6) / 2, ch = 168, cy = this.y0 + 28;
         TradeNet.Mon mine = this.v.myOffer() >= 0 && this.v.myOffer() < this.v.party().size() ? this.v.party().get(this.v.myOffer()) : TradeNet.Mon.NONE;
-        this.card(g, cx, cy, cw, ch, "You offer", mine, this.v.myAcc(), ACCENT);
-        this.card(g, cx + cw + 6, cy, cw, ch, this.v.partner() + " offers", this.v.theirs(), this.v.theirAcc(), GOLD);
+        this.card(g, cx, cy, cw, ch, "You offer", mine, this.v.myAcc(), ACCENT, 35.0F, mx, my, delta);
+        this.card(g, cx + cw + 6, cy, cw, ch, this.v.partner() + " offers", this.v.theirs(), this.v.theirAcc(), GOLD, 325.0F, mx, my, delta);
         // status + buttons
         int by = cy + ch + 8;
         long left = Math.max(0, this.v.lockMs() - (System.currentTimeMillis() - this.received));

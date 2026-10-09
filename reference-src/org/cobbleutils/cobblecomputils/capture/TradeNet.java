@@ -32,8 +32,8 @@ import net.minecraft.server.MinecraftServer;
 public final class TradeNet implements ModInitializer {
     static final long REQ_MS = 60_000, SESSION_MS = 5 * 60_000, LOCK_MS = 1500;
 
-    public record Mon(boolean empty, String name, int level, boolean shiny, List<String> lines) {
-        public static final Mon NONE = new Mon(true, "", 0, false, List.of());
+    public record Mon(boolean empty, String name, int level, boolean shiny, List<String> lines, String sid, String aspects) {
+        public static final Mon NONE = new Mon(true, "", 0, false, List.of(), "", "");
     }
 
     static final class Req { UUID from, to; long exp; }
@@ -56,13 +56,15 @@ public final class TradeNet implements ModInitializer {
             b.method_10814(m.name()); b.method_10804(m.level()); b.writeBoolean(m.shiny());
             b.method_10804(m.lines().size());
             for (String l : m.lines()) b.method_10814(l);
+            b.method_10814(m.sid()); b.method_10814(m.aspects());
         }
         static Mon rMon(class_9129 b) {
             if (b.readBoolean()) return Mon.NONE;
             String n = b.method_19772(); int lv = b.method_10816(); boolean sh = b.readBoolean();
             int c = b.method_10816(); List<String> ls = new ArrayList<>();
             for (int i = 0; i < c; i++) ls.add(b.method_19772());
-            return new Mon(false, n, lv, sh, ls);
+            String sid = b.method_19772(), asp = b.method_19772();
+            return new Mon(false, n, lv, sh, ls, sid, asp);
         }
         static void write(View v, class_9129 b) {
             b.method_10814(v.partner());
@@ -200,7 +202,10 @@ public final class TradeNet implements ModInitializer {
             for (com.cobblemon.mod.common.api.moves.Move m : p.getMoveSet().getMoves()) mv.add(m.getName());
             if (!mv.isEmpty()) l.add("Moves: " + String.join(", ", mv));
         } catch (Throwable t) { }
-        return new Mon(false, shown, p.getLevel(), p.getShiny(), l);
+        String sid = "", asp = "";
+        try { sid = p.getSpecies().getResourceIdentifier().toString(); } catch (Throwable t) { }
+        try { asp = String.join(",", p.getAspects()); } catch (Throwable t) { }
+        return new Mon(false, shown, p.getLevel(), p.getShiny(), l, sid, asp);
     }
 
     static int indexOf(PartyStore ps, UUID id) {
