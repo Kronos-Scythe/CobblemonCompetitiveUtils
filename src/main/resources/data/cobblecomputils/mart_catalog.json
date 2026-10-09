@@ -1,0 +1,3179 @@
+{
+"groups": [
+"Poké Balls",
+"Healing",
+"Training",
+"Battle",
+"Evolution",
+"Garden",
+"Food & Brew",
+"Tech & Tools",
+"Decor & Misc"
+],
+"offers": [
+{
+"item": "cobblemon:ancient_azure_ball",
+"price": 450,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_citrine_ball",
+"price": 450,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_feather_ball",
+"price": 500,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_gigaton_ball",
+"price": 1000,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_great_ball",
+"price": 800,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_heavy_ball",
+"price": 500,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_ivory_ball",
+"price": 450,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_jet_ball",
+"price": 1250,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_leaden_ball",
+"price": 875,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_poke_ball",
+"price": 450,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_roseate_ball",
+"price": 450,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_slate_ball",
+"price": 450,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_ultra_ball",
+"price": 1000,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_verdant_ball",
+"price": 450,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:ancient_wing_ball",
+"price": 875,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:azure_ball",
+"price": 375,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:citrine_ball",
+"price": 375,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:dive_ball",
+"price": 1250,
+"group": 0,
+"merchant": "Pokeball Artisan"
+},
+{
+"item": "cobblemon:dream_ball",
+"price": 1500,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:dusk_ball",
+"price": 2500,
+"group": 0,
+"merchant": "Pokeball Artisan"
+},
+{
+"item": "cobblemon:fast_ball",
+"price": 1500,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:friend_ball",
+"price": 875,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:great_ball",
+"price": 750,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:heal_ball",
+"price": 450,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:heavy_ball",
+"price": 1500,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:level_ball",
+"price": 1500,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:love_ball",
+"price": 1750,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:lure_ball",
+"price": 875,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:luxury_ball",
+"price": 2500,
+"group": 0,
+"merchant": "Pokeball Artisan"
+},
+{
+"item": "cobblemon:moon_ball",
+"price": 1500,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:nest_ball",
+"price": 625,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:net_ball",
+"price": 1250,
+"group": 0,
+"merchant": "Pokeball Artisan"
+},
+{
+"item": "cobblemon:park_ball",
+"price": 1000,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:poke_ball",
+"price": 375,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:premier_ball",
+"price": 2500,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:quick_ball",
+"price": 1250,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:repeat_ball",
+"price": 1250,
+"group": 0,
+"merchant": "Pokeball Artisan"
+},
+{
+"item": "cobblemon:roseate_ball",
+"price": 375,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:slate_ball",
+"price": 375,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:sport_ball",
+"price": 875,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:timer_ball",
+"price": 2500,
+"group": 0,
+"merchant": "Pokeball Artisan"
+},
+{
+"item": "cobblemon:ultra_ball",
+"price": 1000,
+"group": 0,
+"merchant": "Poke Trader"
+},
+{
+"item": "cobblemon:verdant_ball",
+"price": 375,
+"group": 0,
+"merchant": "Pokeball Specialist"
+},
+{
+"item": "cobblemon:antidote",
+"price": 300,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:awakening",
+"price": 300,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:burn_heal",
+"price": 300,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:energy_root",
+"price": 2000,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:full_heal",
+"price": 750,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:full_restore",
+"price": 3750,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:hyper_potion",
+"price": 1500,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:ice_heal",
+"price": 300,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:max_potion",
+"price": 3000,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:max_revive",
+"price": 6250,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:paralyze_heal",
+"price": 300,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:potion",
+"price": 500,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:revival_herb",
+"price": 3500,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:revive",
+"price": 3000,
+"group": 1,
+"merchant": "Poke Trader"
+},
+{
+"item": "cobblemon:super_potion",
+"price": 875,
+"group": 1,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:blue_mint_leaf",
+"price": 6250,
+"group": 2,
+"merchant": "Mint Vendor"
+},
+{
+"item": "cobblemon:calcium",
+"price": 12000,
+"group": 2,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:carbos",
+"price": 12000,
+"group": 2,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:clever_mochi",
+"price": 3750,
+"group": 2,
+"merchant": "Mochi Merchant"
+},
+{
+"item": "cobblemon:cyan_mint_leaf",
+"price": 6250,
+"group": 2,
+"merchant": "Mint Vendor"
+},
+{
+"item": "cobblemon:dire_hit",
+"price": 1250,
+"group": 2,
+"merchant": "Supplement Specialist"
+},
+{
+"item": "cobblemon:exp_candy_l",
+"price": 25000,
+"group": 2,
+"merchant": "Experience Trainer"
+},
+{
+"item": "cobblemon:exp_candy_m",
+"price": 7500,
+"group": 2,
+"merchant": "Experience Trainer"
+},
+{
+"item": "cobblemon:exp_candy_s",
+"price": 2000,
+"group": 2,
+"merchant": "Experience Trainer"
+},
+{
+"item": "cobblemon:exp_candy_xl",
+"price": 62000,
+"group": 2,
+"merchant": "Experience Trainer"
+},
+{
+"item": "cobblemon:exp_candy_xs",
+"price": 250,
+"group": 2,
+"merchant": "Experience Trainer"
+},
+{
+"item": "cobblemon:exp_share",
+"price": 94000,
+"group": 2,
+"merchant": "Experience Trainer"
+},
+{
+"item": "cobblemon:fresh_start_mochi",
+"price": 6250,
+"group": 2,
+"merchant": "Mochi Merchant"
+},
+{
+"item": "cobblemon:genius_mochi",
+"price": 3750,
+"group": 2,
+"merchant": "Mochi Merchant"
+},
+{
+"item": "cobblemon:guard_spec",
+"price": 2000,
+"group": 2,
+"merchant": "Supplement Specialist"
+},
+{
+"item": "cobblemon:health_mochi",
+"price": 3750,
+"group": 2,
+"merchant": "Mochi Merchant"
+},
+{
+"item": "cobblemon:hp_up",
+"price": 12000,
+"group": 2,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:iron",
+"price": 12000,
+"group": 2,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:muscle_mochi",
+"price": 3750,
+"group": 2,
+"merchant": "Mochi Merchant"
+},
+{
+"item": "cobblemon:pink_mint_leaf",
+"price": 6250,
+"group": 2,
+"merchant": "Mint Vendor"
+},
+{
+"item": "cobblemon:pp_max",
+"price": 12000,
+"group": 2,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:pp_up",
+"price": 12000,
+"group": 2,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:protein",
+"price": 12000,
+"group": 2,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:rare_candy",
+"price": 31000,
+"group": 2,
+"merchant": "Experience Trainer"
+},
+{
+"item": "cobblemon:red_mint_leaf",
+"price": 6250,
+"group": 2,
+"merchant": "Mint Vendor"
+},
+{
+"item": "cobblemon:resist_mochi",
+"price": 3750,
+"group": 2,
+"merchant": "Mochi Merchant"
+},
+{
+"item": "cobblemon:swift_mochi",
+"price": 3750,
+"group": 2,
+"merchant": "Mochi Merchant"
+},
+{
+"item": "cobblemon:white_mint_leaf",
+"price": 6250,
+"group": 2,
+"merchant": "Mint Vendor"
+},
+{
+"item": "cobblemon:x_accuracy",
+"price": 1250,
+"group": 2,
+"merchant": "Supplement Specialist"
+},
+{
+"item": "cobblemon:x_attack",
+"price": 1250,
+"group": 2,
+"merchant": "Supplement Specialist"
+},
+{
+"item": "cobblemon:x_defence",
+"price": 1250,
+"group": 2,
+"merchant": "Supplement Specialist"
+},
+{
+"item": "cobblemon:x_special_attack",
+"price": 2500,
+"group": 2,
+"merchant": "Supplement Specialist"
+},
+{
+"item": "cobblemon:x_special_defence",
+"price": 2500,
+"group": 2,
+"merchant": "Supplement Specialist"
+},
+{
+"item": "cobblemon:x_speed",
+"price": 1250,
+"group": 2,
+"merchant": "Supplement Specialist"
+},
+{
+"item": "cobblemon:zinc",
+"price": 12000,
+"group": 2,
+"merchant": "Pokemon Pharmacist"
+},
+{
+"item": "cobblemon:ability_shield",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:absorb_bulb",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:air_balloon",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:assault_vest",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:binding_band",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:black_belt",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:black_glasses",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:black_sludge",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:blunder_policy",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:bright_powder",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:bug_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:cell_battery",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:charcoal_stick",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:choice_band",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:choice_scarf",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:choice_specs",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:covert_cloak",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:dark_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:dragon_fang",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:dragon_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:eject_button",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:eject_pack",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:electric_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:electric_seed",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:eviolite",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:fairy_feather",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:fairy_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:fighting_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:fire_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:flame_orb",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:float_stone",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:flying_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:focus_band",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:focus_sash",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:ghost_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:grass_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:grassy_seed",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:grip_claw",
+"price": 10000,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:ground_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:hard_stone",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:heavy_duty_boots",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:ice_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:iron_ball",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:lagging_tail",
+"price": 10000,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:leftovers",
+"price": 8750,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:life_orb",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:light_ball",
+"price": 50000,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:loaded_dice",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:magnet",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:metal_coat",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:metal_powder",
+"price": 25000,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:miracle_seed",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:misty_seed",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:muscle_band",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:mystic_water",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:never_melt_ice",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:normal_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:poison_barb",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:poison_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:protective_pads",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:psychic_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:psychic_seed",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:punching_glove",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:quick_claw",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:quick_powder",
+"price": 25000,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:red_card",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:ring_target",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:rock_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:rocky_helmet",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:room_service",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:safety_goggles",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:scope_lens",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:sharp_beak",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:shed_shell",
+"price": 62000,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:silk_scarf",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:silver_powder",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:soft_sand",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:spell_tag",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:steel_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:sticky_barb",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Master"
+},
+{
+"item": "cobblemon:terrain_extender",
+"price": 6250,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:throat_spray",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:toxic_orb",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:twisted_spoon",
+"price": 3750,
+"group": 3,
+"merchant": "Battle Specialist"
+},
+{
+"item": "cobblemon:utility_umbrella",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:water_gem",
+"price": 31000,
+"group": 3,
+"merchant": "Master Of Stones"
+},
+{
+"item": "cobblemon:weakness_policy",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:wide_lens",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:wise_glasses",
+"price": 8000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:zoom_lens",
+"price": 12000,
+"group": 3,
+"merchant": "Battle Strategist"
+},
+{
+"item": "cobblemon:auspicious_armor",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:berry_sweet",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:black_augurite",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:chipped_pot",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:clover_sweet",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:cracked_pot",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:dawn_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:deep_sea_scale",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:deep_sea_tooth",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:dragon_scale",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:dubious_disc",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:dusk_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:electirizer",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:everstone",
+"price": 19000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:fire_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:flower_sweet",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:galarica_cuff",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:galarica_wreath",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:ice_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:kings_rock",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:leaf_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:link_cable",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:love_sweet",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:magmarizer",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:malicious_armor",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:masterpiece_teacup",
+"price": 25000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:metal_alloy",
+"price": 38000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:moon_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:oval_stone",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:peat_block",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:prism_scale",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:protector",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:razor_claw",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:razor_fang",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:reaper_cloth",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:ribbon_sweet",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:shiny_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:star_sweet",
+"price": 12000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:sun_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:sweet_apple",
+"price": 25000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:syrupy_apple",
+"price": 25000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:tart_apple",
+"price": 25000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:thunder_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:unremarkable_teacup",
+"price": 25000,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:upgrade",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:water_stone",
+"price": 3750,
+"group": 4,
+"merchant": "Stone Specialist"
+},
+{
+"item": "cobblemon:whipped_dream",
+"price": 6250,
+"group": 4,
+"merchant": "Evolution Specialist"
+},
+{
+"item": "cobblemon:aspear_berry",
+"price": 275,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:big_root",
+"price": 2500,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:black_apricorn",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:black_apricorn_seed",
+"price": 375,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:blue_apricorn",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:blue_apricorn_seed",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:blue_mint_seeds",
+"price": 12000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:cheri_berry",
+"price": 275,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:chesto_berry",
+"price": 275,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:clever_feather",
+"price": 5000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:coarse_mulch",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:cornn_berry",
+"price": 625,
+"group": 5,
+"merchant": "Berry Trader"
+},
+{
+"item": "cobblemon:cyan_mint_seeds",
+"price": 12000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:galarica_nuts",
+"price": 2500,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "cobblemon:genius_feather",
+"price": 5000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:green_apricorn",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:green_apricorn_seed",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:green_mint_seeds",
+"price": 12000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:growth_mulch",
+"price": 500,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:health_feather",
+"price": 5000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:hearty_grains",
+"price": 1250,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "cobblemon:humid_mulch",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:loamy_mulch",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:magost_berry",
+"price": 625,
+"group": 5,
+"merchant": "Berry Trader"
+},
+{
+"item": "cobblemon:mental_herb",
+"price": 2500,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:mirror_herb",
+"price": 3000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:mulch_base",
+"price": 60,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:muscle_feather",
+"price": 5000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:nanab_berry",
+"price": 625,
+"group": 5,
+"merchant": "Berry Trader"
+},
+{
+"item": "cobblemon:nomel_berry",
+"price": 625,
+"group": 5,
+"merchant": "Berry Trader"
+},
+{
+"item": "cobblemon:oran_berry",
+"price": 375,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:peat_mulch",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:pecha_berry",
+"price": 275,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:pep_up_flower",
+"price": 3750,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "cobblemon:persim_berry",
+"price": 450,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:pinap_berry",
+"price": 625,
+"group": 5,
+"merchant": "Berry Trader"
+},
+{
+"item": "cobblemon:pink_apricorn",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:pink_apricorn_seed",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:pink_mint_seeds",
+"price": 12000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:power_herb",
+"price": 2500,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:rawst_berry",
+"price": 275,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:razz_berry",
+"price": 625,
+"group": 5,
+"merchant": "Berry Trader"
+},
+{
+"item": "cobblemon:red_apricorn",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:red_apricorn_seed",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:red_mint_seeds",
+"price": 12000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:resist_feather",
+"price": 5000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:rich_mulch",
+"price": 1000,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:sandy_mulch",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:spelon_berry",
+"price": 625,
+"group": 5,
+"merchant": "Berry Trader"
+},
+{
+"item": "cobblemon:surprise_mulch",
+"price": 500,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:swift_feather",
+"price": 5000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:touga_berry",
+"price": 450,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:vivichoke_seeds",
+"price": 5000,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "cobblemon:wepear_berry",
+"price": 625,
+"group": 5,
+"merchant": "Berry Trader"
+},
+{
+"item": "cobblemon:white_apricorn",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:white_apricorn_seed",
+"price": 375,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:white_herb",
+"price": 2500,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:white_mint_seeds",
+"price": 12000,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "cobblemon:yellow_apricorn",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "cobblemon:yellow_apricorn_seed",
+"price": 250,
+"group": 5,
+"merchant": "Arborist"
+},
+{
+"item": "minecraft:beetroot_seeds",
+"price": 875,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "minecraft:bone_meal",
+"price": 400,
+"group": 5,
+"merchant": "Naturalist"
+},
+{
+"item": "minecraft:cocoa_beans",
+"price": 1000,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "minecraft:melon_seeds",
+"price": 500,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "minecraft:pitcher_pod",
+"price": 2000,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "minecraft:pumpkin_seeds",
+"price": 625,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "minecraft:torchflower_seeds",
+"price": 2000,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "minecraft:wheat_seeds",
+"price": 125,
+"group": 5,
+"merchant": "Floral Specialist"
+},
+{
+"item": "cobblemon:berry_juice",
+"price": 250,
+"group": 6,
+"merchant": "Potions Salesman"
+},
+{
+"item": "cobblemon:big_malasada",
+"price": 1250,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:candied_apple",
+"price": 1000,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:candied_berry",
+"price": 1000,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:casteliacone",
+"price": 1000,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:jubilife_muffin",
+"price": 1500,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:lava_cookie",
+"price": 500,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:leek_and_potato_stew",
+"price": 500,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "cobblemon:lumiose_galette",
+"price": 750,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:moomoo_milk",
+"price": 750,
+"group": 6,
+"merchant": "Milkman"
+},
+{
+"item": "cobblemon:old_gateau",
+"price": 2000,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:open_faced_sandwich",
+"price": 2500,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:pewter_crunchies",
+"price": 2000,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:ponigiri",
+"price": 875,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:rage_candy_bar",
+"price": 2000,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:smoked_tail_curry",
+"price": 2000,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:tasty_tail",
+"price": 12000,
+"group": 6,
+"merchant": "Chef"
+},
+{
+"item": "cobblemon:vivichoke_dip",
+"price": 625,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:apple",
+"price": 250,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:baked_potato",
+"price": 300,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:beef",
+"price": 8750,
+"group": 6,
+"merchant": "Meat Merchant"
+},
+{
+"item": "minecraft:blaze_powder",
+"price": 1500,
+"group": 6,
+"merchant": "Potions Salesman"
+},
+{
+"item": "minecraft:bread",
+"price": 300,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:carrot",
+"price": 200,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:chicken",
+"price": 6250,
+"group": 6,
+"merchant": "Meat Merchant"
+},
+{
+"item": "minecraft:cooked_beef",
+"price": 700,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:cooked_chicken",
+"price": 700,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:cooked_cod",
+"price": 375,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:cooked_mutton",
+"price": 700,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:cooked_rabbit",
+"price": 300,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:egg",
+"price": 875,
+"group": 6,
+"merchant": "Meat Merchant"
+},
+{
+"item": "minecraft:enchanted_golden_apple",
+"price": 150000,
+"group": 6,
+"merchant": "Rare Goods"
+},
+{
+"item": "minecraft:fermented_spider_eye",
+"price": 1500,
+"group": 6,
+"merchant": "Potions Salesman"
+},
+{
+"item": "minecraft:honey_bottle",
+"price": 750,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:honeycomb",
+"price": 550,
+"group": 6,
+"merchant": "Food Merchant"
+},
+{
+"item": "minecraft:milk_bucket",
+"price": 375,
+"group": 6,
+"merchant": "Milkman"
+},
+{
+"item": "minecraft:mutton",
+"price": 8750,
+"group": 6,
+"merchant": "Meat Merchant"
+},
+{
+"item": "minecraft:nether_wart",
+"price": 2000,
+"group": 6,
+"merchant": "Potions Salesman"
+},
+{
+"item": "minecraft:ominous_bottle",
+"price": 11000,
+"group": 6,
+"merchant": "Potions Salesman"
+},
+{
+"item": "minecraft:porkchop",
+"price": 7500,
+"group": 6,
+"merchant": "Meat Merchant"
+},
+{
+"item": "minecraft:potion",
+"price": 25,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:water"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 60,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:mundane"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 100,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:thick"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 125,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:awkward"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:night_vision"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 875,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_night_vision"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 750,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:invisibility"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1000,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_invisibility"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 375,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:leaping"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 875,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_leaping"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 550,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_leaping"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:fire_resistance"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 875,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_fire_resistance"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 375,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:swiftness"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 875,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_swiftness"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 550,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_swiftness"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 125,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:slowness"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 250,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_slowness"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 200,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_slowness"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:water_breathing"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 875,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_water_breathing"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 625,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:healing"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1250,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_healing"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:harming"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1000,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_harming"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 250,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:poison"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 625,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_poison"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 450,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_poison"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1000,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:regeneration"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 2000,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_regeneration"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_regeneration"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strength"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1000,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_strength"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 750,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_strength"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 125,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:weakness"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 200,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_weakness"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:luck"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 2000,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:turtle_master"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 3750,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:strong_turtle_master"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 2500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_turtle_master"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 750,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:slow_falling"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1000,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:long_slow_falling"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 2500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:infested"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 2250,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:oozing"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 2000,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:weaving"
+}
+}
+},
+{
+"item": "minecraft:potion",
+"price": 1500,
+"group": 6,
+"merchant": "Potions Salesman",
+"components": {
+"minecraft:potion_contents": {
+"potion": "minecraft:wind_charged"
+}
+}
+},
+{
+"item": "minecraft:rabbit",
+"price": 3750,
+"group": 6,
+"merchant": "Meat Merchant"
+},
+{
+"item": "cobblemon:campfire_pot_black",
+"price": 2000,
+"group": 7,
+"merchant": "Pot Trader"
+},
+{
+"item": "cobblemon:campfire_pot_blue",
+"price": 1500,
+"group": 7,
+"merchant": "Pot Trader"
+},
+{
+"item": "cobblemon:campfire_pot_green",
+"price": 2000,
+"group": 7,
+"merchant": "Pot Trader"
+},
+{
+"item": "cobblemon:campfire_pot_pink",
+"price": 2000,
+"group": 7,
+"merchant": "Pot Trader"
+},
+{
+"item": "cobblemon:campfire_pot_red",
+"price": 1500,
+"group": 7,
+"merchant": "Pot Trader"
+},
+{
+"item": "cobblemon:campfire_pot_white",
+"price": 2000,
+"group": 7,
+"merchant": "Pot Trader"
+},
+{
+"item": "cobblemon:campfire_pot_yellow",
+"price": 2000,
+"group": 7,
+"merchant": "Pot Trader"
+},
+{
+"item": "cobblemon:great_rod",
+"price": 2250,
+"group": 7,
+"merchant": "Fishing Gear Keeper"
+},
+{
+"item": "cobblemon:poke_bait",
+"price": 1250,
+"group": 7,
+"merchant": "Fishing Gear Keeper"
+},
+{
+"item": "cobblemon:poke_rod",
+"price": 2000,
+"group": 7,
+"merchant": "Fishing Gear Keeper"
+},
+{
+"item": "cobblemon:pokedex_black",
+"price": 625,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblemon:pokedex_blue",
+"price": 625,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblemon:pokedex_green",
+"price": 625,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblemon:pokedex_pink",
+"price": 625,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblemon:pokedex_red",
+"price": 625,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblemon:pokedex_white",
+"price": 625,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblemon:pokedex_yellow",
+"price": 625,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblemon:ultra_rod",
+"price": 2500,
+"group": 7,
+"merchant": "Fishing Gear Keeper"
+},
+{
+"item": "cobblenav:fishingnav_item",
+"price": 19000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokefinder_item_black",
+"price": 9500,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokefinder_item_blue",
+"price": 9500,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokefinder_item_green",
+"price": 9500,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokefinder_item_pink",
+"price": 9500,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokefinder_item_red",
+"price": 9500,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokefinder_item_white",
+"price": 9500,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokefinder_item_yellow",
+"price": 9500,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_base",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_black",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_blue",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_brown",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_cyan",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_gray",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_green",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_light_blue",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_light_gray",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_lime",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_magenta",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_old",
+"price": 10000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_orange",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_pink",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_purple",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_red",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_white",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "cobblenav:pokenav_item_yellow",
+"price": 12000,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "minecraft:fishing_rod",
+"price": 625,
+"group": 7,
+"merchant": "Fishing Gear Keeper"
+},
+{
+"item": "rctmod:trainer_card",
+"price": 625,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "rctmod:trainer_repel_rod",
+"price": 950,
+"group": 7,
+"merchant": "Pokemon Tech Specialist"
+},
+{
+"item": "minecraft:armadillo_scute",
+"price": 375,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:black_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:blaze_rod",
+"price": 3000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:blue_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:bone",
+"price": 450,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:breeze_rod",
+"price": 2500,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:brown_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:bundle",
+"price": 1000,
+"group": 8,
+"merchant": "Bundler"
+},
+{
+"item": "minecraft:cyan_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:dragon_breath",
+"price": 19000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:ender_pearl",
+"price": 2000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:feather",
+"price": 250,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:ghast_tear",
+"price": 2000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:glow_ink_sac",
+"price": 550,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:gray_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:green_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:gunpowder",
+"price": 625,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:ink_sac",
+"price": 375,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:leather",
+"price": 750,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:light_blue_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:light_gray_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:lime_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:magenta_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:magma_cream",
+"price": 1000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:music_disc_11",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_blocks",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_chirp",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_far",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_mall",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_mellohi",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_stal",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_strad",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_wait",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:music_disc_ward",
+"price": 12000,
+"group": 8,
+"merchant": "Disc Merchant"
+},
+{
+"item": "minecraft:nether_star",
+"price": 62000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:ochre_froglight",
+"price": 3000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:orange_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:pearlescent_froglight",
+"price": 3000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:phantom_membrane",
+"price": 950,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:pink_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:prismarine_shard",
+"price": 1000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:pufferfish",
+"price": 1250,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:purple_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:rabbit_foot",
+"price": 500,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:rabbit_hide",
+"price": 300,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:red_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:rotten_flesh",
+"price": 300,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:shulker_shell",
+"price": 38000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:slime_ball",
+"price": 875,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:spider_eye",
+"price": 450,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:string",
+"price": 375,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:totem_of_undying",
+"price": 25000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:tropical_fish",
+"price": 4500,
+"group": 8,
+"merchant": "Exotic Provisions Seller"
+},
+{
+"item": "minecraft:turtle_scute",
+"price": 450,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:verdant_froglight",
+"price": 3000,
+"group": 8,
+"merchant": "Wilderness Trader"
+},
+{
+"item": "minecraft:white_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+},
+{
+"item": "minecraft:yellow_dye",
+"price": 625,
+"group": 8,
+"merchant": "Color Specialist"
+}
+]
+}
