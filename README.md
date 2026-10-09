@@ -107,6 +107,10 @@ sources are in [`reference-src/`](reference-src/) (see the note there).
   enforced by a small patch to the Raid Den Queue mod (`raid-den-queue-1.0.0-pp1`).
   Tier 6 queues are enabled in `config/raid-den-queue.json`.
 
+- **Tutor move guard (`MoveGuard`).** Moves taught by `/movetutor` are remembered per Pokémon
+  (`config/cobblecomputils/tutored_moves.json`). If one vanishes during a battle it is put back
+  afterwards and the event is logged, which also records what the moveset looked like before and after.
+
 ### CobbleDollars prices
 
 With CobbleDollars installed, `/evedit`, `/movetutor` and `/showdown import`

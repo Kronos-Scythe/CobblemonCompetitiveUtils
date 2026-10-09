@@ -565,6 +565,7 @@ public final class MoveTutorMenus {
                message.method_27693(" (paid " + money(cost) + ")");
             }
 
+            org.cobbleutils.cobblecomputils.capture.MoveGuard.record(pokemon, move);
             player.method_7353(message.method_27692(class_124.field_1060), true);
             return true;
          }
