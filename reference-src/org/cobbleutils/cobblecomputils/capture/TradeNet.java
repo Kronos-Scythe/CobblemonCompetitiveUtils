@@ -209,6 +209,30 @@ public final class TradeNet implements ModInitializer {
         return -1;
     }
 
+    /** Receiver's current level cap, or -1 when there is none / RCT data is missing. */
+    static int capOf(class_3222 p) {
+        try {
+            java.util.OptionalInt c = org.cobbleutils.cobblecomputils.integration.RctBridge.levelCap(p);
+            return c.isPresent() ? c.getAsInt() : -1;
+        } catch (Throwable t) { return -1; }
+    }
+
+    /** Null when the swap respects both level caps, otherwise a message. */
+    static String capProblem(class_3222 a, Pokemon ma, class_3222 b, Pokemon mb) {
+        int capA = capOf(a), capB = capOf(b);
+        if (capA >= 0 && mb.getLevel() > capA) return name(a) + "'s level cap is " + capA + " - " + mb.getSpecies().getName() + " is Lv." + mb.getLevel() + ".";
+        if (capB >= 0 && ma.getLevel() > capB) return name(b) + "'s level cap is " + capB + " - " + ma.getSpecies().getName() + " is Lv." + ma.getLevel() + ".";
+        return null;
+    }
+
+    /** Same checks used before every step: nobody in battle / arena / Rogue run. */
+    static String stateProblem(class_3222 p) {
+        if (busy(p)) return name(p) + " is in a battle.";
+        if (inArena(p)) return name(p) + " is inside a gym arena.";
+        if (RogueLink.inRun(p.method_5667())) return name(p) + " is in a Rogue run.";
+        return null;
+    }
+
     static Sess sessionOf(class_3222 p) { return sessions.get(p.method_5667()); }
 
     // ------------------------------------------------------------------ requests
@@ -216,6 +240,8 @@ public final class TradeNet implements ModInitializer {
         if (sessions.containsKey(p.method_5667())) return name(p) + " is already trading.";
         if (busy(p)) return name(p) + " is in a battle.";
         if (inArena(p)) return name(p) + " is inside a gym arena.";
+        if (RogueLink.inRun(p.method_5667())) return name(p) + " is in a Rogue run.";
+        if (PpGui.tag(p, "pp_pend")) return name(p) + " is starting a gym fight.";
         if (!ServerPlayNetworking.canSend(p, View.ID)) return name(p) + " does not have the Cobblemon Competitive Utils mod.";
         return null;
     }
@@ -303,6 +329,7 @@ public final class TradeNet implements ModInitializer {
         } else if (type == 2) { // accept toggle
             if (ss.offA == null || ss.offB == null) { ss.note = "Both players must offer a Pokemon first."; }
             else if (System.currentTimeMillis() - ss.changed < LOCK_MS) { ss.note = "Offer just changed - check it, then accept."; }
+            else if (capNote(s, ss) != null) { ss.note = capNote(s, ss); }
             else {
                 boolean now = isA ? !ss.accA : !ss.accB;
                 if (isA) ss.accA = now; else ss.accB = now;
@@ -313,9 +340,18 @@ public final class TradeNet implements ModInitializer {
         push(s, ss);
     }
 
+    static String capNote(MinecraftServer s, Sess ss) {
+        class_3222 a = find(s, ss.a), b = find(s, ss.b);
+        if (a == null || b == null || ss.offA == null || ss.offB == null) return null;
+        Pokemon ma = party(a).get(ss.offA), mb = party(b).get(ss.offB);
+        if (ma == null || mb == null) return null;
+        return capProblem(a, ma, b, mb);
+    }
+
     static void push(MinecraftServer s, Sess ss) {
         class_3222 a = find(s, ss.a), b = find(s, ss.b);
         if (a == null || b == null) { end(s, ss, "The other player left.", null); return; }
+        if (ss.note.isEmpty()) { String cn = capNote(s, ss); if (cn != null) ss.note = "Level cap: " + cn; }
         sendView(a, b, ss, true);
         sendView(b, a, ss, false);
     }
@@ -335,12 +371,15 @@ public final class TradeNet implements ModInitializer {
         class_3222 a = find(s, ss.a), b = find(s, ss.b);
         if (a == null || b == null) { end(s, ss, "The other player left.", null); return; }
         String why = null;
-        if (busy(a) || busy(b)) why = "A player entered a battle - trade cancelled.";
+        String sp = stateProblem(a); if (sp == null) sp = stateProblem(b);
+        if (sp != null) why = sp + " Trade cancelled.";
         PartyStore pa = party(a), pb = party(b);
         int ia = indexOf(pa, ss.offA), ib = indexOf(pb, ss.offB);
         if (why == null && (ia < 0 || ib < 0)) why = "An offered Pokemon is no longer in the party - trade cancelled.";
         if (why != null) { end(s, ss, why, null); return; }
         Pokemon ma = pa.get(ia), mb = pb.get(ib);
+        String cp = capProblem(a, ma, b, mb);
+        if (cp != null) { ss.accA = ss.accB = false; ss.note = "Level cap: " + cp; push(s, ss); return; }
         try {
             try { if (ma.getEntity() != null) ma.recall(); } catch (Throwable t) { }
             try { if (mb.getEntity() != null) mb.recall(); } catch (Throwable t) { }
@@ -376,7 +415,8 @@ public final class TradeNet implements ModInitializer {
             class_3222 a = find(s, ss.a), b = find(s, ss.b);
             if (a == null || b == null) { end(s, ss, "The other player left.", null); continue; }
             if (now - ss.born > SESSION_MS) { end(s, ss, "The trade timed out.", null); continue; }
-            if (busy(a) || busy(b)) { end(s, ss, "A player entered a battle - trade cancelled.", null); continue; }
+            String sp = stateProblem(a); if (sp == null) sp = stateProblem(b);
+            if (sp != null) { end(s, ss, sp + " Trade cancelled.", null); continue; }
             // refresh so the accept lock countdown and party changes show up
             if (now - ss.changed < LOCK_MS + 1000 || tickN % 100 == 0) push(s, ss);
         }

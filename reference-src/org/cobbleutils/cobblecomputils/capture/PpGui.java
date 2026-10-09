@@ -182,6 +182,12 @@ public final class PpGui {
             n++;
             String name = p.method_5477().getString();
             String hostCap = capOf(p);
+            int hg = score(p, "pp_gym"), mg = score(pl, "pp_gym");
+            String why = hg >= 1 ? (mg >= hg ? null : "You have not reached this gym yet (clear your own next gym first)") : (mg >= 1 ? "Rematch lane: finish your series first" : null);
+            if (why != null) {
+                s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), name, why, "LOCKED", -1, 1, why + "\nYour level cap: " + myCap + "\nHost level cap: " + hostCap), null);
+                continue;
+            }
             s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), name, "Gym stage " + slot + "  |  Level cap: you " + myCap + ", " + name + " " + hostCap, "JOIN", -1, 4,
                     "Click to teleport into " + name + "'s lane\nYour level cap: " + myCap + "\nHost level cap: " + hostCap + "\nPokemon above the cap are held back in gym fights"), () -> {
                 pl.method_7353(class_2561.method_43470("\u00a76Co-op: \u00a7fyour level cap " + myCap + ", " + name + "'s cap " + hostCap + "."), false);

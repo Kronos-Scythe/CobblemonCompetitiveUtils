@@ -218,6 +218,8 @@ enough to prepare, not their moves, items or abilities.
 - **Rogue bonuses**: first win of the day, win streaks and bonus Rogue Tokens; Rogue wins and Pokedex milestones (100/250/600/900 species) also grant Tier 7 Raid Pass vouchers.
 - **Trading**: `/trade <player>`, then both players pick a Pokemon in a side by side confirm window and both press Accept. The swap is re-validated server side (no battles, Pokemon still in the party) and logged. Open to every player; it also lowers CobblemonExtras' `command.poketrade` permission to 0 if that config exists.
 - **Phone search**: every feature of the phone in one searchable list.
+- **Trade safety**: trades are refused (and cancelled if already open) while either player is in a battle, a gym arena or a Rogue run, and a Pokemon above the receiver's RCT level cap cannot be received.
+- **Co-op gate**: the datapack (1.1.14) now only lets you join a lane whose gym you have already reached; rematch lanes need a finished series. The lane list shows locked lanes.
 - **Co-op level caps**: the open lane list shows your cap and each host's cap before you join.
 
 ## Requirements

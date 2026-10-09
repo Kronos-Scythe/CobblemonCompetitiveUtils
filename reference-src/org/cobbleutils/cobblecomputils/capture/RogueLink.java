@@ -142,6 +142,21 @@ public final class RogueLink implements net.fabricmc.api.ModInitializer {
         throw new NoSuchMethodException(name);
     }
 
+    /** True while this player is the owner or a member of an active CobbleRogueLike run. */
+    @SuppressWarnings("unchecked")
+    static boolean inRun(UUID id) {
+        try {
+            Object rm = runManager();
+            if (rm == null) return false;
+            Map<UUID, Object> active = (Map<UUID, Object>) field(rm, "active");
+            for (Object st : new ArrayList<>(active.values())) {
+                if (id.equals(field(st, "playerId"))) return true;
+                try { if (((List<UUID>) st.getClass().getMethod("members").invoke(st)).contains(id)) return true; } catch (Throwable ignored) { }
+            }
+        } catch (Throwable t) { }
+        return false;
+    }
+
     static Object runManager() {
         try { return Class.forName("org.CobbleUtils.cobbleroguelike.run.RunManager").getMethod("get").invoke(null); } catch (Throwable t) { return null; }
     }
