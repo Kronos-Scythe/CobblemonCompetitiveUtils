@@ -138,7 +138,16 @@ public final class HubScreen extends class_437 {
         this.hits.clear();
         this.box(g, this.x0, this.y0, this.w, this.h, BG, BORDER);
         g.method_25294(this.x0 + 1, this.y0 + 1, this.x0 + this.w - 1, this.y0 + 20, 0xFF23274A);
-        g.method_51433(this.field_22793, this.data.title(), this.x0 + 8, this.y0 + 6, TEXT, true);
+        int titleX = this.x0 + 8;
+        if (this.data.back()) {
+            int bw = this.field_22793.method_1727("< Menu") + 10;
+            boolean bover = mx >= titleX && mx < titleX + bw && my >= this.y0 + 4 && my < this.y0 + 17;
+            this.box(g, titleX, this.y0 + 4, bw, 13, bover ? 0xFF2A3050 : PANEL, bover ? ACCENT : BORDER);
+            g.method_51433(this.field_22793, "< Menu", titleX + 5, this.y0 + 7, TEXT, false);
+            this.hits.add(new int[]{titleX, this.y0 + 4, bw, 13, -1});
+            titleX += bw + 8;
+        }
+        g.method_51433(this.field_22793, this.data.title(), titleX, this.y0 + 6, TEXT, true);
         String info = this.data.info();
         if (!info.isEmpty()) g.method_51433(this.field_22793, fit(info, this.w - 140), this.x0 + this.w - 8 - Math.min(this.field_22793.method_1727(info), this.w - 140), this.y0 + 6, GOLD, true);
 
@@ -153,15 +162,22 @@ public final class HubScreen extends class_437 {
             g.method_25294(cx + 1, cy + 1, cx + 4, cy + ch - 1, 0xFFFFC85A);
             this.box(g, cx + 10, cy + 9, 36, 36, 0xFF14162A, 0xFF3A4070);
             this.drawItem(g, card.stack(), cx + 14, cy + 13, 1.75F);
-            int btnW = 116;
-            g.method_51433(this.field_22793, "NEXT FIGHT", cx + 56, cy + 8, MUTED, false);
-            g.method_51433(this.field_22793, fit(card.title().startsWith("Next: ") ? card.title().substring(6) : card.title(), cw - btnW - 76), cx + 56, cy + 20, TEXT, true);
-            g.method_51433(this.field_22793, fit(card.sub(), cw - btnW - 76), cx + 56, cy + 34, MUTED, false);
-            int bx = cx + cw - btnW - 10, by = cy + 11, bh = 32;
-            boolean bo = mx >= bx && mx < bx + btnW && my >= by && my < by + bh;
-            this.box(g, bx, by, btnW, bh, bo ? 0xFF3FA862 : 0xFF2F8A4E, 0xFF7BE39B);
-            String lab = card.right().isEmpty() ? "FIGHT" : card.right();
-            g.method_51433(this.field_22793, lab, bx + (btnW - this.field_22793.method_1727(lab)) / 2, by + 12, TEXT, true);
+            String full = card.title();
+            String caption = "NEXT FIGHT", ttl = full;
+            int nl = full.indexOf('\n');
+            if (nl >= 0) { caption = full.substring(0, nl); ttl = full.substring(nl + 1); }
+            String lab = card.right();
+            int btnW = lab.isEmpty() ? 0 : Math.max(116, this.field_22793.method_1727(lab) + 28);
+            int textMax = cw - btnW - 76;
+            g.method_51433(this.field_22793, fit(caption, textMax), cx + 56, cy + 8, MUTED, false);
+            g.method_51433(this.field_22793, fit(ttl, textMax), cx + 56, cy + 20, TEXT, true);
+            g.method_51433(this.field_22793, fit(card.sub(), textMax), cx + 56, cy + 34, MUTED, false);
+            if (btnW > 0) {
+                int bx = cx + cw - btnW - 10, by = cy + 11, bh = 32;
+                boolean bo = mx >= bx && mx < bx + btnW && my >= by && my < by + bh;
+                this.box(g, bx, by, btnW, bh, bo ? 0xFF3FA862 : 0xFF2F8A4E, 0xFF7BE39B);
+                g.method_51433(this.field_22793, lab, bx + (btnW - this.field_22793.method_1727(lab)) / 2, by + 12, TEXT, true);
+            }
             this.hits.add(new int[]{cx, cy, cw, ch, 0});
         }
 
@@ -220,7 +236,7 @@ public final class HubScreen extends class_437 {
         if (hover >= 0) {
             ListNet.Row row = this.data.rows().get(hover);
             List<class_2561> tip = new ArrayList<>();
-            tip.add(class_2561.method_43470(row.title()).method_27692(net.minecraft.class_124.field_1068));
+            tip.add(class_2561.method_43470(row.title().replace("\n", " - ")).method_27692(net.minecraft.class_124.field_1068));
             if (!row.sub().isEmpty() && hover > 0) tip.add(class_2561.method_43470(row.sub()).method_27692(net.minecraft.class_124.field_1080));
             if (!row.tip().isEmpty()) for (String l : row.tip().split("\n")) tip.add(class_2561.method_43470(l).method_27692(net.minecraft.class_124.field_1063));
             g.method_51434(this.field_22793, tip, mx, my);

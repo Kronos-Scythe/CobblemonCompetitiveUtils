@@ -196,7 +196,7 @@ public final class PpGui {
 
         String[] info = GymBoard.infoByRank(gym);
         String next = info == null ? "Beat the Champion to unlock rematches" : info[1] + " " + info[2] + ": " + info[3];
-        s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "Next: " + next, info == null ? "Pick a region to continue, or replay gyms from Rematches" : "Level cap " + capOf(pl) + (dr != null ? "   |   Duo run" : "   |   Solo run"), "FIGHT", G_BATTLE, 4, "Teleports you to an arena"),
+        s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "NEXT FIGHT\n" + next, info == null ? "Pick a region to continue, or replay gyms from Rematches" : "Level cap " + capOf(pl) + (dr != null ? "   |   Duo run" : "   |   Solo run"), "FIGHT", G_BATTLE, 4, "Teleports you to an arena"),
                 () -> closeAnd(pl, "trigger gym set 1"));
         s.add(ListNet.Row.of(ic("cobblemon:ultra_ball"), "Rematches (Hard / Elite)", "Replay any gym on harder teams for Badge Points", ">", G_BATTLE, 0, "Hard: +10 levels. Elite: level 100 with extra legends."),
                 () -> nav(pl, "rm_hub"));
@@ -455,63 +455,64 @@ public final class PpGui {
         String me = pl.method_5667().toString();
         Duo.Rec r = Duo.recOf(pl);
         boolean on = Duo.onDuoRun(pl);
-        s.title = "Duo Run"; s.back = true; s.backAction = () -> nav(pl, "main");
-        s.groups.addAll(Arrays.asList("Run", "Together", "Partner"));
-        final int G_RUN = 0, G_TOG = 1, G_PART = 2;
+        s.title = "Duo Run"; s.back = true; s.backAction = () -> nav(pl, "main"); s.tiles = true;
+        s.groups.addAll(Arrays.asList("Duo", "Partner"));
+        final int G_DUO = 0, G_PART = 1;
         if (r == null) {
-            s.info = "No partner yet";
-            s.hint = "A Duo run is its own track: you and your partner share one gym stage, one set of badges and one level cap. Your solo run is untouched.";
             Duo.Invite inv = Duo.inviteFor(pl);
+            s.info = "No partner yet";
+            s.hint = "A Duo run is its own track: you and your partner share one gym stage, badges and level cap. Your solo run is untouched.";
             if (inv != null) {
-                s.add(ListNet.Row.of(ic("minecraft:lime_dye"), "Accept the invite from " + inv.fromName, "Become a fixed duo with " + inv.fromName, "ACCEPT", G_RUN, 4, "You stay partners until one of you leaves"),
+                s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), "DUO INVITE\n" + inv.fromName + " wants to team up", "Accept to become a fixed duo. You stay partners until one of you leaves.", "ACCEPT", -1, 4, ""),
                         () -> duoDo(pl, Duo.accept(pl), "You are now a duo"));
-                s.add(ListNet.Row.of(ic("minecraft:red_dye"), "Decline", "Ignore this invite", "", G_RUN, 0, ""),
-                        () -> duoDo(pl, Duo.decline(pl), "Invite declined"));
+                s.add(ListNet.Row.of(ic("minecraft:red_dye"), "Decline", "Ignore this invite", "", G_DUO, 0, "Decline " + inv.fromName + "'s invite"), () -> duoDo(pl, Duo.decline(pl), "Invite declined"));
+            } else {
+                s.add(ListNet.Row.of(ic("minecraft:totem_of_undying"), "FIND A PARTNER\nStart a Duo run", "Pick a friend below to send an invite. They accept from their phone menu.", "", -1, 0, ""), null);
             }
-            int n = 0;
             for (class_3222 p : pl.method_5682().method_3760().method_14571()) {
                 if (p == pl || Duo.recOf(p) != null) continue;
-                n++;
                 String name = p.method_5477().getString();
-                s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), "Invite " + name, "Sends a duo invite (lasts 2 minutes)", "INVITE", G_RUN, 0, "They accept from their phone menu > Duo run"),
+                s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), name, "Send " + name + " a duo invite (lasts 2 minutes)", "INVITE", G_DUO, 0, "Invite " + name),
                         () -> duoDo(pl, Duo.invite(pl, name), "Invite sent to " + name));
             }
-            if (n == 0 && inv == null) s.add(ListNet.Row.of(ic("minecraft:gray_dye"), "Nobody to invite right now", "Ask a friend to log in. You can also use /duo invite <player>", "", G_RUN, 1, ""), null);
             return;
         }
         String partnerName = r.otherName(me);
         class_3222 pp = Duo.partner(pl.method_5682(), pl);
-        s.info = "Partner: " + partnerName + (pp == null ? " (offline)" : "");
-        // ---- run switch
+        boolean ppOn = pp != null && Duo.onDuoRun(pp);
+        s.info = partnerName + (pp == null ? " (offline)" : (ppOn ? " (on the Duo run)" : " (solo run)"));
+        int idx = Arrays.asList(Duo.REG).indexOf(r.series);
+        String regName = idx >= 0 ? Duo.REGN[idx] : r.series;
+        int slot = pp == null ? 0 : score(pp, "pp_slot");
+        boolean lane = pp != null && tag(pp, "pp_coopopen") && !tag(pp, "pp_pend") && slot >= 1;
         if (!on) {
-            s.add(ListNet.Row.of(ic("minecraft:totem_of_undying"), "Switch to the Duo run", "Your solo progress is saved and comes back exactly as it was", "START", G_RUN, 4, "Shared gym stage, badges and level cap with " + partnerName),
+            s.add(ListNet.Row.of(ic("minecraft:totem_of_undying"), "DUO WITH " + partnerName.toUpperCase() + "\nStart your Duo run", "Your solo progress is saved and comes back exactly as it was", "START", -1, 4, ""),
                     () -> duoDo(pl, Duo.enter(pl), "Duo run started"));
         } else {
-            s.add(ListNet.Row.of(ic("minecraft:compass"), "Back to my solo run", "Your Duo progress stays saved for later", "SOLO", G_RUN, 0, "Restores your own gym stage and badges"),
-                    () -> duoDo(pl, Duo.exit(pl), "Back on your solo run"));
-            int idx = Arrays.asList(Duo.REG).indexOf(r.series);
-            String regName = idx >= 0 ? Duo.REGN[idx] : r.series;
             String[] info = GymBoard.infoByRank(score(pl, "pp_gym"));
-            String stage = info == null ? "All gyms cleared for now" : info[2] + ": " + info[3];
-            s.add(ListNet.Row.of(ic("minecraft:filled_map"), regName + ": " + stage, "Badges " + Duo.badges(r, r.series) + "/8   |   Shared level cap " + capOf(pl), "", G_RUN, 2, "This is where the duo is right now"), null);
-            s.add(ListNet.Row.of(ic("minecraft:map"), "Pick a region", "Either of you can choose where the duo plays next", ">", G_RUN, 0, "Any region, in any order"),
-                    () -> nav(pl, "duo_region"));
-            s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "Fight the next gym", "Starts a normal fight on the duo's stage", "FIGHT", G_TOG, 0, "Teleports you to an arena"),
-                    () -> closeAnd(pl, "trigger gym set 1"));
-            s.add(ListNet.Row.of(ic("minecraft:ender_pearl"), "Fight together (co-op lane)", "Host a lane or join " + partnerName + "'s lane for a team fight", ">", G_TOG, 0, "Team wins pay both of you"),
-                    () -> nav(pl, "coop"));
-            if (pp != null && tag(pp, "pp_coopopen") && !tag(pp, "pp_pend") && score(pp, "pp_slot") >= 1 && score(pl, "pp_slot") < 1) {
-                final int slot = score(pp, "pp_slot");
-                s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), "Join " + partnerName + "'s lane", partnerName + " has an open lane right now", "JOIN", G_TOG, 4, "Teleports you into their arena"),
-                        () -> { run(pl, "trigger gym set " + (30000 + slot)); ListNet.close(pl); });
+            String stage = info == null ? regName + ": all gyms cleared" : regName + " " + info[2] + ": " + info[3];
+            String sub = "Badges " + Duo.badges(r, r.series) + "/8   |   Shared level cap " + capOf(pl);
+            if (lane && score(pl, "pp_slot") < 1) {
+                s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), partnerName.toUpperCase() + " IS WAITING\n" + stage, sub, "JOIN", -1, 4, "Teleports you into their lane"),
+                        () -> { String e = Duo.joinPartner(pl); if (e != null) duoDo(pl, e, ""); else ListNet.close(pl); });
+            } else {
+                s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "DUO FIGHT\n" + stage, sub, ppOn ? "FIGHT TOGETHER" : "", -1, 4, ppOn ? "Starts the fight, opens the lane and sends " + partnerName + " a join button" : partnerName + " must be on the Duo run"),
+                        () -> { String e = Duo.fightTogether(pl); if (e != null) duoDo(pl, e, ""); else ListNet.close(pl); });
             }
         }
-        // ---- partner / pair
-        int pi = Arrays.asList(Duo.REG).indexOf(r.series);
+        if (on) {
+            s.add(ListNet.Row.of(ic("minecraft:map"), "Pick a region", "Choose where you and " + partnerName + " play next. Any region, any order", ">", G_DUO, 0, "Both of you move to the region you pick"),
+                    () -> nav(pl, "duo_region"));
+            s.add(ListNet.Row.of(ic("cobblemon:great_ball"), "Fight alone", "Take this gym on your own on the duo's stage", "", G_DUO, 0, "Normal solo-style fight; the win counts for the duo"),
+                    () -> closeAnd(pl, "trigger gym set 1"));
+            s.add(ListNet.Row.of(ic("minecraft:compass"), "Back to solo", "Your own run, exactly as you left it", "", G_DUO, 0, "Your Duo progress stays saved"),
+                    () -> duoDo(pl, Duo.exit(pl), "Back on your solo run"));
+        }
+        int pi = idx;
         String ps = (pi >= 0 ? Duo.REGN[pi] : r.series) + ", " + Duo.badges(r, r.series) + "/8 badges, " + r.defeated.size() + " trainers beaten";
         s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), partnerName, (pp == null ? "Offline" : "Online") + "   |   Duo: " + ps, "", G_PART, 0, "Duo progress is shared and saved"), null);
         boolean sure = DUO_CONFIRM.contains(pl.method_5667());
-        s.add(ListNet.Row.of(ic("minecraft:barrier"), sure ? "Click again to end the duo" : "End the duo", sure ? "Both of you go back to your solo runs" : "Leave this partner. Solo progress is not affected", sure ? "CONFIRM" : "", G_PART, sure ? 3 : 0, "Duo progress is deleted"),
+        s.add(ListNet.Row.of(ic("minecraft:barrier"), sure ? "Click to confirm" : "End the duo", sure ? "Both of you go back to your solo runs. Duo progress is deleted" : "Leave this partner. Solo progress is not affected", sure ? "SURE?" : "", G_PART, sure ? 3 : 0, "Ends the duo for both players"),
                 () -> {
                     if (!DUO_CONFIRM.remove(pl.method_5667())) { DUO_CONFIRM.add(pl.method_5667()); ListNet.note(pl, "Click again to end the duo.", true); return; }
                     duoDo(pl, Duo.leave(pl), "Duo ended");
@@ -520,20 +521,24 @@ public final class PpGui {
 
     static void duoRegionList(class_3222 pl, ListNet.Spec s) {
         Duo.Rec r = Duo.active(pl);
-        s.title = "Duo: pick a region"; s.back = true; s.backAction = () -> nav(pl, "duo");
+        s.title = "Duo: pick a region"; s.back = true; s.backAction = () -> nav(pl, "duo"); s.tiles = true;
         if (r == null) {
-            s.add(ListNet.Row.of(ic("minecraft:barrier"), "Switch to the Duo run first", "Regions are picked while you are on the Duo run", "", -1, 1, ""), null);
+            s.add(ListNet.Row.of(ic("minecraft:barrier"), "SWITCH FIRST\nGo to the Duo run", "Regions are picked while you are on the Duo run", "", -1, 1, ""), null);
             return;
         }
-        s.info = "Both partners play the region you pick";
-        s.hint = "Pick any region in any order. Progress in each region is kept.";
+        s.groups.add("Regions");
+        int ci = Arrays.asList(Duo.REG).indexOf(r.series);
+        s.info = "Both of you play the region you pick";
+        s.hint = "Any region, in any order. Progress in each region is kept.";
+        s.add(ListNet.Row.of(ic("minecraft:map"), "PLAYING NOW\n" + (ci >= 0 ? Duo.REGN[ci] : r.series), "Badges " + Duo.badges(r, r.series) + "/8   |   Pick another region below to move the duo", "", -1, 0, ""), null);
         String[] icons = {"cobblemon:poke_ball", "cobblemon:great_ball", "cobblemon:ultra_ball", "cobblemon:premier_ball", "cobblemon:luxury_ball", "cobblemon:master_ball"};
         for (int i = 0; i < Duo.REG.length; i++) {
             final String reg = Duo.REG[i];
             boolean cur = reg.equals(r.series);
             int done = r.completed.getOrDefault(reg, 0), b = Duo.badges(r, reg);
-            String sub = (done > 0 ? "Cleared" : (b > 0 || r.defeated.stream().anyMatch(d -> d.startsWith(reg + "_")) ? "In progress" : "Not started")) + "   |   Badges " + b + "/8";
-            s.add(ListNet.Row.of(ic(icons[i]), Duo.REGN[i], sub, cur ? "CURRENT" : "PICK", -1, cur ? 2 : (done > 0 ? 0 : 0), cur ? "You are here" : "Click to move the duo to " + Duo.REGN[i]),
+            boolean started = b > 0 || r.defeated.stream().anyMatch(d -> d.startsWith(reg + "_"));
+            String sub = (done > 0 ? "Cleared" : (started ? "In progress" : "Not started")) + "   |   Badges " + b + "/8";
+            s.add(ListNet.Row.of(ic(icons[i]), Duo.REGN[i], sub, cur ? "HERE" : (done > 0 ? "CLEARED" : (started ? b + "/8" : "NEW")), 0, cur ? 4 : (done > 0 ? 2 : 0), cur ? "You are here" : "Click to move the duo to " + Duo.REGN[i]),
                     cur ? null : () -> duoDo(pl, Duo.pickRegion(pl, reg), "Region set"));
         }
     }

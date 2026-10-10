@@ -68,6 +68,8 @@ public final class Duo {
     static final Map<String, Invite> INVITES = new HashMap<>();   // target uuid -> invite
     static final Set<String> SEEN = new HashSet<>();
     static int tickN = 0;
+    static final class Host { String partner; int left = 25; }
+    static final Map<String, Host> HOSTING = new HashMap<>();   // host uuid -> pending "fight together"
     static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     static final File FILE = new File("config/cobblecomputils/duo.json");
 
@@ -393,6 +395,7 @@ public final class Duo {
     /** Called every server tick from PpGui. */
     static void tick(MinecraftServer s) {
         if (++tickN % 20 != 0) return;
+        try { hostTick(s); } catch (Throwable t) { }
         try {
             Set<String> online = new HashSet<>();
             for (class_3222 p : new ArrayList<>(s.method_3760().method_14571())) {
@@ -406,6 +409,62 @@ public final class Duo {
                 try { syncRec(s, r); } catch (Throwable t) { if (tickN % 1200 == 0) System.out.println("[cobblecomputils] duo sync error: " + t); }
             }
         } catch (Throwable t) { if (tickN % 1200 == 0) System.out.println("[cobblecomputils] duo tick error: " + t); }
+    }
+
+
+    // ------------------------------------------------------------------ fighting together
+    static boolean inArenaDim(class_3222 pl) {
+        try { return "potentialpack:gym_arena".equals(pl.method_37908().method_27983().method_29177().toString()); } catch (Throwable t) { return false; }
+    }
+
+    /** Host a team fight: start the next gym fight, open the lane and send the partner a one-click join. */
+    public static String fightTogether(class_3222 pl) {
+        Rec r = active(pl);
+        if (r == null) return "Switch to the Duo run first.";
+        class_3222 pp = partner(pl.method_5682(), pl);
+        if (pp == null) return r.otherName(uid(pl)) + " is offline.";
+        if (!onDuoRun(pp)) return r.otherName(uid(pl)) + " is still on their solo run. Ask them to switch to the Duo run.";
+        if (inArena(pp) && !PpGui.tag(pp, "pp_coopopen")) return r.otherName(uid(pl)) + " is in a fight already.";
+        if (PpGui.score(pl, "pp_slot") < 1 || !inArenaDim(pl)) {
+            if (inArena(pl)) return "Finish or leave your current fight first.";
+            PpGui.run(pl, "trigger gym set 1");
+        }
+        Host h = new Host();
+        h.partner = uid(pp);
+        HOSTING.put(uid(pl), h);
+        return null;
+    }
+
+    /** Join the partner's open lane. */
+    public static String joinPartner(class_3222 pl) {
+        Rec r = recOf(pl);
+        if (r == null) return "You are not in a duo.";
+        class_3222 pp = partner(pl.method_5682(), pl);
+        if (pp == null) return r.otherName(uid(pl)) + " is offline.";
+        if (inArena(pl)) return "Leave your own arena first.";
+        int slot = PpGui.score(pp, "pp_slot");
+        if (slot < 1 || !PpGui.tag(pp, "pp_coopopen") || PpGui.tag(pp, "pp_pend")) return r.otherName(uid(pl)) + " has no open lane right now.";
+        PpGui.run(pl, "trigger gym set " + (30000 + slot));
+        return null;
+    }
+
+    static void hostTick(MinecraftServer s) {
+        for (Iterator<Map.Entry<String, Host>> it = HOSTING.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<String, Host> e = it.next();
+            class_3222 pl = null, pp = null;
+            try { pl = s.method_3760().method_14602(UUID.fromString(e.getKey())); pp = s.method_3760().method_14602(UUID.fromString(e.getValue().partner)); } catch (Throwable ignored) { }
+            if (pl == null || pp == null || --e.getValue().left <= 0) {
+                if (pl != null) say(pl, "§c[Duo] §7The team fight could not be set up. Start a gym fight and use Fight together again.");
+                it.remove(); continue;
+            }
+            if (PpGui.score(pl, "pp_slot") >= 1 && inArenaDim(pl) && !PpGui.tag(pl, "pp_pend")) {
+                if (!PpGui.tag(pl, "pp_coopopen")) PpGui.run(pl, "trigger gym set 42");
+                String n = nameOf(pl);
+                PpGui.runServer(pp, "tellraw " + nameOf(pp) + " [{\"text\":\"[Duo] \",\"color\":\"aqua\"},{\"text\":\"" + n + " is ready for a team fight. \",\"color\":\"green\"},{\"text\":\"[JOIN]\",\"color\":\"yellow\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/duo join\"}},{\"text\":\"  or phone menu > Duo run\",\"color\":\"gray\"}]");
+                say(pl, "§b[Duo] §7Lane open. Waiting for " + nameOf(pp) + " to join, then walk up to the trainer together and use the co-op invite.");
+                it.remove();
+            }
+        }
     }
 
     // ------------------------------------------------------------------ display helpers
@@ -427,6 +486,8 @@ public final class Duo {
         root.then(LiteralArgumentBuilder.<class_2168>literal("decline").executes((Command<class_2168>) c -> { reply(c.getSource().method_9207(), decline(c.getSource().method_9207())); return 1; }));
         root.then(LiteralArgumentBuilder.<class_2168>literal("start").executes((Command<class_2168>) c -> { reply(c.getSource().method_9207(), enter(c.getSource().method_9207())); return 1; }));
         root.then(LiteralArgumentBuilder.<class_2168>literal("solo").executes((Command<class_2168>) c -> { reply(c.getSource().method_9207(), exit(c.getSource().method_9207())); return 1; }));
+        root.then(LiteralArgumentBuilder.<class_2168>literal("join").executes((Command<class_2168>) c -> { reply(c.getSource().method_9207(), joinPartner(c.getSource().method_9207())); return 1; }));
+        root.then(LiteralArgumentBuilder.<class_2168>literal("fight").executes((Command<class_2168>) c -> { reply(c.getSource().method_9207(), fightTogether(c.getSource().method_9207())); return 1; }));
         root.then(LiteralArgumentBuilder.<class_2168>literal("leave").executes((Command<class_2168>) c -> { reply(c.getSource().method_9207(), leave(c.getSource().method_9207())); return 1; }));
         LiteralArgumentBuilder<class_2168> region = LiteralArgumentBuilder.<class_2168>literal("region");
         for (String reg : REG) region.then(LiteralArgumentBuilder.<class_2168>literal(reg).executes((Command<class_2168>) c -> { reply(c.getSource().method_9207(), pickRegion(c.getSource().method_9207(), reg)); return 1; }));
