@@ -338,3 +338,12 @@ PLAN.md                  roadmap and design notes
 ## License
 
 All rights reserved; see [`LICENSE.txt`](LICENSE.txt).
+
+## Duo run (v1.36)
+
+A separate co-op progression track for a fixed pair of players (phone menu > Duo run, or `/duo`).
+`/duo invite <player>`, `/duo accept`, `/duo start` (switch to the Duo run), `/duo solo` (back to solo), `/duo region <name>`, `/duo leave`.
+The duo keeps its own copy of the RCT progress (defeated trainers, current region, completed regions) in `config/cobblecomputils/duo.json`;
+both partners share one gym stage, badge count and level cap, and either can pick any region. A player's solo progress is saved when they
+switch to the Duo run (also backed up to `config/cobblecomputils/duo_backups/`) and restored exactly when they switch back.
+The phone menu is an icon tile hub (`HubScreen`) driven by the same list payload (`View.tiles`).

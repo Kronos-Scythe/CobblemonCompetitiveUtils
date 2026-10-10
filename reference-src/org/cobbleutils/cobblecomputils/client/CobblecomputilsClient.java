@@ -55,11 +55,21 @@ public class CobblecomputilsClient implements ClientModInitializer {
       });
       ClientPlayNetworking.registerGlobalReceiver(ListNet.View.ID, (payload, context) -> {
          class_310 client = context.client();
+         Object cur = client.field_1755;
          if (payload.rows().isEmpty() && payload.title().isEmpty()) {
-            if (client.field_1755 instanceof ListScreen screen) screen.closeFromServer();
-         } else if (client.field_1755 instanceof ListScreen screen) {
+            if (cur instanceof ListScreen screen) screen.closeFromServer();
+            else if (cur instanceof HubScreen hub) hub.closeFromServer();
+         } else if (payload.tiles()) {
+            if (cur instanceof HubScreen hub) {
+               hub.update(payload);
+            } else {
+               if (cur instanceof ListScreen ls) ls.markReplaced();
+               client.method_1507(new HubScreen(payload));
+            }
+         } else if (cur instanceof ListScreen screen) {
             screen.update(payload);
          } else {
+            if (cur instanceof HubScreen hub) hub.markReplaced();
             client.method_1507(new ListScreen(payload));
          }
       });

@@ -24,6 +24,16 @@ public final class GymBoard implements net.fabricmc.api.ModInitializer {
         for (Key k : KEY.values()) if (k.rank == rank) return new String[]{k.id, k.series, k.kind, k.name};
         return null;
     }
+    /** Gym badges (the 8 gyms, not Elite Four / Champion) of a region found in a set of defeated trainer ids. */
+    static int badgesOf(java.util.Collection<String> defeated, String series) {
+        int n = 0;
+        for (Key k : KEY.values()) if (k.series.equalsIgnoreCase(series) && k.kind.startsWith("Gym") && defeated.contains(k.id)) n++;
+        return n;
+    }
+    /** Forget a player's last gym rank so a jump caused by switching Solo/Duo or region is not treated as progress (no Rogue tokens). */
+    static void forget(String name) { lastGym.remove(name); }
+    /** Refresh the gym scoreboard/sidebar on the next server tick instead of waiting for the interval. */
+    static void kick() { tick = intervalTicks; }
     private static void put(String id, String series, String kind, String name, int rank, int badges) {
         Key k = new Key(); k.id = id; k.series = series; k.kind = kind; k.name = name; k.rank = rank; k.badges = badges; KEY.put(id, k);
     }

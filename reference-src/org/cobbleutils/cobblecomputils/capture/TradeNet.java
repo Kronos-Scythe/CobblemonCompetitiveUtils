@@ -168,6 +168,7 @@ public final class TradeNet implements ModInitializer {
             return 1;
         });
         d.register(root);
+        try { Duo.registerCommands(d); } catch (Throwable t) { System.out.println("[cobblecomputils] /duo could not register: " + t); }
     }
 
     // ------------------------------------------------------------------ helpers

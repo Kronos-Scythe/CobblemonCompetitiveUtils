@@ -55,6 +55,7 @@ public final class PpGui {
     static void tick(net.minecraft.server.MinecraftServer server) {
         tickN++;
         try { ListNet.tick(server); } catch (Throwable t) { }
+        try { Duo.tick(server); } catch (Throwable t) { }
         try { RaidPass.tick(server); } catch (Throwable t) { if (tickN % 6000 == 0) System.out.println("[cobblecomputils] raid pass tick error: " + t); }
         if (!OPEN.isEmpty()) {
             for (H h : new ArrayList<>(OPEN)) if (h.virtual && h.pl.method_31481()) { OPEN.remove(h); VIRT.values().remove(h); }
@@ -94,7 +95,7 @@ public final class PpGui {
 
     // ------------------------------------------------------------------ list-window versions (clients with the mod)
     /** Screens that have a list-window version for clients with the mod. */
-    static final Set<String> LISTABLE = new HashSet<>(Arrays.asList("main", "shop", "dex", "coop_join", "rm_hub", "rm_list", "case", "mods", "coop", "weather"));
+    static final Set<String> LISTABLE = new HashSet<>(Arrays.asList("main", "shop", "dex", "coop_join", "rm_hub", "rm_list", "case", "mods", "coop", "weather", "duo", "duo_region"));
     static final Map<UUID, int[]> RM = new HashMap<>();
 
     static void openList(class_3222 pl, String screen) {
@@ -108,6 +109,8 @@ public final class PpGui {
             case "mods": ListNet.open(pl, s -> modsList(pl, s)); break;
             case "coop": ListNet.open(pl, s -> coopList(pl, s)); break;
             case "weather": ListNet.open(pl, s -> weatherList(pl, s)); break;
+            case "duo": ListNet.open(pl, s -> duoList(pl, s)); break;
+            case "duo_region": ListNet.open(pl, s -> duoRegionList(pl, s)); break;
             default: ListNet.open(pl, s -> laneList(pl, s)); break;
         }
     }
@@ -184,18 +187,23 @@ public final class PpGui {
         int bp = score(pl, "pp_bp"), heals = score(pl, "pp_heals"), wins = score(pl, "pp_wins"), gym = score(pl, "pp_gym");
         long day = pl.method_5682().method_30002().method_8532() / 24000L;
         String feat = REGN[(int) ((day / 7) % 6)];
-        s.title = "Gym Challenge"; s.back = false;
-        s.info = bp + " BP   |   " + heals + " heals";
+        s.title = "Gym Challenge"; s.back = false; s.tiles = true;
+        Duo.Rec dr = Duo.active(pl);
+        s.info = (dr != null ? "DUO RUN with " + dr.otherName(pl.method_5667().toString()) + "   |   " : "") + bp + " BP   |   " + heals + " heals";
         s.hint = "Featured region: " + feat + " (x2 Badge Points)   |   Total wins: " + wins + "   |   Type to search";
         s.groups.addAll(Arrays.asList("Battle", "Pokemon", "Shops", "Progress", "Raids", "Social"));
         final int G_BATTLE = 0, G_MON = 1, G_SHOP = 2, G_PROG = 3, G_RAID = 4, G_SOC = 5;
 
         String[] info = GymBoard.infoByRank(gym);
         String next = info == null ? "Beat the Champion to unlock rematches" : info[1] + " " + info[2] + ": " + info[3];
-        s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "Fight my next Gym Leader", "Next: " + next, "FIGHT", G_BATTLE, 4, "Teleports you to an arena"),
+        s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "Next: " + next, info == null ? "Pick a region to continue, or replay gyms from Rematches" : "Level cap " + capOf(pl) + (dr != null ? "   |   Duo run" : "   |   Solo run"), "FIGHT", G_BATTLE, 4, "Teleports you to an arena"),
                 () -> closeAnd(pl, "trigger gym set 1"));
         s.add(ListNet.Row.of(ic("cobblemon:ultra_ball"), "Rematches (Hard / Elite)", "Replay any gym on harder teams for Badge Points", ">", G_BATTLE, 0, "Hard: +10 levels. Elite: level 100 with extra legends."),
                 () -> nav(pl, "rm_hub"));
+        if (dr != null) {
+            s.add(ListNet.Row.of(ic("minecraft:map"), "Pick a region", "Duo run: choose where you and your partner play", ">", G_BATTLE, 0, "Any region, in any order"),
+                    () -> nav(pl, "duo_region"));
+        } else {
         int nx = 0; while (nx < 6 && adv(pl, "region/" + REGN[nx].toLowerCase())) nx++;
         if (nx == 0) s.add(ListNet.Row.of(ic("minecraft:compass"), "Start next region", "Beat the Kanto Champion first", "LOCKED", G_BATTLE, 1, "Clear Kanto to switch to Johto here"), null);
         else if (nx >= 6) s.add(ListNet.Row.of(ic("minecraft:compass"), "Start next region", "All six regions conquered. Use Rematches for Hard / Elite", "DONE", G_BATTLE, 2, "Every region cleared"), null);
@@ -203,6 +211,7 @@ public final class PpGui {
             final String to = REGN[nx];
             s.add(ListNet.Row.of(ic("minecraft:compass"), "Start next region: " + to, REGN[nx - 1] + " conquered - switches your series to " + to, "START", G_BATTLE, 4, "Then use Fight my next Gym Leader"),
                     () -> closeAnd(pl, "trigger gym set 46"));
+        }
         }
         s.add(ListNet.Row.of(ic("minecraft:comparator"), "Challenge Modifiers", "Iron Mode / Speedrun for x1.5 Badge Points", ">", G_BATTLE, 0, "Optional rules for extra Badge Points"),
                 () -> nav(pl, "mods"));
@@ -246,11 +255,11 @@ public final class PpGui {
         s.add(ListNet.Row.of(ic("minecraft:nether_star"), "Tier 7 Raid Pass", psub, pact ? "ACTIVE" : (vch > 0 ? "ACTIVATE" : ""), G_RAID, pact ? 2 : (vch > 0 ? 4 : 1), "Earned for every region clear"),
                 () -> RaidPass.activate(pl));
 
-        int cw = score(pl, "pp_coop");
-        s.add(ListNet.Row.of(ic("minecraft:totem_of_undying"), "Co-op Gyms", "Fight a gym leader with a partner. Team wins: " + cw, ">", G_SOC, 0, "A team win gives both players the badge"),
-                () -> nav(pl, "coop"));
-        s.add(ListNet.Row.of(ic("minecraft:player_head"), "Join an open co-op lane", "See which friends are hosting right now", ">", G_SOC, 0, "Opens the lane list"),
-                () -> nav(pl, "coop_join"));
+        Duo.Rec dr2 = Duo.recOf(pl);
+        Duo.Invite inv = Duo.inviteFor(pl);
+        String dsub = inv != null ? inv.fromName + " invited you" : (dr2 == null ? "Play together on a shared run" : (dr != null ? "On the Duo run with " + dr2.otherName(pl.method_5667().toString()) : "Paired with " + dr2.otherName(pl.method_5667().toString())));
+        s.add(ListNet.Row.of(ic("minecraft:totem_of_undying"), "Duo run", dsub, inv != null ? "INVITE" : (dr != null ? "ON" : ">"), G_SOC, inv != null || dr != null ? 4 : 0, "A separate co-op track: shared gym stage, badges and level cap"),
+                () -> nav(pl, "duo"));
         s.add(ListNet.Row.of(ic("minecraft:lead"), "Trade Pokemon", "Swap Pokemon with another player", "/trade", G_SOC, 0, "Type /trade <player> to start"),
                 () -> {
                     ListNet.close(pl);
@@ -434,6 +443,101 @@ public final class PpGui {
         if (n == 0) s.add(ListNet.Row.of(stackOf("minecraft:gray_dye", ""), "Nobody has an open lane", "Ask your partner to start a fight and open their lane first", "", -1, 1, "No open lanes right now"), null);
     }
 
+
+    // ------------------------------------------------------------------ Duo run
+    static final Set<UUID> DUO_CONFIRM = new HashSet<>();
+
+    private static void duoDo(class_3222 pl, String err, String ok) {
+        ListNet.note(pl, err != null ? err : ok, err != null);
+    }
+
+    static void duoList(class_3222 pl, ListNet.Spec s) {
+        String me = pl.method_5667().toString();
+        Duo.Rec r = Duo.recOf(pl);
+        boolean on = Duo.onDuoRun(pl);
+        s.title = "Duo Run"; s.back = true; s.backAction = () -> nav(pl, "main");
+        s.groups.addAll(Arrays.asList("Run", "Together", "Partner"));
+        final int G_RUN = 0, G_TOG = 1, G_PART = 2;
+        if (r == null) {
+            s.info = "No partner yet";
+            s.hint = "A Duo run is its own track: you and your partner share one gym stage, one set of badges and one level cap. Your solo run is untouched.";
+            Duo.Invite inv = Duo.inviteFor(pl);
+            if (inv != null) {
+                s.add(ListNet.Row.of(ic("minecraft:lime_dye"), "Accept the invite from " + inv.fromName, "Become a fixed duo with " + inv.fromName, "ACCEPT", G_RUN, 4, "You stay partners until one of you leaves"),
+                        () -> duoDo(pl, Duo.accept(pl), "You are now a duo"));
+                s.add(ListNet.Row.of(ic("minecraft:red_dye"), "Decline", "Ignore this invite", "", G_RUN, 0, ""),
+                        () -> duoDo(pl, Duo.decline(pl), "Invite declined"));
+            }
+            int n = 0;
+            for (class_3222 p : pl.method_5682().method_3760().method_14571()) {
+                if (p == pl || Duo.recOf(p) != null) continue;
+                n++;
+                String name = p.method_5477().getString();
+                s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), "Invite " + name, "Sends a duo invite (lasts 2 minutes)", "INVITE", G_RUN, 0, "They accept from their phone menu > Duo run"),
+                        () -> duoDo(pl, Duo.invite(pl, name), "Invite sent to " + name));
+            }
+            if (n == 0 && inv == null) s.add(ListNet.Row.of(ic("minecraft:gray_dye"), "Nobody to invite right now", "Ask a friend to log in. You can also use /duo invite <player>", "", G_RUN, 1, ""), null);
+            return;
+        }
+        String partnerName = r.otherName(me);
+        class_3222 pp = Duo.partner(pl.method_5682(), pl);
+        s.info = "Partner: " + partnerName + (pp == null ? " (offline)" : "");
+        // ---- run switch
+        if (!on) {
+            s.add(ListNet.Row.of(ic("minecraft:totem_of_undying"), "Switch to the Duo run", "Your solo progress is saved and comes back exactly as it was", "START", G_RUN, 4, "Shared gym stage, badges and level cap with " + partnerName),
+                    () -> duoDo(pl, Duo.enter(pl), "Duo run started"));
+        } else {
+            s.add(ListNet.Row.of(ic("minecraft:compass"), "Back to my solo run", "Your Duo progress stays saved for later", "SOLO", G_RUN, 0, "Restores your own gym stage and badges"),
+                    () -> duoDo(pl, Duo.exit(pl), "Back on your solo run"));
+            int idx = Arrays.asList(Duo.REG).indexOf(r.series);
+            String regName = idx >= 0 ? Duo.REGN[idx] : r.series;
+            String[] info = GymBoard.infoByRank(score(pl, "pp_gym"));
+            String stage = info == null ? "All gyms cleared for now" : info[2] + ": " + info[3];
+            s.add(ListNet.Row.of(ic("minecraft:filled_map"), regName + ": " + stage, "Badges " + Duo.badges(r, r.series) + "/8   |   Shared level cap " + capOf(pl), "", G_RUN, 2, "This is where the duo is right now"), null);
+            s.add(ListNet.Row.of(ic("minecraft:map"), "Pick a region", "Either of you can choose where the duo plays next", ">", G_RUN, 0, "Any region, in any order"),
+                    () -> nav(pl, "duo_region"));
+            s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "Fight the next gym", "Starts a normal fight on the duo's stage", "FIGHT", G_TOG, 0, "Teleports you to an arena"),
+                    () -> closeAnd(pl, "trigger gym set 1"));
+            s.add(ListNet.Row.of(ic("minecraft:ender_pearl"), "Fight together (co-op lane)", "Host a lane or join " + partnerName + "'s lane for a team fight", ">", G_TOG, 0, "Team wins pay both of you"),
+                    () -> nav(pl, "coop"));
+            if (pp != null && tag(pp, "pp_coopopen") && !tag(pp, "pp_pend") && score(pp, "pp_slot") >= 1 && score(pl, "pp_slot") < 1) {
+                final int slot = score(pp, "pp_slot");
+                s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), "Join " + partnerName + "'s lane", partnerName + " has an open lane right now", "JOIN", G_TOG, 4, "Teleports you into their arena"),
+                        () -> { run(pl, "trigger gym set " + (30000 + slot)); ListNet.close(pl); });
+            }
+        }
+        // ---- partner / pair
+        int pi = Arrays.asList(Duo.REG).indexOf(r.series);
+        String ps = (pi >= 0 ? Duo.REGN[pi] : r.series) + ", " + Duo.badges(r, r.series) + "/8 badges, " + r.defeated.size() + " trainers beaten";
+        s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), partnerName, (pp == null ? "Offline" : "Online") + "   |   Duo: " + ps, "", G_PART, 0, "Duo progress is shared and saved"), null);
+        boolean sure = DUO_CONFIRM.contains(pl.method_5667());
+        s.add(ListNet.Row.of(ic("minecraft:barrier"), sure ? "Click again to end the duo" : "End the duo", sure ? "Both of you go back to your solo runs" : "Leave this partner. Solo progress is not affected", sure ? "CONFIRM" : "", G_PART, sure ? 3 : 0, "Duo progress is deleted"),
+                () -> {
+                    if (!DUO_CONFIRM.remove(pl.method_5667())) { DUO_CONFIRM.add(pl.method_5667()); ListNet.note(pl, "Click again to end the duo.", true); return; }
+                    duoDo(pl, Duo.leave(pl), "Duo ended");
+                });
+    }
+
+    static void duoRegionList(class_3222 pl, ListNet.Spec s) {
+        Duo.Rec r = Duo.active(pl);
+        s.title = "Duo: pick a region"; s.back = true; s.backAction = () -> nav(pl, "duo");
+        if (r == null) {
+            s.add(ListNet.Row.of(ic("minecraft:barrier"), "Switch to the Duo run first", "Regions are picked while you are on the Duo run", "", -1, 1, ""), null);
+            return;
+        }
+        s.info = "Both partners play the region you pick";
+        s.hint = "Pick any region in any order. Progress in each region is kept.";
+        String[] icons = {"cobblemon:poke_ball", "cobblemon:great_ball", "cobblemon:ultra_ball", "cobblemon:premier_ball", "cobblemon:luxury_ball", "cobblemon:master_ball"};
+        for (int i = 0; i < Duo.REG.length; i++) {
+            final String reg = Duo.REG[i];
+            boolean cur = reg.equals(r.series);
+            int done = r.completed.getOrDefault(reg, 0), b = Duo.badges(r, reg);
+            String sub = (done > 0 ? "Cleared" : (b > 0 || r.defeated.stream().anyMatch(d -> d.startsWith(reg + "_")) ? "In progress" : "Not started")) + "   |   Badges " + b + "/8";
+            s.add(ListNet.Row.of(ic(icons[i]), Duo.REGN[i], sub, cur ? "CURRENT" : "PICK", -1, cur ? 2 : (done > 0 ? 0 : 0), cur ? "You are here" : "Click to move the duo to " + Duo.REGN[i]),
+                    cur ? null : () -> duoDo(pl, Duo.pickRegion(pl, reg), "Region set"));
+        }
+    }
+
     // ------------------------------------------------------------------ phone search
     static void openSearch(class_3222 pl) {
         if (ListNet.hasClient(pl)) { ListNet.open(pl, s -> searchList(pl, s)); return; }
@@ -453,6 +557,7 @@ public final class PpGui {
         srow(s, "minecraft:compass", "Start next region", "region johto hoenn sinnoh unova kalos series", 0, () -> { ListNet.close(pl); run(pl, "trigger gym set 46"); });
         srow(s, "minecraft:barrier", "Leave the arena", "leave exit return arena quit", 0, () -> { ListNet.close(pl); run(pl, "trigger gym set 2"); });
         srow(s, "minecraft:comparator", "Challenge Modifiers", "iron mode speedrun modifier bonus bp", 0, () -> { ListNet.close(pl); open(pl, "mods"); });
+        srow(s, "minecraft:totem_of_undying", "Duo run", "duo coop co-op partner team friend invite region", 4, () -> { ListNet.close(pl); open(pl, "duo"); });
         srow(s, "minecraft:totem_of_undying", "Co-op Gyms", "coop co-op partner team friend duo", 4, () -> { ListNet.close(pl); open(pl, "coop"); });
         srow(s, "minecraft:player_head", "Join an open co-op lane", "join coop lane partner level cap", 4, () -> { ListNet.close(pl); open(pl, "coop_join"); });
         srow(s, "minecraft:emerald", "Badge Point Shop", "bp shop buy mint held item tera shard", 1, () -> { ListNet.close(pl); open(pl, "shop"); });

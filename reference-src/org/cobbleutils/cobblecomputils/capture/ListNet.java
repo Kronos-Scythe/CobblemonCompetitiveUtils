@@ -17,7 +17,7 @@ public final class ListNet implements ModInitializer {
     public static final class Spec {
         public String title = "", info = "", footer = "", hint = "";
         public Runnable backAction = null;
-        public boolean err = false, back = false;
+        public boolean err = false, back = false, tiles = false;
         public final List<String> groups = new ArrayList<>();
         public final List<Row> rows = new ArrayList<>();
         final Map<Integer, Runnable> actions = new HashMap<>();
@@ -53,7 +53,7 @@ public final class ListNet implements ModInitializer {
         s.b.build(sp);
         if (!s.note.isEmpty()) { sp.footer = s.note; sp.err = s.noteErr; }
         s.cur = sp;
-        ServerPlayNetworking.send(pl, new View(sp.title, sp.info, sp.footer, sp.hint, sp.err, sp.back, sp.groups, sp.rows));
+        ServerPlayNetworking.send(pl, new View(sp.title, sp.info, sp.footer, sp.hint, sp.err, sp.back, sp.groups, sp.rows, sp.tiles));
     }
 
     public static void note(class_3222 pl, String msg, boolean err) {
@@ -106,13 +106,14 @@ public final class ListNet implements ModInitializer {
         }
     }
 
-    public static record View(String title, String info, String footer, String hint, boolean err, boolean back, List<String> groups, List<Row> rows) implements class_8710 {
+    public static record View(String title, String info, String footer, String hint, boolean err, boolean back, List<String> groups, List<Row> rows, boolean tiles) implements class_8710 {
+        public View(String title, String info, String footer, String hint, boolean err, boolean back, List<String> groups, List<Row> rows) { this(title, info, footer, hint, err, back, groups, rows, false); }
         public static final class_9154<View> ID = new class_9154<>(class_2960.method_60655("cobblecomputils", "list_view"));
         public static final class_9139<class_9129, View> CODEC = class_9139.method_56438(View::write, View::read);
 
         static void write(View v, class_9129 buf) {
             buf.method_10814(v.title); buf.method_10814(v.info); buf.method_10814(v.footer); buf.method_10814(v.hint);
-            buf.writeBoolean(v.err); buf.writeBoolean(v.back);
+            buf.writeBoolean(v.err); buf.writeBoolean(v.back); buf.writeBoolean(v.tiles);
             buf.method_10804(v.groups.size());
             for (String g : v.groups) buf.method_10814(g);
             buf.method_10804(v.rows.size());
@@ -128,7 +129,7 @@ public final class ListNet implements ModInitializer {
 
         static View read(class_9129 buf) {
             String t = buf.method_19772(), i = buf.method_19772(), f = buf.method_19772(), hint = buf.method_19772();
-            boolean err = buf.readBoolean(), back = buf.readBoolean();
+            boolean err = buf.readBoolean(), back = buf.readBoolean(), tiles = buf.readBoolean();
             int gn = buf.method_10816();
             List<String> groups = new ArrayList<>();
             for (int k = 0; k < gn; k++) groups.add(buf.method_19772());
@@ -144,7 +145,7 @@ public final class ListNet implements ModInitializer {
                 for (int j = 0; j < n; j++) icons.add(class_1799.field_49268.decode(buf));
                 rows.add(new Row(st, title, sub, right, group, state, tip, icons));
             }
-            return new View(t, i, f, hint, err, back, groups, rows);
+            return new View(t, i, f, hint, err, back, groups, rows, tiles);
         }
 
         public class_9154<? extends class_8710> method_56479() { return ID; }

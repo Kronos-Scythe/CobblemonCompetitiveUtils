@@ -69,6 +69,8 @@ public final class ListScreen extends class_437 {
         this.refilter();
     }
 
+    public void markReplaced() { this.closedByServer = true; }
+
     public void closeFromServer() {
         this.closedByServer = true;
         this.method_25419();
