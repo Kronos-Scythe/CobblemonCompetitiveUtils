@@ -72,9 +72,10 @@ public final class ListNet implements ModInitializer {
         if (index == -1) {
             Runnable back = s.cur == null ? null : s.cur.backAction;
             SESS.remove(pl.method_5667());
-            ServerPlayNetworking.send(pl, new View("", "", "", "", false, false, new ArrayList<>(), new ArrayList<>()));
-            if (back != null) { try { back.run(); } catch (Throwable t) { System.out.println("[cobblecomputils] list back error: " + t); } }
-            else PpGui.open(pl, "main");
+            // navigate in place (the replacement list reuses the open window); close it only if nothing took over
+            try { if (back != null) back.run(); else PpGui.open(pl, "main"); }
+            catch (Throwable t) { System.out.println("[cobblecomputils] list back error: " + t); }
+            if (!SESS.containsKey(pl.method_5667())) ServerPlayNetworking.send(pl, new View("", "", "", "", false, false, new ArrayList<>(), new ArrayList<>()));
             return;
         }
         if (s.cur == null) return;

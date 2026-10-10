@@ -93,10 +93,21 @@ public final class PpGui {
     };
 
     // ------------------------------------------------------------------ list-window versions (clients with the mod)
+    /** Screens that have a list-window version for clients with the mod. */
+    static final Set<String> LISTABLE = new HashSet<>(Arrays.asList("main", "shop", "dex", "coop_join", "rm_hub", "rm_list", "case", "mods", "coop", "weather"));
+    static final Map<UUID, int[]> RM = new HashMap<>();
+
     static void openList(class_3222 pl, String screen) {
         switch (screen) {
+            case "main": ListNet.open(pl, s -> mainList(pl, s)); break;
             case "shop": ListNet.open(pl, s -> shopList(pl, s)); break;
             case "dex": ListNet.open(pl, s -> dexList(pl, s)); break;
+            case "rm_hub": ListNet.open(pl, s -> rmHubList(pl, s)); break;
+            case "rm_list": ListNet.open(pl, s -> rmList(pl, s)); break;
+            case "case": ListNet.open(pl, s -> caseList(pl, s)); break;
+            case "mods": ListNet.open(pl, s -> modsList(pl, s)); break;
+            case "coop": ListNet.open(pl, s -> coopList(pl, s)); break;
+            case "weather": ListNet.open(pl, s -> weatherList(pl, s)); break;
             default: ListNet.open(pl, s -> laneList(pl, s)); break;
         }
     }
@@ -158,6 +169,231 @@ public final class PpGui {
         }
     }
 
+
+    // ------------------------------------------------------------------ list versions of the phone / Gym Challenge screens
+    private static class_1799 ic(String id) {
+        class_1799 st = stackOf(id, "");
+        return st.method_7960() ? mk("minecraft:paper", 1, " ", false) : st;
+    }
+
+    private static void nav(class_3222 pl, String screen) { open(pl, screen); }
+
+    private static void closeAnd(class_3222 pl, String command) { ListNet.close(pl); run(pl, command); }
+
+    static void mainList(class_3222 pl, ListNet.Spec s) {
+        int bp = score(pl, "pp_bp"), heals = score(pl, "pp_heals"), wins = score(pl, "pp_wins"), gym = score(pl, "pp_gym");
+        long day = pl.method_5682().method_30002().method_8532() / 24000L;
+        String feat = REGN[(int) ((day / 7) % 6)];
+        s.title = "Gym Challenge"; s.back = false;
+        s.info = bp + " BP   |   " + heals + " heals";
+        s.hint = "Featured region: " + feat + " (x2 Badge Points)   |   Total wins: " + wins + "   |   Type to search";
+        s.groups.addAll(Arrays.asList("Battle", "Pokemon", "Shops", "Progress", "Raids", "Social"));
+        final int G_BATTLE = 0, G_MON = 1, G_SHOP = 2, G_PROG = 3, G_RAID = 4, G_SOC = 5;
+
+        String[] info = GymBoard.infoByRank(gym);
+        String next = info == null ? "Beat the Champion to unlock rematches" : info[1] + " " + info[2] + ": " + info[3];
+        s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "Fight my next Gym Leader", "Next: " + next, "FIGHT", G_BATTLE, 4, "Teleports you to an arena"),
+                () -> closeAnd(pl, "trigger gym set 1"));
+        s.add(ListNet.Row.of(ic("cobblemon:ultra_ball"), "Rematches (Hard / Elite)", "Replay any gym on harder teams for Badge Points", ">", G_BATTLE, 0, "Hard: +10 levels. Elite: level 100 with extra legends."),
+                () -> nav(pl, "rm_hub"));
+        int nx = 0; while (nx < 6 && adv(pl, "region/" + REGN[nx].toLowerCase())) nx++;
+        if (nx == 0) s.add(ListNet.Row.of(ic("minecraft:compass"), "Start next region", "Beat the Kanto Champion first", "LOCKED", G_BATTLE, 1, "Clear Kanto to switch to Johto here"), null);
+        else if (nx >= 6) s.add(ListNet.Row.of(ic("minecraft:compass"), "Start next region", "All six regions conquered. Use Rematches for Hard / Elite", "DONE", G_BATTLE, 2, "Every region cleared"), null);
+        else {
+            final String to = REGN[nx];
+            s.add(ListNet.Row.of(ic("minecraft:compass"), "Start next region: " + to, REGN[nx - 1] + " conquered - switches your series to " + to, "START", G_BATTLE, 4, "Then use Fight my next Gym Leader"),
+                    () -> closeAnd(pl, "trigger gym set 46"));
+        }
+        s.add(ListNet.Row.of(ic("minecraft:comparator"), "Challenge Modifiers", "Iron Mode / Speedrun for x1.5 Badge Points", ">", G_BATTLE, 0, "Optional rules for extra Badge Points"),
+                () -> nav(pl, "mods"));
+        s.add(ListNet.Row.of(ic("minecraft:barrier"), "Leave the arena", "Return to where you were", "", G_BATTLE, 0, "Leaves the current gym arena"),
+                () -> closeAnd(pl, "trigger gym set 2"));
+
+        s.add(ListNet.Row.of(ic("cobblemon:full_restore"), "Heal my party", "Charges left today: " + heals + " (refills daily)", heals > 0 ? "x" + heals : "0 left", G_MON, heals > 0 ? 0 : 3, "Fully heals your party"),
+                () -> run(pl, "trigger gym set 8"));
+        s.add(ListNet.Row.of(ic("minecraft:enchanted_book"), "Move Tutor", "Teach your party any move it can learn, including egg moves", ">", G_MON, 0, "Opens the Move Tutor"),
+                () -> closeAnd(pl, "movetutor"));
+        s.add(ListNet.Row.of(ic("cobblemon:protein"), "EV Editor", "Set your party's EVs", ">", G_MON, 0, "Opens the EV Editor"),
+                () -> closeAnd(pl, "evedit"));
+        s.add(ListNet.Row.of(ic("minecraft:spyglass"), "Scout trainers", "Preview the next opponent's team and level cap", ">", G_MON, 0, "Opens the scouting list"),
+                () -> closeAnd(pl, "scout"));
+
+        s.add(ListNet.Row.of(ic("minecraft:emerald"), "Badge Point Shop", "You have " + bp + " BP: mints, held items, tera shards", ">", G_SHOP, 0, "Spend Badge Points"),
+                () -> nav(pl, "shop"));
+        s.add(ListNet.Row.of(ic("minecraft:villager_spawn_egg"), "Poke Mart", "Every village shopkeeper in one place (CobbleDollars)", ">", G_SHOP, 0, "Opens the Poke Mart"),
+                () -> { ListNet.close(pl); openMartFor(pl); });
+        s.add(ListNet.Row.of(ic("minecraft:lightning_rod"), "Weather Machine", "Clear skies, rain or a thunderstorm. Great for fishing legendaries", ">", G_SHOP, 0, "Changes the weather for the whole server"),
+                () -> nav(pl, "weather"));
+
+        s.add(ListNet.Row.of(ic("minecraft:writable_book"), "Badge Case", "Your progress in every region", ">", G_PROG, 0, "Base, Hard and Elite clears"),
+                () -> nav(pl, "case"));
+        int caught = dexCaught(pl), ready = 0;
+        for (int n : DEX_N) if (caught >= n && !tag(pl, "ppdex_" + n)) ready++;
+        s.add(ListNet.Row.of(ic("minecraft:knowledge_book"), "Pokedex Milestones", "Caught species: " + caught, ready > 0 ? ready + " READY" : ">", G_PROG, ready > 0 ? 4 : 0, "Rewards for registering Pokemon"),
+                () -> nav(pl, "dex"));
+        int qr = Engage.readyCount(pl);
+        s.add(ListNet.Row.of(ic("minecraft:book"), "Daily & Weekly Quests", "Three daily and three weekly goals", qr > 0 ? qr + " READY" : ">", G_PROG, qr > 0 ? 4 : 0, "Ready to claim: " + qr),
+                () -> { ListNet.close(pl); Engage.openQuests(pl); });
+        s.add(ListNet.Row.of(ic("minecraft:gold_ingot"), "Leaderboard", "Top trainers: badges, dex, wins, Rogue clears", ">", G_PROG, 0, "Opens the leaderboard"),
+                () -> { ListNet.close(pl); Engage.openBoard(pl); });
+
+        boolean kanto = adv(pl, "region/kanto");
+        s.add(ListNet.Row.of(ic("minecraft:tripwire_hook"), "Claim Raid Den Key", kanto ? "Unlocked: tier 6/7 raids. Claim a replacement key" : "Beat the Kanto Champion first", kanto ? "CLAIM" : "LOCKED", G_RAID, kanto ? 0 : 1, "Gives a replacement Raid Den key"),
+                () -> run(pl, "trigger gym set 9"));
+        int vch = RaidPass.vouchers(pl); boolean pact = RaidPass.active(pl);
+        String psub = pact ? "ACTIVE: " + RaidPass.fmt(RaidPass.remainingMs(pl)) + " left   |   Vouchers: " + vch
+                : (vch > 0 ? "1 hour of /rqueue on 7-star raids   |   Vouchers: " + vch : "Clear a region (Base, Hard or Elite) to earn a voucher");
+        s.add(ListNet.Row.of(ic("minecraft:nether_star"), "Tier 7 Raid Pass", psub, pact ? "ACTIVE" : (vch > 0 ? "ACTIVATE" : ""), G_RAID, pact ? 2 : (vch > 0 ? 4 : 1), "Earned for every region clear"),
+                () -> RaidPass.activate(pl));
+
+        int cw = score(pl, "pp_coop");
+        s.add(ListNet.Row.of(ic("minecraft:totem_of_undying"), "Co-op Gyms", "Fight a gym leader with a partner. Team wins: " + cw, ">", G_SOC, 0, "A team win gives both players the badge"),
+                () -> nav(pl, "coop"));
+        s.add(ListNet.Row.of(ic("minecraft:player_head"), "Join an open co-op lane", "See which friends are hosting right now", ">", G_SOC, 0, "Opens the lane list"),
+                () -> nav(pl, "coop_join"));
+        s.add(ListNet.Row.of(ic("minecraft:lead"), "Trade Pokemon", "Swap Pokemon with another player", "/trade", G_SOC, 0, "Type /trade <player> to start"),
+                () -> {
+                    ListNet.close(pl);
+                    pl.method_7353(class_2561.method_43470("§6Type §e/trade <player>§6 to start a trade. Both players see a confirm window."), false);
+                });
+    }
+
+    static void rmHubList(class_3222 pl, ListNet.Spec s) {
+        s.title = "Rematches"; s.back = true;
+        s.info = "First clear pays x3 BP";
+        s.hint = "Hard unlocks after a region's Champion. Elite unlocks after Hard.";
+        s.groups.add("Hard"); s.groups.add("Elite");
+        for (int tier = 1; tier <= 2; tier++) {
+            for (int i = 0; i < 6; i++) {
+                String r = REG[i];
+                boolean base = adv(pl, "region/" + r), hard = adv(pl, "region/" + r + "_hard");
+                boolean unlocked = tier == 1 ? base : hard;
+                int cnt = 0;
+                for (int k = 1; k <= 13; k++) if (tag(pl, "ppw" + tier + "_" + (i * 20 + k))) cnt++;
+                final int ri = i, ti = tier;
+                String name = REGN[i] + " - " + (tier == 1 ? "Hard" : "Elite");
+                String icon = unlocked ? (tier == 1 ? "cobblemon:ultra_ball" : "cobblemon:master_ball") : "minecraft:gray_dye";
+                String sub = unlocked ? "Cleared " + cnt + "/13   |   " + (tier == 1 ? "Gym teams +10 levels" : "All level 100 + extra legends")
+                        : "Locked: clear " + REGN[i] + (tier == 1 ? "" : " Hard") + " first";
+                s.add(ListNet.Row.of(ic(icon), name, sub, unlocked ? cnt + "/13" : "LOCKED", tier - 1, unlocked ? (cnt == 13 ? 2 : 0) : 1,
+                        unlocked ? "Click to pick a gym" : "Clear " + REGN[i] + (tier == 1 ? " Champion" : " on Hard") + " to unlock"),
+                        unlocked ? () -> { RM.put(pl.method_5667(), new int[]{ri, ti}); nav(pl, "rm_list"); } : () -> ListNet.note(pl, name + " is locked.", true));
+            }
+        }
+    }
+
+    static void rmList(class_3222 pl, ListNet.Spec s) {
+        int[] rt = RM.getOrDefault(pl.method_5667(), new int[]{0, 1});
+        final int region = rt[0], tier = rt[1];
+        s.title = REGN[region] + " " + (tier == 1 ? "Hard" : "Elite") + " rematches"; s.back = true;
+        s.backAction = () -> nav(pl, "rm_hub");
+        s.hint = "Green = already cleared   |   First clear pays x3 Badge Points";
+        s.groups.add("Gym Leaders"); s.groups.add("Elite Four"); s.groups.add("Champion");
+        int done = 0;
+        for (int k = 1; k <= 13; k++) if (tag(pl, "ppw" + tier + "_" + (region * 20 + k))) done++;
+        s.info = done + "/13 cleared";
+        for (int k = 1; k <= 13; k++) {
+            int rank = region * 20 + k;
+            String[] info = GymBoard.infoByRank(rank);
+            if (info == null) continue;
+            boolean cleared = tag(pl, "ppw" + tier + "_" + rank);
+            String icon = k <= 8 ? "minecraft:iron_ingot" : (k <= 12 ? "minecraft:diamond" : "minecraft:netherite_ingot");
+            final int val = (region + 1) * 1000 + tier * 100 + k;
+            s.add(ListNet.Row.of(ic(icon), info[2] + ": " + info[3], cleared ? "Cleared" : "Not cleared yet", cleared ? "CLEARED" : "FIGHT", k <= 8 ? 0 : (k <= 12 ? 1 : 2), cleared ? 2 : 0,
+                    "Click to fight"), () -> closeAnd(pl, "trigger gym set " + val));
+        }
+    }
+
+    static void caseList(class_3222 pl, ListNet.Spec s) {
+        s.title = "Badge Case"; s.back = true;
+        s.hint = "Your Champion clears in every region";
+        s.groups.addAll(Arrays.asList("Base", "Hard", "Elite", "Trophies"));
+        String[] sf = {"", "_hard", "_elite"};
+        String[] lab = {"Base", "Hard", "Elite"};
+        String[] ball = {"cobblemon:poke_ball", "cobblemon:ultra_ball", "cobblemon:master_ball"};
+        int total = 0;
+        for (int t = 0; t < 3; t++) {
+            for (int i = 0; i < 6; i++) {
+                boolean done = adv(pl, "region/" + REG[i] + sf[t]);
+                if (done) total++;
+                String sub = done ? "Cleared" : "Not cleared";
+                if (t == 2 && done) { int best = score(pl, "pp_best" + i); if (best > 0) sub += "   |   Best champion time: " + best + " s"; }
+                s.add(ListNet.Row.of(ic(done ? ball[t] : "minecraft:gray_dye"), REGN[i] + " " + lab[t], sub, done ? "CLEARED" : "", t, done ? 2 : 0, ""), null);
+            }
+        }
+        s.info = total + "/18 clears";
+        String[][] tr = {{"grand_master", "World Champion", "All six regions"}, {"grand_hard", "Grand Hard Champion", "All regions on Hard"}, {"grand_elite", "Grand Elite Champion", "All regions on Elite"}};
+        for (String[] t : tr) {
+            boolean d = adv(pl, "region/" + t[0]);
+            s.add(ListNet.Row.of(ic(d ? "minecraft:nether_star" : "minecraft:gray_dye"), t[1], t[2], d ? "EARNED" : "", 3, d ? 2 : 0, ""), null);
+        }
+    }
+
+    static void modsList(class_3222 pl, ListNet.Spec s) {
+        boolean iron = score(pl, "pp_modi") == 1, speed = score(pl, "pp_mods") == 1;
+        s.title = "Challenge Modifiers"; s.back = true;
+        s.info = "x1.5 Badge Points";
+        s.hint = "Click to toggle a modifier before your next gym fight";
+        s.add(ListNet.Row.of(ic(iron ? "minecraft:lime_dye" : "minecraft:gray_dye"), "Iron Mode", "No healing items in your inventory during the fight", iron ? "ON" : "off", -1, iron ? 4 : 0,
+                "Satisfied: x1.5 Badge Points\nClick to toggle"), () -> run(pl, "trigger gym set 71"));
+        s.add(ListNet.Row.of(ic(speed ? "minecraft:lime_dye" : "minecraft:gray_dye"), "Speedrun", "Win within 5 minutes of the leader appearing", speed ? "ON" : "off", -1, speed ? 4 : 0,
+                "Satisfied: x1.5 Badge Points\nClick to toggle"), () -> run(pl, "trigger gym set 72"));
+    }
+
+    static void coopList(class_3222 pl, ListNet.Spec s) {
+        int w = score(pl, "pp_coop");
+        boolean open = tag(pl, "pp_coopopen"), inArena = score(pl, "pp_slot") >= 1;
+        s.title = "Co-op Gyms"; s.back = true;
+        s.info = "Team wins: " + w;
+        s.hint = "A team win gives BOTH players the badge, +50% Badge Points and co-op rewards. Same gym stage required.";
+        s.groups.add("How it works"); s.groups.add("Milestones");
+        s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "1. Host: start a gym fight", "One of you starts a normal gym fight first", "FIGHT", 0, 4, "Fights your next gym leader"),
+                () -> closeAnd(pl, "trigger gym set 1"));
+        s.add(ListNet.Row.of(ic(open ? "minecraft:lime_dye" : "minecraft:gray_dye"), "2. Host: lane " + (open ? "OPEN" : "closed"),
+                inArena ? "Click to " + (open ? "close" : "open") + " your lane for a partner" : "Start a gym fight first", open ? "OPEN" : (inArena ? "CLOSED" : ""), 0, open ? 4 : (inArena ? 0 : 1),
+                "Partners can join while it is open"), () -> run(pl, "trigger gym set 42"));
+        s.add(ListNet.Row.of(ic("minecraft:ender_pearl"), "3. Partner: join a host", "Pick a friend with an open lane", ">", 0, 0, "Opens the lane list"), () -> nav(pl, "coop_join"));
+        s.add(ListNet.Row.of(ic("cobblemon:exp_candy_xl"), "4. Walk up to the trainer", "Right-click (or sneak + right-click) the trainer and send the invite", "", 0, 0, ""), null);
+        int[] need = {5, 15, 30, 60};
+        String[] rw = {"5 Rare Candy", "10 XL Exp Candy + 50,000 CobbleDollars", "Master Ball + 5% shiny odds", "+1 heart + Tag Team title"};
+        for (int i = 0; i < need.length; i++) {
+            boolean got = w >= need[i];
+            s.add(ListNet.Row.of(ic(got ? "minecraft:nether_star" : "minecraft:gray_dye"), need[i] + " team wins", rw[i], got ? "DONE" : (need[i] - w) + " to go", 1, got ? 2 : 0, ""), null);
+        }
+    }
+
+    static void weatherList(class_3222 pl, ListNet.Spec s) {
+        org.cobbleutils.cobblecomputils.economy.Economy eco = org.cobbleutils.cobblecomputils.Cobblecomputils.economy();
+        boolean dollars = !eco.isFree();
+        int bp = score(pl, "pp_bp");
+        java.math.BigInteger bal = dollars ? eco.balance(pl) : java.math.BigInteger.ZERO;
+        long now = pl.method_5682().method_30002().method_8510();
+        long left = Math.max(0, fakeScore(pl, "#next", "pp_wx") - now);
+        s.title = "Weather Machine"; s.back = true;
+        s.info = dollars ? eco.format(bal) : bp + " BP";
+        s.hint = left > 0 ? "Recharging: " + ((left + 1199) / 1200) + " min left (shared cooldown)" : "Changes the weather for the whole server";
+        String[] ic = {"minecraft:sunflower", "minecraft:water_bucket", "minecraft:lightning_rod"};
+        String[] nm = {"Clear skies (20 min)", "Rain (10 min)", "Thunderstorm (7.5 min)"};
+        long[] price = {20000L, 30000L, 50000L};
+        int[] cost = {30, 60, 120};
+        String[] ln = {"Ends rain and storms", "Needed for rain-only spawns", "x8 Kyogre-style fishing spawn weight"};
+        for (int i = 0; i < 3; i++) {
+            final int tr = 60 + i;
+            final java.math.BigInteger p = java.math.BigInteger.valueOf(price[i]);
+            boolean afford = dollars ? bal.compareTo(p) >= 0 : bp >= cost[i];
+            boolean ok = afford && left == 0;
+            String costTxt = dollars ? eco.format(p) : cost[i] + " BP";
+            s.add(ListNet.Row.of(ic(ic[i]), nm[i], ln[i], left > 0 ? "WAIT" : costTxt, -1, ok ? 0 : (left > 0 ? 1 : 3),
+                    ok ? "Click to use" : (left > 0 ? "Recharging" : "Not enough " + (dollars ? "CobbleDollars" : "Badge Points"))), () -> {
+                if (!dollars) { run(pl, "trigger gym set " + tr); return; }
+                long l2 = Math.max(0, fakeScore(pl, "#next", "pp_wx") - pl.method_5682().method_30002().method_8510());
+                if (l2 > 0 || !eco.withdraw(pl, p)) { ListNet.note(pl, "Not available right now.", true); return; }
+                runServer(pl, "scoreboard players set #paid pp_wx 1");
+                run(pl, "trigger gym set " + tr);
+            });
+        }
+    }
+
     static String capOf(class_3222 p) {
         try {
             java.util.OptionalInt c = org.cobbleutils.cobblecomputils.integration.RctBridge.levelCap(p);
@@ -166,7 +402,7 @@ public final class PpGui {
     }
 
     static void laneList(class_3222 pl, ListNet.Spec s) {
-        s.title = "Open co-op lanes"; s.back = true;
+        s.title = "Open co-op lanes"; s.back = true; s.backAction = () -> nav(pl, "coop");
         s.info = "Pick a host to fight beside";
         if (score(pl, "pp_slot") >= 1) {
             s.add(ListNet.Row.of(stackOf("minecraft:barrier", ""), "You are in your own lane", "Leave the arena first, then join a partner", "", -1, 1, "Leave the arena first"), null);
@@ -256,7 +492,7 @@ public final class PpGui {
 
     static void open(class_3222 pl, String screen) {
         if (screen.equals("mart") && MartNet.hasClient(pl)) { virtClose(pl); MartNet.open(pl); return; }
-        if ((screen.equals("shop") || screen.equals("dex") || screen.equals("coop_join")) && ListNet.hasClient(pl)) { virtClose(pl); openList(pl, screen); return; }
+        if (LISTABLE.contains(screen) && ListNet.hasClient(pl)) { virtClose(pl); openList(pl, screen); return; }
         if (GymNet.hasClient(pl)) {
             virtClose(pl);
             H v = new H(0, pl.method_31548(), pl);
@@ -461,7 +697,7 @@ public final class PpGui {
         }
         void cmd(String c) { close(); run(pl, c); }
         void go(String s) {
-            if ((s.equals("shop") || s.equals("dex") || s.equals("coop_join")) && ListNet.hasClient(pl)) { close(); openList(pl, s); return; } screen = s; page = 0; render(); }
+            if (LISTABLE.contains(s) && ListNet.hasClient(pl)) { close(); openList(pl, s); return; } screen = s; page = 0; render(); }
 
         void render() {
             act.clear();

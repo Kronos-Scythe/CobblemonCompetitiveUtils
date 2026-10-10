@@ -58,6 +58,13 @@ public final class ListScreen extends class_437 {
     }
 
     public void update(ListNet.View d) {
+        // moving to a different list (same window): drop the old category filter, scroll and search text
+        boolean other = this.data != null && !this.data.title().equals(d.title());
+        if (other) {
+            this.group = -1;
+            this.scroll = 0;
+            if (this.search != null && !this.search.method_1882().isEmpty()) this.search.method_1852("");
+        }
         this.setData(d);
         this.refilter();
     }
