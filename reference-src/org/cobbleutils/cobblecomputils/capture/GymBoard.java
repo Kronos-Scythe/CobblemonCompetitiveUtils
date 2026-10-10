@@ -221,9 +221,9 @@ public final class GymBoard implements net.fabricmc.api.ModInitializer {
                 String suffix, entry, badges;
                 if (best == null) { suffix = " - No series"; entry = name + " -"; badges = "0"; }
                 else {
-                    String shortName = best.series + " " + best.kind;
+                    String shortName = (Duo.onDuoRun((net.minecraft.class_3222) pl) ? "Duo " : "") + best.series + " " + best.kind;
                     suffix = " - " + shortName;
-                    entry = trunc(name + ": " + best.series + " " + best.kind.replace("Elite Four ", "E4 ").replace("Champion", "Champ") + " " + best.name, 40);
+                    entry = trunc(name + ": " + (Duo.onDuoRun((net.minecraft.class_3222) pl) ? "Duo " : "") + best.series + " " + best.kind.replace("Elite Four ", "E4 ").replace("Champion", "Champ") + " " + best.name, 40);
                     badges = String.valueOf(best.badges);
                 }
                 // Score-holder arguments end at the first plain space (quotes do NOT group), so a name with spaces
