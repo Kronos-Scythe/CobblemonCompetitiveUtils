@@ -145,7 +145,7 @@ public final class GymBoard implements net.fabricmc.api.ModInitializer {
             else {
                 f.getParentFile().mkdirs();
                 p.setProperty("enabled", "true"); p.setProperty("sidebar", "true");
-                p.setProperty("tabSuffix", "true"); p.setProperty("compass", "true"); p.setProperty("tabBadges", "true"); p.setProperty("updateTicks", "100");
+                p.setProperty("tabSuffix", "true"); p.setProperty("tabBadges", "true"); p.setProperty("updateTicks", "100");
                 try (FileOutputStream out = new FileOutputStream(f)) {
                     p.store(out, "Gym progress board. sidebar: right-hand scoreboard. tabSuffix: ' - Kanto Gym 3' after each name in the tab list. tabBadges: badge count in the tab list.");
                 }
@@ -154,85 +154,10 @@ public final class GymBoard implements net.fabricmc.api.ModInitializer {
             sidebar = Boolean.parseBoolean(p.getProperty("sidebar", "true").trim());
             tabSuffix = Boolean.parseBoolean(p.getProperty("tabSuffix", "true").trim());
             tabBadges = Boolean.parseBoolean(p.getProperty("tabBadges", "true").trim());
-            compass = Boolean.parseBoolean(p.getProperty("compass", "true").trim());
             intervalTicks = Math.max(20, Integer.parseInt(p.getProperty("updateTicks", "100").trim()));
         } catch (Exception e) { System.out.println("[cobblecomputils] gym_board config problem, using defaults: " + e); }
     }
 
-
-    // Kanto gym / league buildings from Radical Gyms & Structures
-    private static final Map<String, String> STRUCT = new HashMap<>();
-    static {
-        STRUCT.put("kanto_brock", "rgs:pewter_gym"); STRUCT.put("kanto_misty", "rgs:cerulean_gym");
-        STRUCT.put("kanto_ltsurge", "rgs:vermilion_gym"); STRUCT.put("kanto_erika", "rgs:celadon_gym");
-        STRUCT.put("kanto_koga", "rgs:fuchsia_gym"); STRUCT.put("kanto_sabrina", "rgs:saffron_gym");
-        STRUCT.put("kanto_blaine", "rgs:cinnabar_gym"); STRUCT.put("kanto_giovanni", "rgs:blackthorn_gym");
-        for (String e : new String[]{"lorelei", "bruno", "agatha", "lance"}) STRUCT.put("kanto_league_" + e, "rgs:kanto_league");
-        STRUCT.put("kanto_champion_blue", "rgs:kanto_league");
-    }
-    private static boolean compass = true;
-    private static final Map<String, int[]> found = new HashMap<>();      // player|id -> {x,y,z}
-    private static final Map<String, Long> failedAt = new HashMap<>();    // player|id -> tick of failed lookup
-    private static final Map<String, String> compassKey = new HashMap<>();// player -> last applied key
-    private static final Pattern LOC = Pattern.compile("is at \\[(-?\\d+), (~|-?\\d+), (-?\\d+)\\]");
-    private static final Pattern POS = Pattern.compile("\\[(-?[\\d.]+)d, (-?[\\d.]+)d, (-?[\\d.]+)d\\]");
-    private static final String[] SLOTS = buildSlots();
-    private static String[] buildSlots() {
-        List<String> l = new ArrayList<>();
-        for (int i = 0; i < 9; i++) l.add("hotbar." + i);
-        for (int i = 0; i < 27; i++) l.add("inventory." + i);
-        l.add("weapon.offhand");
-        return l.toArray(new String[0]);
-    }
-
-    private static String capture(Object server, String c) {
-        File f = new File("logs/latest.log");
-        long off = f.length();
-        cmd(server, c);
-        try (RandomAccessFile r = new RandomAccessFile(f, "r")) {
-            long len = r.length();
-            if (len <= off) return "";
-            byte[] b = new byte[(int) Math.min(len - off, 65536)];
-            r.seek(off); r.readFully(b);
-            return new String(b, StandardCharsets.UTF_8);
-        } catch (Exception e) { return ""; }
-    }
-
-    /** Where should this player's Gym Compass point? null = unknown. */
-    private static int[] target(Object server, Object pl, Class<?> sp, String name, Key best) throws Exception {
-        double px = (Double) sp.getMethod("method_23317").invoke(pl), py = (Double) sp.getMethod("method_23318").invoke(pl), pz = (Double) sp.getMethod("method_23321").invoke(pl);
-        String at = "execute in minecraft:overworld positioned " + (int) px + " " + (int) py + " " + (int) pz + " run ";
-        String ck = name + "|" + best.id;
-        String structure = STRUCT.get(best.id);
-        if (structure != null) {
-            int[] hit = found.get(ck);
-            if (hit != null) return hit;
-            Long fa = failedAt.get(ck);
-            if (fa != null && tick - fa < 12000) return null;
-            Matcher m = LOC.matcher(capture(server, at + "locate structure " + structure));
-            if (m.find()) {
-                int[] t = {Integer.parseInt(m.group(1)), 64, Integer.parseInt(m.group(3))};
-                found.put(ck, t); System.out.println("[cobblecomputils] gym compass: " + name + " -> " + structure + " at " + t[0] + ", " + t[2]); return t;
-            }
-            failedAt.put(ck, (long) tick); System.out.println("[cobblecomputils] gym compass: no " + structure + " found near " + name + " (will retry in 10 min)"); return null;
-        }
-        // no building for this gym: point at the nearest loaded gym leader
-        Matcher m = POS.matcher(capture(server, at + "data get entity @e[type=rctmod:trainer,nbt={TrainerId:\"" + best.id + "\"},sort=nearest,limit=1] Pos"));
-        if (m.find()) return new int[]{(int) Double.parseDouble(m.group(1)) / 16 * 16, (int) Double.parseDouble(m.group(2)), (int) Double.parseDouble(m.group(3)) / 16 * 16};
-        return null;
-    }
-
-    private static void updateCompass(Object server, String name, Key best, int[] t) {
-        String key = best.id + "@" + t[0] + "," + t[2];
-        String lore = "Next: " + best.series + " " + best.kind + " - " + best.name;
-        String item = "minecraft:compass[minecraft:custom_data={pp_compass:1b,tgt:\"" + key + "\"},"
-                + "minecraft:custom_name='{\"text\":\"Gym Compass\",\"color\":\"gold\",\"italic\":false}',"
-                + "minecraft:lore=['{\"text\":\"" + lore + "\",\"color\":\"gray\",\"italic\":false}'],"
-                + "minecraft:lodestone_tracker={target:{pos:[I;" + t[0] + "," + t[1] + "," + t[2] + "],dimension:\"minecraft:overworld\"},tracked:false}]";
-        for (String s : SLOTS)
-            cmd(server, "execute as " + name + " if items entity @s " + s + " minecraft:compass[minecraft:custom_data~{pp_compass:1b}] unless items entity @s " + s
-                    + " minecraft:compass[minecraft:custom_data~{tgt:\"" + key + "\"}] run item replace entity @s " + s + " with " + item);
-    }
 
     private static void cmd(Object server, String c) {
         try {
@@ -294,12 +219,6 @@ public final class GymBoard implements net.fabricmc.api.ModInitializer {
                 // Score-holder arguments end at the first plain space (quotes do NOT group), so a name with spaces
                 // broke the command ("Expected integer"). Non-breaking spaces look identical and parse as one token.
                 entry = entry.replace(' ', '\u00a0');
-                if (compass && best != null) {
-                    try {
-                        int[] t = target(server, pl, sp, name, best);
-                        if (t != null) updateCompass(server, name, best, t);
-                    } catch (Throwable ce) { if (tick % 600 == 1) System.out.println("[cobblecomputils] gym compass error: " + ce); }
-                }
                 String[] old = shown.get(name);
                 if (old != null && old[0].equals(suffix) && old[1].equals(entry) && old[2].equals(badges)) continue;
                 String team = "pg" + Integer.toHexString(name.hashCode());
