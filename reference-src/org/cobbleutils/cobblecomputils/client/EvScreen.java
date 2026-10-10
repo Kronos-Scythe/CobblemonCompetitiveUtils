@@ -17,6 +17,8 @@ import org.cobbleutils.cobblecomputils.movetutor.TutorNet;
 /** EV editor: party tabs, six stat bars with +/- buttons, same look as the move tutor. */
 @Environment(EnvType.CLIENT)
 public final class EvScreen extends class_437 {
+    @Override public void method_25432() { MonIcon.clear(); super.method_25432(); }
+
    private static final int BG = 0xF0121420;
    private static final int PANEL = 0xFF1B1E2E;
    private static final int BORDER = 0xFF4A5080;

@@ -21,6 +21,9 @@ public final class MonIcon {
 
     private MonIcon() { }
 
+    /** Drop every cached model widget (called when a screen closes so nothing is held between uses). */
+    public static void clear() { CACHE.clear(); }
+
     public static void draw(class_332 g, String sid, String aspects, int x, int y, int size, float rot, int mx, int my, float delta) {
         if (sid == null || sid.isEmpty()) return;
         try {
@@ -34,7 +37,7 @@ public final class MonIcon {
                 for (String a : aspects.split(",")) if (!a.isEmpty()) asp.add(a);
                 float k = size / 78.0F;
                 wd = new ModelWidget(x, y, size, size, new RenderablePokemon(sp, asp, class_1799.field_8037), 2.0F * k, rot, -8.0 * k);
-                if (CACHE.size() > 200) CACHE.clear();
+                if (CACHE.size() > 40) CACHE.clear();
                 CACHE.put(key, wd);
             }
             wd.method_48229(x, y);

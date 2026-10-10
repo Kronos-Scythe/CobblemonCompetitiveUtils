@@ -24,6 +24,8 @@ import org.cobbleutils.cobblecomputils.movetutor.TutorNet.MoveInfo;
 /** Move tutor: party tabs, an EMI-style live search bar, filter chips and one scrolling list. */
 @Environment(EnvType.CLIENT)
 public final class TutorScreen extends class_437 {
+    @Override public void method_25432() { MonIcon.clear(); super.method_25432(); }
+
    private static final int BG = 0xF0121420;
    private static final int PANEL = 0xFF1B1E2E;
    private static final int BORDER = 0xFF4A5080;

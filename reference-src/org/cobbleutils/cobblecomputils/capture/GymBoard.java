@@ -208,13 +208,13 @@ public final class GymBoard implements net.fabricmc.api.ModInitializer {
             int[] hit = found.get(ck);
             if (hit != null) return hit;
             Long fa = failedAt.get(ck);
-            if (fa != null && tick - fa < 1200) return null;
+            if (fa != null && tick - fa < 12000) return null;
             Matcher m = LOC.matcher(capture(server, at + "locate structure " + structure));
             if (m.find()) {
                 int[] t = {Integer.parseInt(m.group(1)), 64, Integer.parseInt(m.group(3))};
                 found.put(ck, t); System.out.println("[cobblecomputils] gym compass: " + name + " -> " + structure + " at " + t[0] + ", " + t[2]); return t;
             }
-            failedAt.put(ck, (long) tick); System.out.println("[cobblecomputils] gym compass: no " + structure + " found near " + name + " (will retry in 60 s)"); return null;
+            failedAt.put(ck, (long) tick); System.out.println("[cobblecomputils] gym compass: no " + structure + " found near " + name + " (will retry in 10 min)"); return null;
         }
         // no building for this gym: point at the nearest loaded gym leader
         Matcher m = POS.matcher(capture(server, at + "data get entity @e[type=rctmod:trainer,nbt={TrainerId:\"" + best.id + "\"},sort=nearest,limit=1] Pos"));
