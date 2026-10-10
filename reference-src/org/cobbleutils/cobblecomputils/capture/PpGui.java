@@ -362,7 +362,7 @@ public final class PpGui {
                 inArena ? "Click to " + (open ? "close" : "open") + " your lane for a partner" : "Start a gym fight first", open ? "OPEN" : (inArena ? "CLOSED" : ""), 0, open ? 4 : (inArena ? 0 : 1),
                 "Partners can join while it is open"), () -> run(pl, "trigger gym set 42"));
         s.add(ListNet.Row.of(ic("minecraft:ender_pearl"), "3. Partner: join a host", "Pick a friend with an open lane", ">", 0, 0, "Opens the lane list"), () -> nav(pl, "coop_join"));
-        s.add(ListNet.Row.of(ic("cobblemon:exp_candy_xl"), "4. Walk up to the trainer", "Right-click (or sneak + right-click) the trainer and send the invite", "", 0, 0, ""), null);
+        s.add(ListNet.Row.of(ic("cobblemon:exp_candy_xl"), "4. Sneak + right-click the trainer", "Stand together, sneak + right-click the trainer, pick your partner as ally and send the invite", "", 0, 0, ""), null);
         int[] need = {5, 15, 30, 60};
         String[] rw = {"5 Rare Candy", "10 XL Exp Candy + 50,000 CobbleDollars", "Master Ball + 5% shiny odds", "+1 heart + Tag Team title"};
         for (int i = 0; i < need.length; i++) {
@@ -496,7 +496,7 @@ public final class PpGui {
                 s.add(ListNet.Row.of(stackOf("minecraft:player_head", ""), partnerName.toUpperCase() + " IS WAITING\n" + stage, sub, "JOIN", -1, 4, "Teleports you into their lane"),
                         () -> { String e = Duo.joinPartner(pl); if (e != null) duoDo(pl, e, ""); else ListNet.close(pl); });
             } else {
-                s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "DUO FIGHT\n" + stage, sub, ppOn ? "FIGHT TOGETHER" : "", -1, 4, ppOn ? "Starts the fight, opens the lane and sends " + partnerName + " a join button" : partnerName + " must be on the Duo run"),
+                s.add(ListNet.Row.of(ic("cobblemon:poke_ball"), "DUO FIGHT\n" + stage, sub, ppOn ? "FIGHT TOGETHER" : "", -1, 4, ppOn ? "Opens the lane for " + partnerName + ", then sneak + right-click the trainer to invite them" : partnerName + " must be on the Duo run"),
                         () -> { String e = Duo.fightTogether(pl); if (e != null) duoDo(pl, e, ""); else ListNet.close(pl); });
             }
         }

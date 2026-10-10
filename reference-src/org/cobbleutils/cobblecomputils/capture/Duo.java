@@ -460,8 +460,8 @@ public final class Duo {
             if (PpGui.score(pl, "pp_slot") >= 1 && inArenaDim(pl) && !PpGui.tag(pl, "pp_pend")) {
                 if (!PpGui.tag(pl, "pp_coopopen")) PpGui.run(pl, "trigger gym set 42");
                 String n = nameOf(pl);
-                PpGui.runServer(pp, "tellraw " + nameOf(pp) + " [{\"text\":\"[Duo] \",\"color\":\"aqua\"},{\"text\":\"" + n + " is ready for a team fight. \",\"color\":\"green\"},{\"text\":\"[JOIN]\",\"color\":\"yellow\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/duo join\"}},{\"text\":\"  or phone menu > Duo run\",\"color\":\"gray\"}]");
-                say(pl, "§b[Duo] §7Lane open. Waiting for " + nameOf(pp) + " to join, then walk up to the trainer together and use the co-op invite.");
+                PpGui.runServer(pp, "tellraw " + nameOf(pp) + " [{\"text\":\"[Duo] \",\"color\":\"aqua\"},{\"text\":\"" + n + " is ready for a team fight. \",\"color\":\"green\"},{\"text\":\"[JOIN]\",\"color\":\"yellow\",\"bold\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/duo join\"}},{\"text\":\"  Then stay next to \" + n + \" and wait for the co-op invite.\",\"color\":\"gray\"}]");
+                say(pl, "§b[Duo] §7Lane open. Once " + nameOf(pp) + " has joined, stand together and SNEAK + RIGHT-CLICK the trainer, then pick " + nameOf(pp) + " as your ally.");
                 it.remove();
             }
         }
