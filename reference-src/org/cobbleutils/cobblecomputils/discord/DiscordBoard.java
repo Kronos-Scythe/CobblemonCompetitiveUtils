@@ -340,8 +340,24 @@ public final class DiscordBoard implements net.fabricmc.api.ModInitializer {
         PROGRESSION.put("alola", new Object[]{"Alola", alola});
     }
 
-    @SuppressWarnings("unchecked")
+    /** Players currently on a Duo run (config/cobblecomputils/duo.json, written by the Duo system). */
+    static boolean onDuoRun(String uid) {
+        try {
+            File f = new File("config/cobblecomputils/duo.json");
+            if (!f.exists()) return false;
+            com.google.gson.JsonObject root = com.google.gson.JsonParser.parseString(java.nio.file.Files.readString(f.toPath())).getAsJsonObject();
+            return root.has("mode") && root.getAsJsonObject("mode").has(uid);
+        } catch (Throwable t) { return false; }
+    }
+
     static String[] gymProgress(String uid, File world) {
+        String[] g = gymProgressRaw(uid, world);
+        if (g != null && onDuoRun(uid) && !g[0].startsWith("No series")) g[0] = "Duo - " + g[0];
+        return g;
+    }
+
+    @SuppressWarnings("unchecked")
+    static String[] gymProgressRaw(String uid, File world) {
         File fp = new File(world, "data/rctmod.player." + uid + ".stat.dat");
         if (!fp.exists()) return null;
         try {
