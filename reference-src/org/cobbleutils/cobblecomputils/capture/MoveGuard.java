@@ -107,10 +107,11 @@ public class MoveGuard implements ModInitializer {
     }
 
     static void restore(class_3222 pl, Pokemon p, List<String> before) {
-        Set<String> taught = TAUGHT.get(p.getUuid());
-        if (before == null || taught == null) return;
+        if (before == null) return;
+        // every move that was on the Pokemon when the fight began (learnset, egg, tutor...) must still be there afterwards;
+        // Sketch is the one move that legitimately turns into another move during a fight
         for (String name : before) {
-            if (!taught.contains(name)) continue;
+            if (name.equalsIgnoreCase("sketch")) continue;
             List<String> now = names(p);
             if (now.contains(name)) continue;
             MoveTemplate t = Moves.getByName(name);
@@ -125,7 +126,7 @@ public class MoveGuard implements ModInitializer {
                     if (old != null && p.exchangeMove(old, t)) { ok = true; break; }
                 }
             }
-            System.out.println("[cobblecomputils] Tutored move " + name + " vanished from " + p.getSpecies().getName() + " (" + pl.method_5477().getString() + ") during a battle; "
+            System.out.println("[cobblecomputils] Move " + name + " vanished from " + p.getSpecies().getName() + " (" + pl.method_5477().getString() + ") during a battle; "
                 + (ok ? "restored" : "could not restore") + ". Moves before: " + before + ", after: " + now);
         }
     }
