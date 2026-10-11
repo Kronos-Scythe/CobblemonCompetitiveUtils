@@ -347,3 +347,6 @@ The duo keeps its own copy of the RCT progress (defeated trainers, current regio
 both partners share one gym stage, badge count and level cap, and either can pick any region. A player's solo progress is saved when they
 switch to the Duo run (also backed up to `config/cobblecomputils/duo_backups/`) and restored exactly when they switch back.
 The phone menu is an icon tile hub (`HubScreen`) driven by the same list payload (`View.tiles`).
+
+## Export to PKForge / PKHeX (v1.43)
+`/pokeexport` writes your party and PC as Gen 9 `.pk9` files plus `manifest.json` (PKForge bank archive format), `showdown.txt` and a `.zip` to `config/cobblecomputils/pokeexport/` on the server. Ops can run `/pokeexport <player>`. PID, TID/SID and caught date are generated because Cobblemon does not store them; shininess, IVs, EVs, nature, ability, moves, item, ball and original trainer name are kept.
