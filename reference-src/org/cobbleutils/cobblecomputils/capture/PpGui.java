@@ -56,6 +56,7 @@ public final class PpGui {
         tickN++;
         try { ListNet.tick(server); } catch (Throwable t) { }
         try { Duo.tick(server); } catch (Throwable t) { }
+        RaidLives.tick(server);
         try { RaidPass.tick(server); } catch (Throwable t) { if (tickN % 6000 == 0) System.out.println("[cobblecomputils] raid pass tick error: " + t); }
         if (!OPEN.isEmpty()) {
             for (H h : new ArrayList<>(OPEN)) if (h.virtual && h.pl.method_31481()) { OPEN.remove(h); VIRT.values().remove(h); }
