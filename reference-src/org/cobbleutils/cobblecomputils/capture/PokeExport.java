@@ -207,8 +207,8 @@ public final class PokeExport {
         b.putShort(0x14, (short) abId.intValue());
         b.put(0x16, (byte) 1);
         b.putInt(0x1C, pid);
-        int nat = Arrays.asList(NATURES).indexOf(p.getNature().getName().method_12832());
-        int nat2 = Arrays.asList(NATURES).indexOf(p.getMintedNature().getName().method_12832());
+        int nat = p.getNature() == null ? 0 : Arrays.asList(NATURES).indexOf(p.getNature().getName().method_12832());
+        int nat2 = p.getMintedNature() == null ? nat : Arrays.asList(NATURES).indexOf(p.getMintedNature().getName().method_12832());
         if (nat < 0) nat = 0;
         if (nat2 < 0) nat2 = nat;
         b.put(0x20, (byte) nat);
@@ -339,21 +339,29 @@ public final class PokeExport {
         return s.toString();
     }
 
+    static int skipped;
+
+    static void addSafe(List<Out> all, Pokemon p, String who, int box, int slot) {
+        try { all.add(build(p, who, box, slot)); }
+        catch (Throwable t) { skipped++; System.out.println("[cobblecomputils] pokeexport: skipped one Pokemon (box " + box + " slot " + slot + "): " + t); }
+    }
+
     /** Exports everything; returns the user-facing result text. */
     public static String export(class_3222 target, String by) {
         try {
             load();
             String who = target.method_5477().getString();
             List<Out> all = new ArrayList<>();
+            skipped = 0;
             int slot = 0;
             for (Pokemon p : Cobblemon.INSTANCE.getStorage().getParty(target)) {
-                if (p != null) all.add(build(p, who, 0, slot));
+                if (p != null) addSafe(all, p, who, 0, slot);
                 slot++;
             }
             PCStore pc = Cobblemon.INSTANCE.getStorage().getPC(target);
             int bn = 1;
             for (PCBox box : pc.getBoxes()) {
-                for (Map.Entry<Integer, Pokemon> e : box.getNonEmptySlots().entrySet()) all.add(build(e.getValue(), who, bn, e.getKey()));
+                for (Map.Entry<Integer, Pokemon> e : box.getNonEmptySlots().entrySet()) addSafe(all, e.getValue(), who, bn, e.getKey());
                 bn++;
             }
             if (all.isEmpty()) return "§c[Export] " + who + " has no Pokémon to export.";
@@ -410,7 +418,7 @@ public final class PokeExport {
             for (Out o : all) warn += o.notes.size();
             System.out.println("[cobblecomputils] pokeexport: " + all.size() + " Pokemon of " + who + " -> " + zip + " (" + warn + " notes)");
             return "§a[Export] " + all.size() + " Pokémon exported as .pk9 for " + who + ". Files are on the server in §fconfig/cobblecomputils/pokeexport/" + base
-                + "§a (and the same as a .zip). Import the folder in PKForge's Bank." + (warn > 0 ? " §e" + warn + " small field(s) could not be mapped, see README.txt in the folder." : "");
+                + "§a (and the same as a .zip). Import the folder in PKForge's Bank." + (skipped > 0 ? " §c" + skipped + " could not be exported, see the server log." : "") + (warn > 0 ? " §e" + warn + " small field(s) could not be mapped, see README.txt in the folder." : "");
         } catch (Throwable t) {
             t.printStackTrace();
             return "§c[Export] failed: " + t;
