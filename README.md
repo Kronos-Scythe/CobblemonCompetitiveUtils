@@ -349,4 +349,4 @@ switch to the Duo run (also backed up to `config/cobblecomputils/duo_backups/`) 
 The phone menu is an icon tile hub (`HubScreen`) driven by the same list payload (`View.tiles`).
 
 ## Export to PKForge / PKHeX (v1.43)
-`/pokeexport` writes your party and PC as Gen 9 `.pk9` files plus `manifest.json` (PKForge bank archive format), `showdown.txt` and a `.zip` to `config/cobblecomputils/pokeexport/` on the server. Ops can run `/pokeexport <player>`. PID, TID/SID and caught date are generated because Cobblemon does not store them; shininess, IVs, EVs, nature, ability, moves, item, ball and original trainer name are kept.
+`/pokeexport [all|party|1-6|name] [player]` writes your party and PC (or only what you pick) as Gen 9 `.pk9` files plus `manifest.json` (PKForge bank archive format), `showdown.txt` and a `.zip` to `config/cobblecomputils/pokeexport/` on the server. Ops can run `/pokeexport <player>`. PID, TID/SID and caught date are generated because Cobblemon does not store them; shininess, IVs, EVs, nature, ability, moves, item, ball and original trainer name are kept.

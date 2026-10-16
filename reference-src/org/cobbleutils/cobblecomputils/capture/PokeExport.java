@@ -347,7 +347,21 @@ public final class PokeExport {
     }
 
     /** Exports everything; returns the user-facing result text. */
-    public static String export(class_3222 target, String by) {
+    public static String export(class_3222 target, String by) { return export(target, by, "all"); }
+
+    static boolean matches(Pokemon p, String what, int slot, boolean party) {
+        if (what.equals("all")) return true;
+        if (what.equals("party")) return party;
+        if (what.matches("[1-6]")) return party && slot == Integer.parseInt(what) - 1;
+        String w = norm(what);
+        if (w.isEmpty()) return false;
+        String nick = "";
+        try { if (p.getNickname() != null) nick = norm(p.getNickname().getString()); } catch (Throwable t) { }
+        return nick.equals(w) || norm(p.getSpecies().getName()).equals(w);
+    }
+
+    public static String export(class_3222 target, String by, String what) {
+        what = what == null || what.isBlank() ? "all" : what.trim().toLowerCase(Locale.ROOT);
         try {
             load();
             String who = target.method_5477().getString();
@@ -355,16 +369,16 @@ public final class PokeExport {
             skipped = 0;
             int slot = 0;
             for (Pokemon p : Cobblemon.INSTANCE.getStorage().getParty(target)) {
-                if (p != null) addSafe(all, p, who, 0, slot);
+                if (p != null && matches(p, what, slot, true)) addSafe(all, p, who, 0, slot);
                 slot++;
             }
             PCStore pc = Cobblemon.INSTANCE.getStorage().getPC(target);
             int bn = 1;
             for (PCBox box : pc.getBoxes()) {
-                for (Map.Entry<Integer, Pokemon> e : box.getNonEmptySlots().entrySet()) addSafe(all, e.getValue(), who, bn, e.getKey());
+                for (Map.Entry<Integer, Pokemon> e : box.getNonEmptySlots().entrySet()) if (matches(e.getValue(), what, e.getKey(), false)) addSafe(all, e.getValue(), who, bn, e.getKey());
                 bn++;
             }
-            if (all.isEmpty()) return "§c[Export] " + who + " has no Pokémon to export.";
+            if (all.isEmpty()) return "§c[Export] " + (what.equals("all") ? who + " has no Pokémon to export." : "No Pokémon matched '" + what + "'. Use all, party, a party slot 1-6, or a nickname/species name."); 
             String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
             String base = who.replaceAll("[^A-Za-z0-9_-]", "_") + "-" + stamp;
             Path dir = ROOT.resolve(base);
@@ -431,18 +445,26 @@ public final class PokeExport {
         LiteralArgumentBuilder<class_2168> root = LiteralArgumentBuilder.<class_2168>literal("pokeexport");
         root.executes((Command<class_2168>) c -> {
             class_3222 me = c.getSource().method_9207();
-            TradeNet.say(me, export(me, me.method_5477().getString()));
+            TradeNet.say(me, export(me, me.method_5477().getString(), "all"));
             return 1;
         });
-        root.then(RequiredArgumentBuilder.<class_2168, String>argument("player", StringArgumentType.word())
+        RequiredArgumentBuilder<class_2168, String> what = RequiredArgumentBuilder.<class_2168, String>argument("what", StringArgumentType.string())
+            .suggests((c, b) -> { b.suggest("all"); b.suggest("party"); for (int i = 1; i <= 6; i++) b.suggest(String.valueOf(i)); return b.buildFuture(); })
+            .executes((Command<class_2168>) c -> {
+                class_3222 me = c.getSource().method_9207();
+                TradeNet.say(me, export(me, me.method_5477().getString(), StringArgumentType.getString(c, "what")));
+                return 1;
+            });
+        what.then(RequiredArgumentBuilder.<class_2168, String>argument("player", StringArgumentType.word())
             .requires(s -> s.method_9259(2))
             .executes((Command<class_2168>) c -> {
                 class_3222 me = c.getSource().method_9207();
                 class_3222 t = c.getSource().method_9211().method_3760().method_14566(StringArgumentType.getString(c, "player"));
                 if (t == null) { TradeNet.say(me, "§c[Export] That player is not online."); return 0; }
-                TradeNet.say(me, export(t, me.method_5477().getString()));
+                TradeNet.say(me, export(t, me.method_5477().getString(), StringArgumentType.getString(c, "what")));
                 return 1;
             }));
+        root.then(what);
         d.register(root);
     }
 }
